@@ -27,6 +27,9 @@ namespace CoreTracker
         private Int16 ModeFast = 1000;
         private RegistryKey startup_key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
         private string PN = "CoreTracker"; // program name
+        private bool mouseDown;
+        private Point lastLocation;
+
 
         public Form1()
         {
@@ -64,7 +67,10 @@ namespace CoreTracker
             // intialize thread && check auto start
             var target = startup_key.GetValue(PN);
             bool auto_run = string.IsNullOrEmpty(target?.ToString()) ? false : true;
-            if (auto_run) { ch_auto_start.Checked = true; }
+            if (auto_run) { 
+                ch_auto_start.Checked = true;
+                Hide();
+            }
             init_CPU_Watcher(auto_run);
 
 
@@ -205,6 +211,57 @@ namespace CoreTracker
 
         }
 
+        private void l_close_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void l_hide_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
+        }
+
+        private void Form1_MouseDown(object sender, MouseEventArgs e)
+        {
+            mouseDown = true;
+            lastLocation = e.Location;
+        }
+
+        private void Form1_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (mouseDown)
+            {
+                this.Location = new Point(
+                    (this.Location.X - lastLocation.X) + e.X, (this.Location.Y - lastLocation.Y) + e.Y);
+
+                this.Update();
+            }
+        }
+
+        private void Form1_MouseUp(object sender, MouseEventArgs e)
+        {
+            mouseDown = false;
+        }
+
+        private void l_close_MouseHover(object sender, EventArgs e)
+        {
+            l_close.BackColor = System.Drawing.Color.DodgerBlue;
+        }
+
+        private void l_close_MouseLeave(object sender, EventArgs e)
+        {
+            l_close.BackColor = System.Drawing.Color.Transparent;
+        }
+
+        private void l_hide_MouseHover(object sender, EventArgs e)
+        {
+            l_hide.BackColor = System.Drawing.Color.DodgerBlue;
+        }
+
+        private void l_hide_MouseLeave(object sender, EventArgs e)
+        {
+            l_hide.BackColor = System.Drawing.Color.Transparent;
+        }
     }
     #endregion
 

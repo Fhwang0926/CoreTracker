@@ -53,6 +53,8 @@ namespace CoreTracker
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.label1 = new System.Windows.Forms.Label();
             this.pic_status = new System.Windows.Forms.PictureBox();
+            this.l_close = new System.Windows.Forms.Label();
+            this.l_hide = new System.Windows.Forms.Label();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -64,7 +66,7 @@ namespace CoreTracker
             this.l_core.AutoSize = true;
             this.l_core.Font = new System.Drawing.Font("굴림", 28F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.l_core.ForeColor = System.Drawing.Color.White;
-            this.l_core.Location = new System.Drawing.Point(20, 35);
+            this.l_core.Location = new System.Drawing.Point(20, 72);
             this.l_core.Name = "l_core";
             this.l_core.Size = new System.Drawing.Size(218, 38);
             this.l_core.TabIndex = 0;
@@ -75,7 +77,7 @@ namespace CoreTracker
             this.l_th.AutoSize = true;
             this.l_th.Font = new System.Drawing.Font("굴림", 28F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.l_th.ForeColor = System.Drawing.Color.White;
-            this.l_th.Location = new System.Drawing.Point(20, 96);
+            this.l_th.Location = new System.Drawing.Point(20, 133);
             this.l_th.Name = "l_th";
             this.l_th.Size = new System.Drawing.Size(216, 38);
             this.l_th.TabIndex = 1;
@@ -86,7 +88,7 @@ namespace CoreTracker
             this.l_th_value.AutoSize = true;
             this.l_th_value.Font = new System.Drawing.Font("굴림", 28F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.l_th_value.ForeColor = System.Drawing.Color.White;
-            this.l_th_value.Location = new System.Drawing.Point(216, 96);
+            this.l_th_value.Location = new System.Drawing.Point(216, 133);
             this.l_th_value.Name = "l_th_value";
             this.l_th_value.Size = new System.Drawing.Size(39, 38);
             this.l_th_value.TabIndex = 3;
@@ -97,7 +99,7 @@ namespace CoreTracker
             this.l_core_value.AutoSize = true;
             this.l_core_value.Font = new System.Drawing.Font("굴림", 28F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.l_core_value.ForeColor = System.Drawing.Color.White;
-            this.l_core_value.Location = new System.Drawing.Point(216, 35);
+            this.l_core_value.Location = new System.Drawing.Point(216, 72);
             this.l_core_value.Name = "l_core_value";
             this.l_core_value.Size = new System.Drawing.Size(39, 38);
             this.l_core_value.TabIndex = 2;
@@ -110,7 +112,7 @@ namespace CoreTracker
             this.btn_tray.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_tray.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btn_tray.ForeColor = System.Drawing.Color.White;
-            this.btn_tray.Location = new System.Drawing.Point(12, 606);
+            this.btn_tray.Location = new System.Drawing.Point(12, 640);
             this.btn_tray.Name = "btn_tray";
             this.btn_tray.Size = new System.Drawing.Size(344, 44);
             this.btn_tray.TabIndex = 4;
@@ -134,7 +136,7 @@ namespace CoreTracker
             // 
             this.groupBox1.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.groupBox1.ForeColor = System.Drawing.Color.White;
-            this.groupBox1.Location = new System.Drawing.Point(12, 12);
+            this.groupBox1.Location = new System.Drawing.Point(12, 46);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(344, 144);
             this.groupBox1.TabIndex = 5;
@@ -149,7 +151,7 @@ namespace CoreTracker
             this.groupBox2.Controls.Add(this.ch_auto_update);
             this.groupBox2.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.groupBox2.ForeColor = System.Drawing.Color.White;
-            this.groupBox2.Location = new System.Drawing.Point(12, 162);
+            this.groupBox2.Location = new System.Drawing.Point(12, 196);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(344, 254);
             this.groupBox2.TabIndex = 6;
@@ -261,7 +263,7 @@ namespace CoreTracker
             this.groupBox4.Controls.Add(this.linkLabel1);
             this.groupBox4.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.groupBox4.ForeColor = System.Drawing.Color.White;
-            this.groupBox4.Location = new System.Drawing.Point(12, 422);
+            this.groupBox4.Location = new System.Drawing.Point(12, 456);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(344, 119);
             this.groupBox4.TabIndex = 8;
@@ -273,7 +275,7 @@ namespace CoreTracker
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("굴림", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(86, 558);
+            this.label1.Location = new System.Drawing.Point(86, 592);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(125, 27);
             this.label1.TabIndex = 9;
@@ -281,18 +283,51 @@ namespace CoreTracker
             // 
             // pic_status
             // 
-            this.pic_status.Location = new System.Drawing.Point(218, 558);
+            this.pic_status.Location = new System.Drawing.Point(218, 592);
             this.pic_status.Name = "pic_status";
             this.pic_status.Size = new System.Drawing.Size(25, 27);
             this.pic_status.TabIndex = 10;
             this.pic_status.TabStop = false;
             // 
+            // l_close
+            // 
+            this.l_close.AutoSize = true;
+            this.l_close.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.l_close.Font = new System.Drawing.Font("Arial", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.l_close.ForeColor = System.Drawing.Color.White;
+            this.l_close.Location = new System.Drawing.Point(326, 9);
+            this.l_close.Name = "l_close";
+            this.l_close.Size = new System.Drawing.Size(30, 27);
+            this.l_close.TabIndex = 11;
+            this.l_close.Text = "X";
+            this.l_close.Click += new System.EventHandler(this.l_close_Click);
+            this.l_close.MouseHover += new System.EventHandler(this.l_close_MouseHover);
+            this.l_close.MouseLeave += new System.EventHandler(this.l_close_MouseLeave);
+            // 
+            // l_hide
+            // 
+            this.l_hide.AutoSize = true;
+            this.l_hide.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.l_hide.Font = new System.Drawing.Font("Arial", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.l_hide.ForeColor = System.Drawing.Color.White;
+            this.l_hide.Location = new System.Drawing.Point(290, 9);
+            this.l_hide.Name = "l_hide";
+            this.l_hide.Size = new System.Drawing.Size(27, 27);
+            this.l_hide.TabIndex = 13;
+            this.l_hide.Text = "_";
+            this.l_hide.Click += new System.EventHandler(this.l_hide_Click);
+            this.l_hide.MouseHover += new System.EventHandler(this.l_hide_MouseHover);
+            this.l_hide.MouseLeave += new System.EventHandler(this.l_hide_MouseLeave);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.WindowFrame;
-            this.ClientSize = new System.Drawing.Size(368, 662);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(44)))), ((int)(((byte)(54)))));
+            this.ClientSize = new System.Drawing.Size(368, 703);
+            this.ControlBox = false;
+            this.Controls.Add(this.l_hide);
+            this.Controls.Add(this.l_close);
             this.Controls.Add(this.pic_status);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.groupBox2);
@@ -304,11 +339,16 @@ namespace CoreTracker
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox4);
             this.ForeColor = System.Drawing.Color.Black;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
+            this.ShowIcon = false;
             this.Text = "CoreTracker";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);
+            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseUp);
             this.Resize += new System.EventHandler(this.Form1_Resize);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
@@ -345,6 +385,8 @@ namespace CoreTracker
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.PictureBox pic_status;
+        private System.Windows.Forms.Label l_close;
+        private System.Windows.Forms.Label l_hide;
     }
 }
 
