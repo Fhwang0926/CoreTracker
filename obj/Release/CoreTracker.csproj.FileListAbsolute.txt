@@ -1,0 +1,13 @@
+C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\bin\Release\CoreTracker.exe.config
+C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\bin\Release\CoreTracker.exe
+C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\bin\Release\CoreTracker.pdb
+C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\obj\Release\CoreTracker.csprojAssemblyReference.cache
+C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\obj\Release\CoreTracker.Form1.resources
+C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\obj\Release\CoreTracker.Properties.Resources.resources
+C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\obj\Release\CoreTracker.csproj.GenerateResource.cache
+C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\obj\Release\CoreTracker.csproj.CoreCompileInputs.cache
+C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\obj\Release\CoreTracker.exe
+C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\obj\Release\CoreTracker.pdb
+C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\bin\Release\x64\CoreTracker.exe.config
+C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\bin\Release\x64\CoreTracker.exe
+C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\bin\Release\x64\CoreTracker.pdb

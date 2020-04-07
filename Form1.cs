@@ -19,16 +19,19 @@ namespace CoreTracker
     #region application
     public partial class Form1 : Form
     {
+        // Constant Definition
         private List<NotifyIcon> th_list = new List<NotifyIcon>();
         private bool run = false;
         private Thread th;
         private Int16 ModeSlow = 5000;
         private Int16 ModeNormarl = 3000;
         private Int16 ModeFast = 1000;
-        private RegistryKey startup_key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-        private string PN = "CoreTracker"; // program name
+        private string VERSION = "v0.0.0-beta2";
+
         private bool mouseDown;
         private Point lastLocation;
+        private Ragistry Ragistry = new Ragistry();
+        private Controller controller = new Controller();
 
 
         public Form1()
@@ -48,15 +51,14 @@ namespace CoreTracker
             pic_status.Region = new Region(gp);
 
             // add NotifyIcon mouse right button menu
-            ti_main.Visible = true;
+            //ti_main.Visible = true;
             ti_main.ContextMenu = new ContextMenu();
             ti_main.ContextMenu.MenuItems.Add(0, new MenuItem("Exit", new System.EventHandler(Exit_Click)));
             ti_main.ContextMenu.MenuItems.Add(1, new MenuItem("Show", new System.EventHandler(Show_Click)));
             ti_main.ContextMenu.MenuItems.Add(2, new MenuItem("Hide", new System.EventHandler(Hide_Click)));
             ti_main.ContextMenu.MenuItems.Add(3, new MenuItem("Report", new System.EventHandler(Report_Click)));
-            //ti_main.ContextMenu.MenuItems.Add(4, new MenuItem("Update", new System.EventHandler(Update_Click)));
-            //ti_main.ContextMenu.MenuItems.Add(5, new MenuItem("Reset", new System.EventHandler(Reset_Click)));
-
+            ti_main.ContextMenu.MenuItems.Add(4, new MenuItem("Reset", new System.EventHandler(Reset_Click)));
+            ti_main.ContextMenu.MenuItems.Add(4, new MenuItem("Update", new System.EventHandler(Update_Click)));
 
             // add NotifyIcon by core count
             for (int c = 1; c <= Environment.ProcessorCount; c++)
@@ -65,14 +67,13 @@ namespace CoreTracker
             }
 
             // intialize thread && check auto start
-            var target = startup_key.GetValue(PN);
-            bool auto_run = string.IsNullOrEmpty(target?.ToString()) ? false : true;
+            bool auto_run = Ragistry.CheckAutoRun();
             if (auto_run) { 
                 ch_auto_start.Checked = true;
                 Hide();
             }
             init_CPU_Watcher(auto_run);
-
+            l_version.Text = VERSION;
 
             // not yet support func
             ch_auto_update.Enabled = false;
@@ -96,6 +97,8 @@ namespace CoreTracker
         private void Update_Click(Object sender, System.EventArgs e)
         {
             // auto update latest
+            Int32 v = controller.stringToVersion(VERSION);
+            controller.Update(v);
         }
         private void Reset_Click(Object sender, System.EventArgs e)
         {
@@ -137,7 +140,7 @@ namespace CoreTracker
                 {
                     if (c.Name.ToString() == "_Total")
                     {
-                        //l_cpu_value.Text = c.Usage.ToString();
+                        continue;
                     }
                     else
                     {
@@ -179,7 +182,7 @@ namespace CoreTracker
             {
                 t.Dispose();
             }
-            Tray.RefreshTrayArea();
+            controller.RefreshTrayArea();
         }
 
         private void Form1_Resize(object sender, EventArgs e)
@@ -188,7 +191,7 @@ namespace CoreTracker
             if (FormWindowState.Minimized == WindowState) { 
                 Hide();
                 ti_main.Visible = true;
-                if (!run) { run = true; th.Start(); }
+                if (!run && !th.IsAlive) { run = true; th.Start(); }
             }
                 
         }
@@ -200,14 +203,8 @@ namespace CoreTracker
 
         private void ch_auto_start_CheckedChanged(object sender, EventArgs e)
         {
-            if(ch_auto_start.Checked)
-            {
-                startup_key.SetValue(PN, Application.ExecutablePath);
-                //startup_key.GetValue(PN);
-            } else
-            {
-                startup_key.DeleteValue(PN, false);
-            }
+            if(ch_auto_start.Checked) { Ragistry.Register(); }
+            else { Ragistry.Unregister(); }
 
         }
 
@@ -231,9 +228,7 @@ namespace CoreTracker
         {
             if (mouseDown)
             {
-                this.Location = new Point(
-                    (this.Location.X - lastLocation.X) + e.X, (this.Location.Y - lastLocation.Y) + e.Y);
-
+                this.Location = new Point((this.Location.X - lastLocation.X) + e.X, (this.Location.Y - lastLocation.Y) + e.Y);
                 this.Update();
             }
         }
@@ -264,61 +259,4 @@ namespace CoreTracker
         }
     }
     #endregion
-
-    #region "Refresh Notification Area Icons"
-
-    public partial class Tray
-
-    {
-
-        [StructLayout(LayoutKind.Sequential)]
-        public struct RECT
-        {
-            public int left;
-            public int top;
-            public int right;
-            public int bottom;
-        }
-
-        [DllImport("user32.dll")]
-        public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
-
-        [DllImport("user32.dll")]
-        public static extern IntPtr FindWindowEx(IntPtr hwndParent, IntPtr hwndChildAfter, string lpszClass,
-            string lpszWindow);
-
-        [DllImport("user32.dll")]
-        public static extern bool GetClientRect(IntPtr hWnd, out RECT lpRect);
-
-        [DllImport("user32.dll")]
-        public static extern IntPtr SendMessage(IntPtr hWnd, uint msg, int wParam, int lParam);
-
-        public static void RefreshTrayArea()
-        {
-            IntPtr systemTrayContainerHandle = FindWindow("Shell_TrayWnd", null);
-            IntPtr systemTrayHandle = FindWindowEx(systemTrayContainerHandle, IntPtr.Zero, "TrayNotifyWnd", null);
-            IntPtr sysPagerHandle = FindWindowEx(systemTrayHandle, IntPtr.Zero, "SysPager", null);
-            IntPtr notificationAreaHandle = FindWindowEx(sysPagerHandle, IntPtr.Zero, "ToolbarWindow32", "Notification Area");
-            if (notificationAreaHandle == IntPtr.Zero) notificationAreaHandle = FindWindowEx(sysPagerHandle, IntPtr.Zero, "ToolbarWindow32", null);
-            if (notificationAreaHandle == IntPtr.Zero)
-            {
-                notificationAreaHandle = FindWindowEx(sysPagerHandle, IntPtr.Zero, "ToolbarWindow32", "User Promoted Notification Area");
-                IntPtr notifyIconOverflowWindowHandle = FindWindow("NotifyIconOverflowWindow", null);
-                IntPtr overflowNotificationAreaHandle = FindWindowEx(notifyIconOverflowWindowHandle, IntPtr.Zero, "ToolbarWindow32", "Overflow Notification Area");
-                RefreshTrayArea(overflowNotificationAreaHandle);
-            }
-            RefreshTrayArea(notificationAreaHandle);
-        }
-
-        private static void RefreshTrayArea(IntPtr windowHandle)
-        {
-            const uint wmMousemove = 0x0200;
-            RECT rect;
-            GetClientRect(windowHandle, out rect);
-            for (var x = 0; x < rect.right; x += 5)
-                for (var y = 0; y < rect.bottom; y += 5)
-                    SendMessage(windowHandle, wmMousemove, 0, (y << 16) + x);
-        }
-        #endregion
-    }
 }
