@@ -1,13 +1,12 @@
 C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\bin\Debug\CoreTracker.exe.config
 C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\bin\Debug\CoreTracker.exe
 C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\bin\Debug\CoreTracker.pdb
+C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\bin\Debug\Newtonsoft.Json.dll
+C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\bin\Debug\Newtonsoft.Json.xml
 C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\obj\Debug\CoreTracker.Form1.resources
 C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\obj\Debug\CoreTracker.Properties.Resources.resources
 C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\obj\Debug\CoreTracker.csproj.GenerateResource.cache
 C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\obj\Debug\CoreTracker.csproj.CoreCompileInputs.cache
+C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\obj\Debug\CoreTracker.csproj.CopyComplete
 C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\obj\Debug\CoreTracker.exe
 C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\obj\Debug\CoreTracker.pdb
-C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\obj\Debug\CoreTracker.csprojAssemblyReference.cache
-C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\bin\Debug\Newtonsoft.Json.dll
-C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\bin\Debug\Newtonsoft.Json.xml
-C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\obj\Debug\CoreTracker.csproj.CopyComplete

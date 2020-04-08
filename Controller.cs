@@ -17,8 +17,9 @@ namespace CoreTracker
     class Controller
     {
         #region "Refresh Notification Area Icons"
+        string name = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
 
-            [StructLayout(LayoutKind.Sequential)]
+        [StructLayout(LayoutKind.Sequential)]
             public struct RECT
             {
                 public int left;
@@ -135,59 +136,63 @@ namespace CoreTracker
             }
         }
 
-        private void restart()
+        public bool restart()
         {
-            string path = Application.StartupPath + @"\update.bat";
-            string name = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
             try
             {
-                string[] lines = { "cd %~dp0", "echo off", "cls", "echo start update : " + name, "timeout 3 > NUL", $"xcopy {name}_new.exe {name}.exe /K /D /H /Y", $"del /F {name}.exe", $"START /B {name}.exe" };
+                Process.Start(Application.StartupPath + $"\\{name}.bat");
+                return true;
+            } catch (Exception e)
+            {
+                return false;
+            }
+            
+            //Process.GetCurrentProcess().Kill();
+        }
+
+        private bool setupRestart()
+        {
+            string path = Application.StartupPath + @"\update.bat";
+            try
+            {
+                string[] lines = { "cd %~dp0", "echo off", "cls", "echo start update : " + name, $"taskkill /IM {name}.exe /F", "timeout 3 > NUL",  $"move /Y {name}_new.exe {name}.exe", "timeout 1 > NUL", $"START /B {name}.exe", "del %0" };
                 using (var outputFile = new StreamWriter(Path.Combine(Application.StartupPath, $"{name}.bat")))
                 {
-                    foreach (string line in lines)
-                        outputFile.WriteLine(line);
+                    foreach (string line in lines) { outputFile.WriteLine(line); }
                 }
             }
 
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
+                return false;
             }
-
-            try
-            {
-                Process.Start(Application.StartupPath + $"\\{name}.bat");
-                Process.GetCurrentProcess().Kill();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
-
+            return true;
         }
 
 
-        public async void Update(Int32 v)
+        public async Task<dynamic> Update(Int32 v)
         {
             github_result rs = await CheckVersion();
+            if (rs.is_error) { return new { msg = "version check failed, tray later or check internet status", is_error = true }; }
+
             if(stringToVersion(rs.tag_name) > v)
             {
-                Console.WriteLine("need update");
+                // start download
                 if(await download(rs.target))
                 {
-                    Console.WriteLine("start update");
-                    restart();
-
-                } else
-                {
-                    Console.WriteLine("download failed");
+                    // setup restart bat file
+                    if (setupRestart()) { return new { msg = "download done :D, if click ok button restart program", is_error = false }; }
+                    else { return new { msg = "download done :D, but is failed to setup override new version", is_error = true }; }
+                    
+                } else {
+                    return new { msg = "download failed, try later or check internet status", is_error = true };
                 }
             }
             else
             {
-                Console.WriteLine("recently version");
+                return new { msg = "recently version", is_error = false };
             }
-            
         }
 
         #endregion

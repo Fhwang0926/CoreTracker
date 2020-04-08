@@ -26,7 +26,7 @@ namespace CoreTracker
         private Int16 ModeSlow = 5000;
         private Int16 ModeNormarl = 3000;
         private Int16 ModeFast = 1000;
-        private string VERSION = "v0.0.0-beta2";
+        private string VERSION = "v0.0.0";
 
         private bool mouseDown;
         private Point lastLocation;
@@ -68,18 +68,19 @@ namespace CoreTracker
 
             // intialize thread && check auto start
             bool auto_run = Ragistry.CheckAutoRun();
-            if (auto_run) { 
+            if (auto_run)
+            {
                 ch_auto_start.Checked = true;
                 Hide();
             }
             init_CPU_Watcher(auto_run);
             l_version.Text = VERSION;
 
-            // not yet support func
-            ch_auto_update.Enabled = false;
-            ch_auto_update.Text = ch_auto_update.Text += "(coming soon)";
-            ch_auto_bugreport.Enabled = false;
-            ch_auto_bugreport.Text = ch_auto_bugreport.Text += "(coming soon)";
+            // check auto update
+            bool auto_update = Ragistry.CheckAutoUpdate();
+            if (auto_update) { ch_auto_update.Checked = true; self_update(); }
+
+            
 
         }
         private void init_CPU_Watcher(bool Immediate_start = true)
@@ -96,9 +97,39 @@ namespace CoreTracker
         }
         private void Update_Click(Object sender, System.EventArgs e)
         {
+            self_update();
+        }
+
+        // update function with msgbox
+        private async void self_update()
+        {
             // auto update latest
             Int32 v = controller.stringToVersion(VERSION);
-            controller.Update(v);
+            var rs = await controller.Update(v);
+            if (rs?.is_error)
+            {
+                MessageBox.Show(rs?.msg.ToString(), "Update failed!! :/", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                DialogResult result = MessageBox.Show(rs?.msg.ToString(), $"{Process.GetCurrentProcess().ProcessName}", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+                if (result == System.Windows.Forms.DialogResult.OK)
+                {
+                    // real restart
+                    if (controller.restart())
+                    {
+                        Close();
+                    }
+                    else
+                    {
+                        MessageBox.Show("failed update :/", "Update Failed", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
+                    }
+                }
+                else
+                {
+                    // update cancel && remove update bat file
+                }
+            }
         }
         private void Reset_Click(Object sender, System.EventArgs e)
         {
@@ -203,8 +234,8 @@ namespace CoreTracker
 
         private void ch_auto_start_CheckedChanged(object sender, EventArgs e)
         {
-            if(ch_auto_start.Checked) { Ragistry.Register(); }
-            else { Ragistry.Unregister(); }
+            if(ch_auto_start.Checked) { Ragistry.enable_auto_run(); }
+            else { Ragistry.disable_auto_run(); }
 
         }
 
@@ -256,6 +287,12 @@ namespace CoreTracker
         private void l_hide_MouseLeave(object sender, EventArgs e)
         {
             l_hide.BackColor = System.Drawing.Color.Transparent;
+        }
+
+        private void ch_auto_update_CheckedChanged(object sender, EventArgs e)
+        {
+            if (ch_auto_update.Checked) { Ragistry.enable_auto_update(); }
+            else { Ragistry.disable_auto_update(); }
         }
     }
     #endregion

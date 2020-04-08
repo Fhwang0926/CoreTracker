@@ -235,6 +235,7 @@ namespace CoreTracker
             this.ch_auto_update.TabIndex = 0;
             this.ch_auto_update.Text = "Auto Update";
             this.ch_auto_update.UseVisualStyleBackColor = true;
+            this.ch_auto_update.CheckedChanged += new System.EventHandler(this.ch_auto_update_CheckedChanged);
             // 
             // label2
             // 
@@ -351,6 +352,7 @@ namespace CoreTracker
             this.Controls.Add(this.groupBox4);
             this.ForeColor = System.Drawing.Color.Black;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.ShowIcon = false;
             this.Text = "CoreTracker";

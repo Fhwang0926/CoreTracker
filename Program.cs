@@ -1,6 +1,7 @@
 ﻿using Microsoft.Build.Framework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,9 +19,30 @@ namespace CoreTracker
         {
             try
             {
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new Form1());
+                System.Threading.Mutex mutex = new System.Threading.Mutex(false, System.Diagnostics.Process.GetCurrentProcess().ProcessName);
+                try
+                {
+                    if (mutex.WaitOne(0, false))
+                    {
+                        // Run the application
+                        Application.EnableVisualStyles();
+                        Application.SetCompatibleTextRenderingDefault(false);
+                        Application.Run(new Form1());
+                    }
+                    else
+                    {
+                        MessageBox.Show("CoreTracker application is already running.");
+                    }
+                }
+                finally
+                {
+                    if (mutex != null)
+                    {
+                        mutex.Close();
+                        mutex = null;
+                    }
+                }
+                
             } catch(Exception e)
             {
                 string[] lines = { e.Message.ToString(), e.StackTrace.ToString() };

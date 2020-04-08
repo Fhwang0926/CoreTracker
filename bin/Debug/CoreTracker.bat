@@ -2,7 +2,8 @@ cd %~dp0
 echo off
 cls
 echo start update : CoreTracker
+taskkill /IM CoreTracker.exe /F
 timeout 3 > NUL
-xcopy CoreTracker_new.exe CoreTracker.exe /K /D /H /Y
-del /Y CoreTracker.exe
+move /Y CoreTracker_new.exe CoreTracker.exe
+timeout 1 > NUL
 START /B CoreTracker.exe
