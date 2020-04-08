@@ -171,10 +171,10 @@ namespace CoreTracker
         }
 
 
-        public async Task<dynamic> Update(Int32 v)
+        public async Task<updateFormat> Update(Int32 v)
         {
             github_result rs = await CheckVersion();
-            if (rs.is_error) { return new { msg = "version check failed, tray later or check internet status", is_error = true }; }
+            if (rs.is_error) { return new updateFormat { msg = "version check failed, tray later or check internet status", is_error = true }; }
 
             if(stringToVersion(rs.tag_name) > v)
             {
@@ -182,16 +182,16 @@ namespace CoreTracker
                 if(await download(rs.target))
                 {
                     // setup restart bat file
-                    if (setupRestart()) { return new { msg = "download done :D, if click ok button restart program", is_error = false }; }
-                    else { return new { msg = "download done :D, but is failed to setup override new version", is_error = true }; }
+                    if (setupRestart()) { return new updateFormat { msg = "download done :D, if click ok button restart program", is_error = false }; }
+                    else { return new updateFormat { msg = "download done :D, but is failed to setup override new version", is_error = true }; }
                     
                 } else {
-                    return new { msg = "download failed, try later or check internet status", is_error = true };
+                    return new updateFormat { msg = "download failed, try later or check internet status", is_error = true };
                 }
             }
             else
             {
-                return new { msg = "recently version", is_error = false };
+                return new updateFormat { msg = "recently version", latest = true };
             }
         }
 

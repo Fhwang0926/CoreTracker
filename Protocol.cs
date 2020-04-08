@@ -100,4 +100,13 @@ namespace CoreTracker
         public string type { get; set; }
         public bool site_admin { get; set; }
     }
+
+    #region
+    class updateFormat
+    {
+        public string msg { get; set; }
+        public bool is_error { get; set; } = false;
+        public bool latest { get; set; } = false;
+    }
+    #endregion
 }

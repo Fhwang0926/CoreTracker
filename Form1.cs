@@ -26,7 +26,7 @@ namespace CoreTracker
         private Int16 ModeSlow = 5000;
         private Int16 ModeNormarl = 3000;
         private Int16 ModeFast = 1000;
-        private string VERSION = "v0.0.0";
+        private string VERSION = "v0.1.1";
 
         private bool mouseDown;
         private Point lastLocation;
@@ -97,37 +97,39 @@ namespace CoreTracker
         }
         private void Update_Click(Object sender, System.EventArgs e)
         {
-            self_update();
+            self_update(true);
         }
 
         // update function with msgbox
-        private async void self_update()
+        private async void self_update(bool updateAnswer = false)
         {
             // auto update latest
             Int32 v = controller.stringToVersion(VERSION);
-            var rs = await controller.Update(v);
-            if (rs?.is_error)
+            updateFormat rs = await controller.Update(v);
+            if (rs.is_error)
             {
                 MessageBox.Show(rs?.msg.ToString(), "Update failed!! :/", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                DialogResult result = MessageBox.Show(rs?.msg.ToString(), $"{Process.GetCurrentProcess().ProcessName}", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
-                if (result == System.Windows.Forms.DialogResult.OK)
-                {
-                    // real restart
-                    if (controller.restart())
-                    {
-                        Close();
-                    }
-                    else
-                    {
-                        MessageBox.Show("failed update :/", "Update Failed", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
-                    }
+                if (rs.latest) {
+                    if (updateAnswer) { MessageBox.Show(rs?.msg.ToString(), $"{Process.GetCurrentProcess().ProcessName}", MessageBoxButtons.OK, MessageBoxIcon.Information); }
                 }
                 else
                 {
-                    // update cancel && remove update bat file
+                    DialogResult result = MessageBox.Show(rs?.msg.ToString(), $"{Process.GetCurrentProcess().ProcessName}", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+                    if (result == System.Windows.Forms.DialogResult.OK)
+                    {
+                        // real restart
+                        if (controller.restart())
+                        {
+                            Close();
+                        }
+                        else
+                        {
+                            MessageBox.Show("failed update :/", "Update Failed", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
+                        }
+                    }
                 }
             }
         }

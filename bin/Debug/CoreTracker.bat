@@ -7,3 +7,4 @@ timeout 3 > NUL
 move /Y CoreTracker_new.exe CoreTracker.exe
 timeout 1 > NUL
 START /B CoreTracker.exe
+del %0
