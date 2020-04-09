@@ -1,10 +1,5 @@
-﻿using Microsoft.Build.Framework;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CoreTracker

@@ -1,13 +1,10 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -83,7 +80,7 @@ namespace CoreTracker
                     var response = await client.GetAsync("https://api.github.com/repos/Fhwang0926/CoreTracker/releases/latest");
                     if (response != null)
                     {
-                        var jsonString = await response.Content.ReadAsStringAsync();
+                        dynamic jsonString = await response.Content.ReadAsStringAsync();
                         github github = JsonConvert.DeserializeObject<github>(jsonString);
 
                         // update result info
@@ -96,7 +93,7 @@ namespace CoreTracker
 
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 github_result.is_error = true;
             }
@@ -130,7 +127,7 @@ namespace CoreTracker
                         return false;
                     }
                 }
-            } catch (Exception e)
+            } catch (Exception)
             {
                 return false;
             }
@@ -140,9 +137,22 @@ namespace CoreTracker
         {
             try
             {
-                Process.Start(Application.StartupPath + $"\\{name}.bat");
+                string cmd = Application.StartupPath + $"\\{name}.bat";
+
+                var process = new Process
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        WindowStyle = ProcessWindowStyle.Hidden,
+                        FileName = cmd
+                    }
+                };
+
+                
+                process.Start();
+                //Process.Start(Application.StartupPath + $"\\{name}.bat");
                 return true;
-            } catch (Exception e)
+            } catch (Exception)
             {
                 return false;
             }
@@ -155,7 +165,7 @@ namespace CoreTracker
             string path = Application.StartupPath + @"\update.bat";
             try
             {
-                string[] lines = { "cd %~dp0", "echo off", "cls", "echo start update : " + name, $"taskkill /IM {name}.exe /F", "timeout 3 > NUL",  $"move /Y {name}_new.exe {name}.exe", "timeout 1 > NUL", $"START /B {name}.exe", "del %0" };
+                string[] lines = { "ping 127.0.0.1 -n 2 > NULL", "cd %~dp0", "echo off", "cls", "echo start update : " + name, $"taskkill /IM {name}.exe /F", "timeout 2 > NUL",  $"move /Y {name}_new.exe {name}.exe", "timeout 1 > NUL", $"START /B {name}.exe", "del %0" };
                 using (var outputFile = new StreamWriter(Path.Combine(Application.StartupPath, $"{name}.bat")))
                 {
                     foreach (string line in lines) { outputFile.WriteLine(line); }
@@ -170,31 +180,36 @@ namespace CoreTracker
             return true;
         }
 
-
-        public async Task<updateFormat> Update(Int32 v)
+        public async Task<updateFormat> startDownload(string url)
         {
-            github_result rs = await CheckVersion();
-            if (rs.is_error) { return new updateFormat { msg = "version check failed, tray later or check internet status", is_error = true }; }
-
-            if(stringToVersion(rs.tag_name) > v)
+            // start download
+            if (await download(url))
             {
-                // start download
-                if(await download(rs.target))
-                {
-                    // setup restart bat file
-                    if (setupRestart()) { return new updateFormat { msg = "download done :D, if click ok button restart program", is_error = false }; }
-                    else { return new updateFormat { msg = "download done :D, but is failed to setup override new version", is_error = true }; }
-                    
-                } else {
-                    return new updateFormat { msg = "download failed, try later or check internet status", is_error = true };
-                }
+                // setup restart bat file
+                if (setupRestart()) { return new updateFormat { msg = "download done :D, if click ok button restart program", is_error = false }; }
+                else { return new updateFormat { msg = "download done :D, but is failed to setup override new version", is_error = true }; }
             }
             else
             {
-                return new updateFormat { msg = "recently version", latest = true };
+                return new updateFormat { msg = "download failed, try later or check internet status", is_error = true };
             }
+
         }
 
+        public async Task<updateFormat> CompareVersion(Int32 v)
+        {
+            github_result rs = await CheckVersion();
+            if (rs.is_error) { return new updateFormat { msg = "version check failed, try later or check internet status", is_error = true }; }
+
+            if (stringToVersion(rs.tag_name) > v)
+            {
+                return new updateFormat { target = rs.target, msg = "Can you update the latest release version?" };
+            }
+            else
+            {
+                return new updateFormat { msg = "Recently version", latest = true };
+            }
+        }
         #endregion
     }
 }

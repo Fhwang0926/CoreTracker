@@ -1,11 +1,4 @@
-﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System;
 
 namespace CoreTracker
 {
@@ -104,6 +97,7 @@ namespace CoreTracker
     #region
     class updateFormat
     {
+        public string target { get; set; }
         public string msg { get; set; }
         public bool is_error { get; set; } = false;
         public bool latest { get; set; } = false;

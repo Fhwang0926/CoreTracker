@@ -11,3 +11,6 @@ C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\obj\Release\CoreTracker.pdb
 C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\bin\Release\x64\CoreTracker.exe.config
 C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\bin\Release\x64\CoreTracker.exe
 C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\bin\Release\x64\CoreTracker.pdb
+C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\bin\Release\x64\Newtonsoft.Json.dll
+C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\bin\Release\x64\Newtonsoft.Json.xml
+C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\obj\Release\CoreTracker.csproj.CopyComplete

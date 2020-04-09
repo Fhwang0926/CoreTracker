@@ -1,17 +1,11 @@
-﻿using Microsoft.Win32;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Management;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CoreTracker
@@ -37,6 +31,7 @@ namespace CoreTracker
         public Form1()
         {
             InitializeComponent();
+            KeyPreview = true;
 
             // under code run after InitializeComponent
 
@@ -80,7 +75,7 @@ namespace CoreTracker
             bool auto_update = Ragistry.CheckAutoUpdate();
             if (auto_update) { ch_auto_update.Checked = true; self_update(); }
 
-            
+            Activate();
 
         }
         private void init_CPU_Watcher(bool Immediate_start = true)
@@ -105,7 +100,7 @@ namespace CoreTracker
         {
             // auto update latest
             Int32 v = controller.stringToVersion(VERSION);
-            updateFormat rs = await controller.Update(v);
+            updateFormat rs = await controller.CompareVersion(v);
             if (rs.is_error)
             {
                 MessageBox.Show(rs?.msg.ToString(), "Update failed!! :/", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -120,10 +115,12 @@ namespace CoreTracker
                     DialogResult result = MessageBox.Show(rs?.msg.ToString(), $"{Process.GetCurrentProcess().ProcessName}", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
                     if (result == System.Windows.Forms.DialogResult.OK)
                     {
+                        // unload start
+                        updateFormat restart = await controller.startDownload(rs.target);
                         // real restart
-                        if (controller.restart())
+                        if (!restart.is_error)
                         {
-                            Close();
+                            if (controller.restart()) { Close(); }
                         }
                         else
                         {
@@ -205,7 +202,7 @@ namespace CoreTracker
         {
             // not run here, too slow loading
             // change using taryicon dispose > windows auto refresh
-            //Tray.RefreshTrayArea();
+            controller.RefreshTrayArea();
         }
 
         private void Form1_FormClosing(object sender, EventArgs e)
@@ -295,6 +292,17 @@ namespace CoreTracker
         {
             if (ch_auto_update.Checked) { Ragistry.enable_auto_update(); }
             else { Ragistry.disable_auto_update(); }
+        }
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            if(ti_main.Visible) { return; }
+            if(e.KeyData == Keys.Escape)
+            {
+                Hide();
+                ti_main.Visible = true;
+            }
+            //base.OnKeyUp(e);
         }
     }
     #endregion

@@ -10,3 +10,4 @@ C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\obj\Debug\CoreTracker.csproj
 C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\obj\Debug\CoreTracker.csproj.CopyComplete
 C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\obj\Debug\CoreTracker.exe
 C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\obj\Debug\CoreTracker.pdb
+C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\obj\Debug\CoreTracker.csprojAssemblyReference.cache

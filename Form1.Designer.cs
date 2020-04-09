@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CoreTracker
+﻿namespace CoreTracker
 {
     partial class Form1
     {
@@ -353,9 +351,6 @@ namespace CoreTracker
             this.ForeColor = System.Drawing.Color.Black;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "Form1";
-            this.ShowIcon = false;
-            this.Text = "CoreTracker";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
