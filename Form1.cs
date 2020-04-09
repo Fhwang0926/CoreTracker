@@ -20,7 +20,7 @@ namespace CoreTracker
         private Int16 ModeSlow = 5000;
         private Int16 ModeNormarl = 3000;
         private Int16 ModeFast = 1000;
-        private string VERSION = "v0.1.1";
+        private string VERSION = "v0.1.3";
 
         private bool mouseDown;
         private Point lastLocation;
@@ -38,6 +38,8 @@ namespace CoreTracker
             // update
             l_core_value.Text = (Environment.ProcessorCount / 2).ToString();
             l_th_value.Text = Environment.ProcessorCount.ToString();
+            ch_auto_bugreport.Enabled = false;
+            ch_auto_bugreport.Text = ch_auto_bugreport.Text += "(coming soon)";
 
             // ass running status
             pic_status.Image = Properties.Resources.bad;
@@ -46,7 +48,6 @@ namespace CoreTracker
             pic_status.Region = new Region(gp);
 
             // add NotifyIcon mouse right button menu
-            //ti_main.Visible = true;
             ti_main.ContextMenu = new ContextMenu();
             ti_main.ContextMenu.MenuItems.Add(0, new MenuItem("Exit", new System.EventHandler(Exit_Click)));
             ti_main.ContextMenu.MenuItems.Add(1, new MenuItem("Show", new System.EventHandler(Show_Click)));
