@@ -3,7 +3,12 @@ we can see by graphic about Logical Processor
 
 [![C|CoreTracker](https://cldup.com/dTxpPi9lDf.thumb.png)](https://nodesource.com/products/nsolid)
 
+del area start
 [![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
+
+CPU : https://stackoverrun.com/ko/q/639802
+RAM : https://github.com/openhardwaremonitor/openhardwaremonitor
+del area end
 
 # Summary
   - New Features!
