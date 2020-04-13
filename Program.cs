@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Security.Permissions;
 using System.Windows.Forms;
 
 namespace CoreTracker

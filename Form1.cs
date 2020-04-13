@@ -7,6 +7,8 @@ using System.Linq;
 using System.Management;
 using System.Threading;
 using System.Windows.Forms;
+using Tulpep;
+using Tulpep.NotificationWindow;
 
 namespace CoreTracker
 {
@@ -20,7 +22,8 @@ namespace CoreTracker
         private Int16 ModeSlow = 5000;
         private Int16 ModeNormarl = 3000;
         private Int16 ModeFast = 1000;
-        private string VERSION = "v0.1.3";
+        private string VERSION = "v0.1.4";
+        private string GITHUB = "https://github.com/Fhwang0926/CoreTracker";
 
         private bool mouseDown;
         private Point lastLocation;
@@ -78,6 +81,20 @@ namespace CoreTracker
 
             Activate();
 
+            
+
+        }
+
+        private void popup()
+        {
+            PopupNotifier popup = new PopupNotifier();
+            popup.BodyColor = Color.Red;
+            popup.TitleColor = Color.White;
+            popup.ContentColor = Color.White;
+            popup.TitleText = "CoreTracker Notification";
+            popup.Size = new Size { Height = 80, Width = 240 };
+            popup.ContentText = "[CPU Busy]Check your cpu, why working hard!!!! :/ ";
+            popup.Popup();// show
         }
         private void init_CPU_Watcher(bool Immediate_start = true)
         {
@@ -88,7 +105,7 @@ namespace CoreTracker
         private void Report_Click(Object sender, System.EventArgs e)
         {
             // github report
-            Process.Start("https://github.com/Fhwang0926/CoreTracker/issues/new");
+            Process.Start($"{GITHUB}/issues/new");
 
         }
         private void Update_Click(Object sender, System.EventArgs e)
@@ -141,17 +158,16 @@ namespace CoreTracker
         }
         private void Hide_Click(Object sender, System.EventArgs e)
         {
-            Hide();
+            toggleMe();
         }
         private void Show_Click(Object sender, System.EventArgs e)
         {
-            Show();
+            toggleMe();
         }
 
         private void btn_tray_Click(object sender, EventArgs e)
         {
-            Hide();
-            ti_main.Visible = true;
+            toggleMe();
             if (!run && !th.IsAlive) { run = true; th.Start(); }
         }
 
@@ -159,6 +175,7 @@ namespace CoreTracker
         {
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("select * from Win32_PerfFormattedData_PerfOS_Processor");
             pic_status.Image = Properties.Resources.good;
+            
 
             while (true)
             {
@@ -171,6 +188,12 @@ namespace CoreTracker
                 {
                     if (c.Name.ToString() == "_Total")
                     {
+                        // if show windows system notification more then 80% usage
+                        if(Convert.ToInt32(c.Usage) > 80)
+                        {
+                            ti_main.ShowBalloonTip(1000, "[CoreTracker Notice]CPU Busy", "recommended to check, why CPU busy if you don't know program so hard work is happening the cryptojacking virus", ToolTipIcon.Warning);
+
+                        }
                         continue;
                     }
                     else
@@ -181,21 +204,33 @@ namespace CoreTracker
             }
         }
 
+        private void toggleMe()
+        {
+            if(ti_main.Visible)
+            {
+                Show();
+                this.WindowState = FormWindowState.Normal;
+                ti_main.Visible = false;
+            } else
+            {
+                Hide();
+                ti_main.Visible = true;
+            }
+            
+        }
+
 
         private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            Show();
-            this.WindowState = FormWindowState.Normal;
-            ti_main.Visible = false;
-            
+            toggleMe();
         }
 
         private dynamic setTrayIcon(int value)
         {
-            if (0 <= value && value <= 10) { return Properties.Resources._10; }
-            else if (10 < value && value <= 20) { return Properties.Resources._20; }
-            else if (20 < value && value <= 40) { return Properties.Resources._40; }
-            else if (40 < value && value <= 60) { return Properties.Resources._60; }
+            if (0 <= value && value < 10) { return Properties.Resources._10; }
+            else if (10 <= value && value < 20) { return Properties.Resources._20; }
+            else if (20 <= value && value < 40) { return Properties.Resources._40; }
+            else if (40 <= value && value < 60) { return Properties.Resources._60; }
             else { return Properties.Resources._80; }
         }
 
@@ -222,6 +257,12 @@ namespace CoreTracker
             if (FormWindowState.Minimized == WindowState) { 
                 Hide();
                 ti_main.Visible = true;
+                // 1 : show. 2 : hide
+                if(ti_main.Visible)
+                {
+                    ti_main.ContextMenu.MenuItems[1].Enabled = true;
+                    ti_main.ContextMenu.MenuItems[2].Enabled = false;
+                }                
                 if (!run && !th.IsAlive) { run = true; th.Start(); }
             }
                 
@@ -229,7 +270,7 @@ namespace CoreTracker
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("https://github.com/Fhwang0926/CoreTracker");
+            Process.Start(GITHUB);
         }
 
         private void ch_auto_start_CheckedChanged(object sender, EventArgs e)
@@ -300,8 +341,7 @@ namespace CoreTracker
             if(ti_main.Visible) { return; }
             if(e.KeyData == Keys.Escape)
             {
-                Hide();
-                ti_main.Visible = true;
+                toggleMe();
             }
             //base.OnKeyUp(e);
         }

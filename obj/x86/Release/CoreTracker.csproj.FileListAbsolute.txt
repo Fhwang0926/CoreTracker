@@ -10,3 +10,7 @@ C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\obj\x86\Release\CoreTracker.
 C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\obj\x86\Release\CoreTracker.csproj.CoreCompileInputs.cache
 C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\obj\x86\Release\CoreTracker.exe
 C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\obj\x86\Release\CoreTracker.pdb
+C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\bin\Release\x32\Newtonsoft.Json.dll
+C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\bin\Release\x32\Newtonsoft.Json.xml
+C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\obj\x86\Release\CoreTracker.csprojAssemblyReference.cache
+C:\Users\hdh09\source\repos\CoreTracker\CoreTracker\obj\x86\Release\CoreTracker.csproj.CopyComplete

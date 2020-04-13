@@ -36,7 +36,6 @@
             this.l_core_value = new System.Windows.Forms.Label();
             this.btn_tray = new System.Windows.Forms.Button();
             this.ti_main = new System.Windows.Forms.NotifyIcon(this.components);
-            this.ti_menu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -121,14 +120,12 @@
             // 
             // ti_main
             // 
+            this.ti_main.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.ti_main.BalloonTipText = "CoreTracker";
+            this.ti_main.BalloonTipTitle = "Core Status Tracker";
             this.ti_main.Icon = ((System.Drawing.Icon)(resources.GetObject("ti_main.Icon")));
-            this.ti_main.Text = "notifyIcon1";
+            this.ti_main.Text = "CoreTracker";
             this.ti_main.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
-            // 
-            // ti_menu
-            // 
-            this.ti_menu.Name = "ti_menu";
-            this.ti_menu.Size = new System.Drawing.Size(61, 4);
             // 
             // groupBox1
             // 
@@ -351,6 +348,7 @@
             this.ForeColor = System.Drawing.Color.Black;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "Form1";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
@@ -377,7 +375,6 @@
         private System.Windows.Forms.Label l_core_value;
         private System.Windows.Forms.Button btn_tray;
         private System.Windows.Forms.NotifyIcon ti_main;
-        private System.Windows.Forms.ContextMenuStrip ti_menu;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox3;
