@@ -63,7 +63,7 @@ echo FunctionEnd >> installer.build.%TAG%.nsi
 
 echo ; Finish page >> installer.build.%TAG%.nsi
 echo !define MUI_FINISHPAGE_RUN "$INSTDIR\CoreTracker.exe" >> installer.build.%TAG%.nsi
-echo !define MUI_FINISHPAGE_SHOWREADME "$INSTDIR\README.md" >> installer.build.%TAG%.nsi
+echo ;!define MUI_FINISHPAGE_SHOWREADME "$INSTDIR\README.md" >> installer.build.%TAG%.nsi
 echo !insertmacro MUI_PAGE_FINISH >> installer.build.%TAG%.nsi
 echo. >> installer.build.%TAG%.nsi
 
