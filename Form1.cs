@@ -1,45 +1,48 @@
-﻿using Microsoft.Win32;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Management;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using Tulpep;
+using Tulpep.NotificationWindow;
 
 namespace CoreTracker
 {
     #region application
     public partial class Form1 : Form
     {
+        // Constant Definition
         private List<NotifyIcon> th_list = new List<NotifyIcon>();
         private bool run = false;
         private Thread th;
         private Int16 ModeSlow = 5000;
         private Int16 ModeNormarl = 3000;
         private Int16 ModeFast = 1000;
-        private RegistryKey startup_key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-        private string PN = "CoreTracker"; // program name
+        private string VERSION = "v0.1.4";
+        private string GITHUB = "https://github.com/Fhwang0926/CoreTracker";
+
         private bool mouseDown;
         private Point lastLocation;
+        private Ragistry Ragistry = new Ragistry();
+        private Controller controller = new Controller();
 
 
         public Form1()
         {
             InitializeComponent();
+            KeyPreview = true;
 
             // under code run after InitializeComponent
 
             // update
             l_core_value.Text = (Environment.ProcessorCount / 2).ToString();
             l_th_value.Text = Environment.ProcessorCount.ToString();
+            ch_auto_bugreport.Enabled = false;
+            ch_auto_bugreport.Text = ch_auto_bugreport.Text += "(coming soon)";
 
             // ass running status
             pic_status.Image = Properties.Resources.bad;
@@ -48,15 +51,13 @@ namespace CoreTracker
             pic_status.Region = new Region(gp);
 
             // add NotifyIcon mouse right button menu
-            ti_main.Visible = true;
             ti_main.ContextMenu = new ContextMenu();
             ti_main.ContextMenu.MenuItems.Add(0, new MenuItem("Exit", new System.EventHandler(Exit_Click)));
             ti_main.ContextMenu.MenuItems.Add(1, new MenuItem("Show", new System.EventHandler(Show_Click)));
             ti_main.ContextMenu.MenuItems.Add(2, new MenuItem("Hide", new System.EventHandler(Hide_Click)));
             ti_main.ContextMenu.MenuItems.Add(3, new MenuItem("Report", new System.EventHandler(Report_Click)));
-            //ti_main.ContextMenu.MenuItems.Add(4, new MenuItem("Update", new System.EventHandler(Update_Click)));
-            //ti_main.ContextMenu.MenuItems.Add(5, new MenuItem("Reset", new System.EventHandler(Reset_Click)));
-
+            ti_main.ContextMenu.MenuItems.Add(4, new MenuItem("Reset", new System.EventHandler(Reset_Click)));
+            ti_main.ContextMenu.MenuItems.Add(4, new MenuItem("Update", new System.EventHandler(Update_Click)));
 
             // add NotifyIcon by core count
             for (int c = 1; c <= Environment.ProcessorCount; c++)
@@ -65,37 +66,90 @@ namespace CoreTracker
             }
 
             // intialize thread && check auto start
-            var target = startup_key.GetValue(PN);
-            bool auto_run = string.IsNullOrEmpty(target?.ToString()) ? false : true;
-            if (auto_run) { 
+            bool auto_run = Ragistry.CheckAutoRun();
+            if (auto_run)
+            {
                 ch_auto_start.Checked = true;
                 Hide();
             }
             init_CPU_Watcher(auto_run);
+            l_version.Text = VERSION;
 
+            // check auto update
+            bool auto_update = Ragistry.CheckAutoUpdate();
+            if (auto_update) { ch_auto_update.Checked = true; self_update(); }
 
-            // not yet support func
-            ch_auto_update.Enabled = false;
-            ch_auto_update.Text = ch_auto_update.Text += "(coming soon)";
-            ch_auto_bugreport.Enabled = false;
-            ch_auto_bugreport.Text = ch_auto_bugreport.Text += "(coming soon)";
+            Activate();
 
+            
+
+        }
+
+        private void popup()
+        {
+            PopupNotifier popup = new PopupNotifier();
+            popup.BodyColor = Color.Red;
+            popup.TitleColor = Color.White;
+            popup.ContentColor = Color.White;
+            popup.TitleText = "CoreTracker Notification";
+            popup.Size = new Size { Height = 80, Width = 240 };
+            popup.ContentText = "[CPU Busy]Check your cpu, why working hard!!!! :/ ";
+            popup.Popup();// show
         }
         private void init_CPU_Watcher(bool Immediate_start = true)
         {
             if (th != null) { th.Abort(); th = null; }
             th = new Thread(new ThreadStart(runner));
-            if (Immediate_start) { th.Start(); }
+            if (Immediate_start) {
+                th.Start();
+                ti_main.ShowBalloonTip(1000, "[CoreTracker Notice] : Reset", "refreshed", ToolTipIcon.Info);
+            }
         }
         private void Report_Click(Object sender, System.EventArgs e)
         {
             // github report
-            Process.Start("https://github.com/Fhwang0926/CoreTracker/issues/new");
+            Process.Start($"{GITHUB}/issues/new");
 
         }
         private void Update_Click(Object sender, System.EventArgs e)
         {
+            self_update(true);
+        }
+
+        // update function with msgbox
+        private async void self_update(bool updateAnswer = false)
+        {
             // auto update latest
+            Int32 v = controller.stringToVersion(VERSION);
+            updateFormat rs = await controller.CompareVersion(v);
+            if (rs.is_error)
+            {
+                MessageBox.Show(rs?.msg.ToString(), "Update failed!! :/", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                if (rs.latest) {
+                    if (updateAnswer) { MessageBox.Show(rs?.msg.ToString(), $"{Process.GetCurrentProcess().ProcessName}", MessageBoxButtons.OK, MessageBoxIcon.Information); }
+                }
+                else
+                {
+                    DialogResult result = MessageBox.Show(rs?.msg.ToString(), $"{Process.GetCurrentProcess().ProcessName}", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+                    if (result == System.Windows.Forms.DialogResult.OK)
+                    {
+                        // unload start
+                        updateFormat restart = await controller.startDownload(rs.target);
+                        // real restart
+                        if (!restart.is_error)
+                        {
+                            if (controller.restart()) { Close(); }
+                        }
+                        else
+                        {
+                            MessageBox.Show("failed update :/", "Update Failed", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
+                        }
+                    }
+                }
+            }
         }
         private void Reset_Click(Object sender, System.EventArgs e)
         {
@@ -107,17 +161,16 @@ namespace CoreTracker
         }
         private void Hide_Click(Object sender, System.EventArgs e)
         {
-            Hide();
+            toggleMe();
         }
         private void Show_Click(Object sender, System.EventArgs e)
         {
-            Show();
+            toggleMe();
         }
 
         private void btn_tray_Click(object sender, EventArgs e)
         {
-            Hide();
-            ti_main.Visible = true;
+            toggleMe();
             if (!run && !th.IsAlive) { run = true; th.Start(); }
         }
 
@@ -125,6 +178,8 @@ namespace CoreTracker
         {
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("select * from Win32_PerfFormattedData_PerfOS_Processor");
             pic_status.Image = Properties.Resources.good;
+            bool noticeStatus = false;
+            Int16 busyCount = 0;
 
             while (true)
             {
@@ -135,9 +190,19 @@ namespace CoreTracker
                 var cpu_info = searcher.Get().Cast<ManagementObject>().Select(mo => new { Name = mo["Name"], Usage = Convert.ToInt32(mo["PercentProcessorTime"]) }).ToList();
                 foreach (var c in cpu_info)
                 {
+                    
                     if (c.Name.ToString() == "_Total")
                     {
-                        //l_cpu_value.Text = c.Usage.ToString();
+                        // if show windows system notification more then 80% usage
+                        if (busyCount >= 5) { noticeStatus = false; busyCount = 0; continue; }
+                        else if (noticeStatus) { busyCount++; continue; }
+                        else if(Convert.ToInt32(c.Usage) > 80)
+                        {
+                            ti_main.ShowBalloonTip(1000, "[CoreTracker Notice]CPU Busy", "recommended to check, why CPU busy if you don't know program so hard work is happening the cryptojacking virus", ToolTipIcon.Warning);
+                            noticeStatus = true;
+
+                        }
+                        continue;
                     }
                     else
                     {
@@ -147,21 +212,33 @@ namespace CoreTracker
             }
         }
 
+        private void toggleMe()
+        {
+            if(ti_main.Visible)
+            {
+                Show();
+                this.WindowState = FormWindowState.Normal;
+                ti_main.Visible = false;
+            } else
+            {
+                Hide();
+                ti_main.Visible = true;
+            }
+            
+        }
+
 
         private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            Show();
-            this.WindowState = FormWindowState.Normal;
-            ti_main.Visible = false;
-            
+            toggleMe();
         }
 
         private dynamic setTrayIcon(int value)
         {
-            if (0 <= value && value <= 10) { return Properties.Resources._10; }
-            else if (10 < value && value <= 20) { return Properties.Resources._20; }
-            else if (20 < value && value <= 40) { return Properties.Resources._40; }
-            else if (40 < value && value <= 60) { return Properties.Resources._60; }
+            if (0 <= value && value < 10) { return Properties.Resources._10; }
+            else if (10 <= value && value < 20) { return Properties.Resources._20; }
+            else if (20 <= value && value < 40) { return Properties.Resources._40; }
+            else if (40 <= value && value < 60) { return Properties.Resources._60; }
             else { return Properties.Resources._80; }
         }
 
@@ -169,7 +246,7 @@ namespace CoreTracker
         {
             // not run here, too slow loading
             // change using taryicon dispose > windows auto refresh
-            //Tray.RefreshTrayArea();
+            controller.RefreshTrayArea();
         }
 
         private void Form1_FormClosing(object sender, EventArgs e)
@@ -179,7 +256,7 @@ namespace CoreTracker
             {
                 t.Dispose();
             }
-            Tray.RefreshTrayArea();
+            controller.RefreshTrayArea();
         }
 
         private void Form1_Resize(object sender, EventArgs e)
@@ -188,26 +265,26 @@ namespace CoreTracker
             if (FormWindowState.Minimized == WindowState) { 
                 Hide();
                 ti_main.Visible = true;
-                if (!run) { run = true; th.Start(); }
+                // 1 : show. 2 : hide
+                if(ti_main.Visible)
+                {
+                    ti_main.ContextMenu.MenuItems[1].Enabled = true;
+                    ti_main.ContextMenu.MenuItems[2].Enabled = false;
+                }                
+                if (!run && !th.IsAlive) { run = true; th.Start(); }
             }
                 
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("https://github.com/Fhwang0926/CoreTracker");
+            Process.Start(GITHUB);
         }
 
         private void ch_auto_start_CheckedChanged(object sender, EventArgs e)
         {
-            if(ch_auto_start.Checked)
-            {
-                startup_key.SetValue(PN, Application.ExecutablePath);
-                //startup_key.GetValue(PN);
-            } else
-            {
-                startup_key.DeleteValue(PN, false);
-            }
+            if(ch_auto_start.Checked) { Ragistry.enable_auto_run(); }
+            else { Ragistry.disable_auto_run(); }
 
         }
 
@@ -231,9 +308,7 @@ namespace CoreTracker
         {
             if (mouseDown)
             {
-                this.Location = new Point(
-                    (this.Location.X - lastLocation.X) + e.X, (this.Location.Y - lastLocation.Y) + e.Y);
-
+                this.Location = new Point((this.Location.X - lastLocation.X) + e.X, (this.Location.Y - lastLocation.Y) + e.Y);
                 this.Update();
             }
         }
@@ -262,63 +337,22 @@ namespace CoreTracker
         {
             l_hide.BackColor = System.Drawing.Color.Transparent;
         }
+
+        private void ch_auto_update_CheckedChanged(object sender, EventArgs e)
+        {
+            if (ch_auto_update.Checked) { Ragistry.enable_auto_update(); }
+            else { Ragistry.disable_auto_update(); }
+        }
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            if(ti_main.Visible) { return; }
+            if(e.KeyData == Keys.Escape)
+            {
+                toggleMe();
+            }
+            //base.OnKeyUp(e);
+        }
     }
     #endregion
-
-    #region "Refresh Notification Area Icons"
-
-    public partial class Tray
-
-    {
-
-        [StructLayout(LayoutKind.Sequential)]
-        public struct RECT
-        {
-            public int left;
-            public int top;
-            public int right;
-            public int bottom;
-        }
-
-        [DllImport("user32.dll")]
-        public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
-
-        [DllImport("user32.dll")]
-        public static extern IntPtr FindWindowEx(IntPtr hwndParent, IntPtr hwndChildAfter, string lpszClass,
-            string lpszWindow);
-
-        [DllImport("user32.dll")]
-        public static extern bool GetClientRect(IntPtr hWnd, out RECT lpRect);
-
-        [DllImport("user32.dll")]
-        public static extern IntPtr SendMessage(IntPtr hWnd, uint msg, int wParam, int lParam);
-
-        public static void RefreshTrayArea()
-        {
-            IntPtr systemTrayContainerHandle = FindWindow("Shell_TrayWnd", null);
-            IntPtr systemTrayHandle = FindWindowEx(systemTrayContainerHandle, IntPtr.Zero, "TrayNotifyWnd", null);
-            IntPtr sysPagerHandle = FindWindowEx(systemTrayHandle, IntPtr.Zero, "SysPager", null);
-            IntPtr notificationAreaHandle = FindWindowEx(sysPagerHandle, IntPtr.Zero, "ToolbarWindow32", "Notification Area");
-            if (notificationAreaHandle == IntPtr.Zero) notificationAreaHandle = FindWindowEx(sysPagerHandle, IntPtr.Zero, "ToolbarWindow32", null);
-            if (notificationAreaHandle == IntPtr.Zero)
-            {
-                notificationAreaHandle = FindWindowEx(sysPagerHandle, IntPtr.Zero, "ToolbarWindow32", "User Promoted Notification Area");
-                IntPtr notifyIconOverflowWindowHandle = FindWindow("NotifyIconOverflowWindow", null);
-                IntPtr overflowNotificationAreaHandle = FindWindowEx(notifyIconOverflowWindowHandle, IntPtr.Zero, "ToolbarWindow32", "Overflow Notification Area");
-                RefreshTrayArea(overflowNotificationAreaHandle);
-            }
-            RefreshTrayArea(notificationAreaHandle);
-        }
-
-        private static void RefreshTrayArea(IntPtr windowHandle)
-        {
-            const uint wmMousemove = 0x0200;
-            RECT rect;
-            GetClientRect(windowHandle, out rect);
-            for (var x = 0; x < rect.right; x += 5)
-                for (var y = 0; y < rect.bottom; y += 5)
-                    SendMessage(windowHandle, wmMousemove, 0, (y << 16) + x);
-        }
-        #endregion
-    }
 }
