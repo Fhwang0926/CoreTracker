@@ -50,7 +50,7 @@ logical core status(usage %) by logical core
 | 40 <= status < 60 | DEEPORANG | |
 | 60 <= status | READ  | |
 
-
+[![C|CoreTracker](https://cldup.com/dTxpPi9lDf.thumb.png)](https://nodesource.com/products/nsolid)
 
 ### Show DAMO
 
