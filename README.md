@@ -1,29 +1,24 @@
+
 # CoreTracker
-we can see by graphic about Logical Processor
+We can see by graphic about the status of Logical Processor
 
-[![C|CoreTracker](https://cldup.com/dTxpPi9lDf.thumb.png)](https://nodesource.com/products/nsolid)
 
-del area start
-[![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
-
-CPU : https://stackoverrun.com/ko/q/639802
-RAM : https://github.com/openhardwaremonitor/openhardwaremonitor
-del area end
+[![C|CoreTracker](https://raw.githubusercontent.com/Fhwang0926/CoreTracker/master/form.ico)](https://raw.githubusercontent.com/Fhwang0926/CoreTracker/master/form.ico)
+[![C|CPU](https://raw.githubusercontent.com/Fhwang0926/CoreTracker/blob/master/img/cpu.png)](https://raw.githubusercontent.com/Fhwang0926/CoreTracker/blob/master/img/cpu.png)
+<!-- [![M|MARDARBOARD](https://raw.githubusercontent.com/Fhwang0926/CoreTracker/master/form.ico)](https://raw.githubusercontent.com/Fhwang0926/CoreTracker/master/form.ico)
+[![M|RAM](https://raw.githubusercontent.com/Fhwang0926/CoreTracker/master/form.ico)](https://raw.githubusercontent.com/Fhwang0926/CoreTracker/master/form.ico) -->
 
 # Summary
-  - New Features!
-  - Why i made it
+
+  - What is it ?
   - how work it
   - show demo
   - Installation
+  - support
+  - how bug report
+  - New Features!
 
-## New Features!
-
-  - CPU temperature Status(is optional)
-  - Motherboard temperature Status(is optional)
-  - GPU temperature Status(is optional)
-
-## 1. Why i made it
+## 1. What is it ?
 
 > now almost people use PC and some others consider them's PC Performance(someone check the benchmark on PC)
 > don't forget what is important, performance of system when you using it!!!
@@ -33,36 +28,35 @@ del area end
 > i just want to see on my computer performance like widget when i using PC
 > so i developed it kkkk
 
-##### one-sentence summary,
-" i just want to see on my computer performance like widget when i using PC "
+### one-sentence summary, " i just want to see on my computer performance like widget when i using PC "
 
 ## 2. how work it
-status is usage by logical core
-show core status using of tray icon
-logical core status(usage %) by logical core
+> status is usage by logical core
+> show core status using of tray icon
+> logical core status(usage %) by logical core
 
 
-| status | result | example Color |
+| Status | Color | Example |
 | ------ | ------ | ------ |
-| 0 <= status < 10 | GREEN | | 
-| 10 <= status < 20 | YELLO | |
-| 20 <= status < 40 | ORANGE | |
-| 40 <= status < 60 | DEEPORANG | |
-| 60 <= status | READ  | |
+| 0 <= status < 10 | GREEN | <img src="https://raw.githubusercontent.com/Fhwang0926/CoreTracker/master/Properties/status/10.ico" width="20"> | 
+| 10 <= status < 20 | YELLO | <img src="https://raw.githubusercontent.com/Fhwang0926/CoreTracker/master/Properties/status/20.ico" width="20"> |
+| 20 <= status < 40 | ORANGE | <img src="https://raw.githubusercontent.com/Fhwang0926/CoreTracker/master/Properties/status/40.ico" width="20"> |
+| 40 <= status < 60 | DEEPORANG | <img src="https://raw.githubusercontent.com/Fhwang0926/CoreTracker/master/Properties/status/60.ico" width="20"> |
+| 60 <= status | READ  | <img src="https://raw.githubusercontent.com/Fhwang0926/CoreTracker/master/Properties/status/80.ico" width="20"> |
 
-[![C|CoreTracker](https://cldup.com/dTxpPi9lDf.thumb.png)](https://nodesource.com/products/nsolid)
 
-### Show DAMO
+
+## Show DAMO
 
 some wirte about demo
 gif and youtube embaded
 
-### Installation
+## Installation
 
-require
- - dotnet framework
+> require
+>  - dotnet framework 3.5 <=
 
-### Todos
-
- - consider fureture
- - Add homepage for download deploy
+## New Features!
+CPU temperature Status(is optional)
+Motherboard temperature Status(is optional)
+GPU temperature Status(is optional)
