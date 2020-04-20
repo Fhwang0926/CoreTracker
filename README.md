@@ -51,10 +51,9 @@ We can see by graphic about the status of Logical Processor
 some wirte about demo
 gif and youtube embaded
 
-## Installation
+## Installation dependency
 
-> require
->  - dotnet framework 3.5 <=
+- <= dotnet framework 3.5
 
 ## New Features!
 CPU temperature Status(is optional)
