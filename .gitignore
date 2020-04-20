@@ -44,3 +44,4 @@ $RECYCLE.BIN/
 .vscode
 deploy
 deploy
+build.*.nsi
