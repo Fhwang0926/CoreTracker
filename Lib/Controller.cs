@@ -105,7 +105,7 @@ namespace CoreTracker
             return Convert.ToInt32(v.Substring(1, 5).Replace(".", string.Empty));
         }
 
-        public static async Task<bool> download(string url)
+        public static async Task<bool> download(string url, string target)
         {
             try
             {
@@ -115,7 +115,7 @@ namespace CoreTracker
 
                     if (response.IsSuccessStatusCode)
                     {
-                        using (var fs = new FileStream($"{Application.StartupPath}\\" + System.Diagnostics.Process.GetCurrentProcess().ProcessName+"_new.exe", FileMode.OpenOrCreate))
+                        using (var fs = new FileStream(target, FileMode.OpenOrCreate))
                         {
                             var responseTask = response.Content.CopyToAsync(fs);
                             responseTask.Wait();
@@ -159,16 +159,13 @@ namespace CoreTracker
             //Process.GetCurrentProcess().Kill();
         }
 
-        private bool setupRestart()
+        private bool setupRestart(string target)
         {
             string path = Application.StartupPath + @"\update.bat";
             try
             {
-                string[] lines = { "ping 127.0.0.1 -n 2 > NULL", "cd %~dp0", "echo off", "cls", "echo start update : " + name, $"taskkill /IM {name}.exe /F", "timeout 2 > NUL",  $"move /Y {name}_new.exe {name}.exe", "timeout 1 > NUL", $"START /B {name}.exe", "del %0" };
-                using (var outputFile = new StreamWriter(Path.Combine(Application.StartupPath, $"{name}.bat")))
-                {
-                    foreach (string line in lines) { outputFile.WriteLine(line); }
-                }
+                string[] lines = { "ping 127.0.0.1 -n 2 > NULL", "cd %~dp0", "echo off", "cls", "echo start update : " + name, $"taskkill /IM {name}.exe /F", "timeout 2 > NUL",  $"START /B {target}", "del %0" };
+                using (var outputFile = new StreamWriter(Path.Combine(Application.StartupPath, $"{name}.bat"))) { foreach (string line in lines) { outputFile.WriteLine(line); } }
             }
 
             catch (Exception ex)
@@ -181,11 +178,12 @@ namespace CoreTracker
 
         public async Task<updateFormat> startDownload(string url)
         {
+            string target = $"{Application.UserAppDataPath}\\" + System.Diagnostics.Process.GetCurrentProcess().ProcessName + "_new_installer.exe";
             // start download
-            if (await download(url))
+            if (await download(url, target))
             {
                 // setup restart bat file
-                if (setupRestart()) { return new updateFormat { msg = "download done :D, if click ok button restart program", is_error = false }; }
+                if (setupRestart(target)) { return new updateFormat { msg = "download done :D, if click ok button restart program", is_error = false }; }
                 else { return new updateFormat { msg = "download done :D, but is failed to setup override new version", is_error = true }; }
             }
             else

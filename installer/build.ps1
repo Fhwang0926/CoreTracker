@@ -13,10 +13,10 @@ code "build.$version.nsi"
 Write-Output "build nsi file done"
 
 Write-Output "build delete pre file start"
-if (Test-Path ..\bin\Release\x32\Newtonsoft.x32.Json) { Remove-Item ..\bin\Release\x32\Newtonsoft.x32.Json }
-if (Test-Path ..\bin\Release\x32\CoreTracker.x32.Json) { Remove-Item ..\bin\Release\x32\CoreTracker.x32.Json }
-if (Test-Path ..\bin\Release\x64\Newtonsoft.x64.Json) { Remove-Item ..\bin\Release\x64\Newtonsoft.x64.Json }
-if (Test-Path ..\bin\Release\x64\Newtonsoft.x64.Json) { Remove-Item ..\bin\Release\x64\Newtonsoft.x64.Json }
+if (Test-Path ..\bin\Release\x32\Newtonsoft.x32.Json) { Remove-Item ..\bin\Release\x32\Newtonsoft.x32.Json; Write-Output "Deleted Newtonsoft.x32.Json"; }
+if (Test-Path ..\bin\Release\x32\CoreTracker.x32.exe) { Remove-Item ..\bin\Release\x32\CoreTracker.x32.exe; Write-Output "Deleted CoreTracker.x32.Json"; }
+if (Test-Path ..\bin\Release\x64\Newtonsoft.x64.Json) { Remove-Item ..\bin\Release\x64\Newtonsoft.x64.Json; Write-Output "Deleted Newtonsoft.x64.Json"; }
+if (Test-Path ..\bin\Release\x64\CoreTracker.x64.exe) { Remove-Item ..\bin\Release\x64\CoreTracker.x64.exe; Write-Output "Deleted CoreTracker.x64.Json"; }
 Write-Output "build delete pre file done"
 
 Write-Output "build rename to install files start"
