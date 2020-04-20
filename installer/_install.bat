@@ -5,9 +5,10 @@ echo off
 SET location=%~dp0
 echo start install script
 echo location : %location:~0,-1%
-rem sc delete CoreTrackerHelper
-sc create CoreTrackerHelper binPath="%location%CoreTrackerHelper.exe" start=auto DisplayName="CoreTracker Refresh Helper"
-sc description CoreTrackerHelper "Trayicon area refresh program"
-net start CoreTrackerHelper
 ping 127.0.0.1 -n 1 > NULL
-echo done
+del NULL
+echo copy start
+If "%PROCESSOR_ARCHITEW6432%" == "AMD64" (copy CoreTracker.x64.exe CoreTracker.exe) else ( copy CoreTracker.x32.exe CoreTracker.exe )
+If "%PROCESSOR_ARCHITEW6432%" == "AMD64" (copy Newtonsoft.Json.x64.dll Newtonsoft.Json.dll) else ( copy Newtonsoft.Json.x32.dll Newtonsoft.Json.dll )
+echo copy done
+echo all done
