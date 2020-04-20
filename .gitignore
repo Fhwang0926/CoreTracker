@@ -40,7 +40,7 @@ $RECYCLE.BIN/
 
 # End of https://www.gitignore.io/api/windows,dotnetcore
 
-/.vs
-/.vscode
-/deploy
+.vs
+.vscode
+deploy
 deploy
