@@ -50,6 +50,26 @@ ___
 | 40 <= status < 60 | DEEPORANG | <img src="https://raw.githubusercontent.com/Fhwang0926/CoreTracker/master/Properties/status/60.ico" width="20"> |
 | 60 <= status | READ  | <img src="https://raw.githubusercontent.com/Fhwang0926/CoreTracker/master/Properties/status/80.ico" width="20"> |
 
+
+Function Explain Start
+
+| Name | Action |
+| ------ | ------ |
+| Auto Update | Auto-update check and notice, if you want to can continue update from recently version |
+| Auto Start | Auto start when system turn on|
+| [Icon-Menu]Hide | The CoreTracker program Hide main windows |
+| [Icon-Menu]Show | The CoreTracker program Show main windows |
+| [Icon-Menu]Exit | The CoreTracker program close action |
+| [Icon-Menu]Report | find out a bug, or want to a new function, can write on GitHub issue(login required) |
+| [Icon-Menu]Update | Custom action for the update to new version|
+| [Icon-Menu]Reset | Reset CPUs status watcher |
+
+
+[CoreTarackerHelper] : excute tray icon refresh when uninstall using
+
+Function Explain End
+
+
 ___
 
 ## Show DAMO
@@ -62,7 +82,9 @@ ___
 ## Installation 
 
 1. dependency(support x86 and x64)
+
 > <= dotnet framework 3.5
+
 2. Many core( ? kkkk )  :D :D :D
 3. testing tool(if you want to) ~ is optional
 
@@ -74,3 +96,7 @@ ___
 - Motherboard temperature Status by one trayicon(is optional)
 - RAM Status by one trayicon(is optional)
 - GPU temperature Status  by one trayicon(is optional)
+
+
+
+[CoreTarackerHelper]: <https://github.com/Fhwang0926/CoreTrackerHelper>
