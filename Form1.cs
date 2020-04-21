@@ -79,10 +79,6 @@ namespace CoreTracker
             bool auto_update = Ragistry.CheckAutoUpdate();
             if (auto_update) { ch_auto_update.Checked = true; self_update(); }
 
-            Activate();
-
-            
-
         }
 
         private void popup()
@@ -102,7 +98,7 @@ namespace CoreTracker
             th = new Thread(new ThreadStart(runner));
             if (Immediate_start) {
                 th.Start();
-                ti_main.ShowBalloonTip(1000, "[CoreTracker Notice] : Reset", "refreshed", ToolTipIcon.Info);
+                ti_main.ShowBalloonTip(1000, "[CoreTracker Notice] : Reset", "CPU Status Checker refreshed", ToolTipIcon.Info);
             }
         }
         private void Report_Click(Object sender, System.EventArgs e)
