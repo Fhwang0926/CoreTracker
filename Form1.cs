@@ -22,14 +22,13 @@ namespace CoreTracker
         private Int16 ModeSlow = 5000;
         private Int16 ModeNormarl = 3000;
         private Int16 ModeFast = 1000;
-        private string VERSION = "v0.2.3";
+        private string VERSION = "v0.2.4";
         private string GITHUB = "https://github.com/Fhwang0926/CoreTracker";
 
         private bool mouseDown;
         private Point lastLocation;
         private Ragistry Ragistry = new Ragistry();
         private Controller controller = new Controller();
-
 
         public Form1()
         {
