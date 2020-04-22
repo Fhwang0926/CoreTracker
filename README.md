@@ -18,7 +18,7 @@ _ _ _
 
 - What is it ?
 - How work it
-- Show demo
+- Demo
 - Installation
 - Support
 - How bug report
@@ -78,12 +78,10 @@ Function Explain End
 
 ___
 
-## Show DAMO(Attention Task bar)
+## DEMO with youtube (Attention Task bar)
 
 
-<!-- [![CoreTracker](http://img.youtube.com/vi/rdZ1RNOGpvo/0.jpg)](http://www.youtube.com/watch?v=rdZ1RNOGpvo "CoreTracker") -->
-<iframe  title="YouTube video player" width="480" height="390" src="http://www.youtube.com/watch?v=rdZ1RNOGpvo?autoplay=1" frameborder="0" allowfullscreen></iframe>
-
+[![CoreTracker](http://img.youtube.com/vi/rdZ1RNOGpvo/0.jpg)](http://www.youtube.com/watch?v=rdZ1RNOGpvo "CoreTracker")
 
 ___
 
