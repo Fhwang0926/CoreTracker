@@ -1,12 +1,18 @@
 
+
 # CoreTracker
 
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/Fhwang0926/CoreTracker)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Status: ing](https://img.shields.io/badge/Status-ing-red.svg)](https://github.com/Fhwang0926/CoreTracker)
+
+***
 We can see by graphic about the status of Logical Processor
 
 <img src="https://raw.githubusercontent.com/Fhwang0926/CoreTracker/master/form.ico" width="150">
 <img src="https://raw.githubusercontent.com/Fhwang0926/CoreTracker/master/img/cpu.png" width="150">
 
-___
+_ _ _
 
 # Summary
 
@@ -72,10 +78,10 @@ Function Explain End
 
 ___
 
-## Show DAMO
+## Show DAMO(Attention Task bar)
 
-some wirte about demo
-gif and youtube embaded
+
+[![CoreTracker](http://img.youtube.com/vi/rdZ1RNOGpvo/0.jpg)](http://www.youtube.com/watch?v=rdZ1RNOGpvo "CoreTracker")
 
 ___
 
