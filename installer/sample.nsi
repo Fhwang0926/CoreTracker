@@ -79,8 +79,10 @@ Section "MainSection" SEC01
   SetOverwrite ifnewer 
   ; packing file
   File "..\bin\Release\x32\Newtonsoft.Json.x32.dll"
+  File "..\bin\Release\x32\OpenHardwareMonitorLib.x32.dll"
   File "..\bin\Release\x32\CoreTracker.x32.exe"
   File "..\bin\Release\x64\Newtonsoft.Json.x64.dll"
+  File "..\bin\Release\x64\OpenHardwareMonitorLib.x64.dll"
   File "..\bin\Release\x64\CoreTracker.x64.exe"
   File "_install.bat" 
   File "_uninstall.bat"
@@ -130,13 +132,16 @@ Section Uninstall
   Delete "$INSTDIR\_uninstall.bat" 
   Delete "$INSTDIR\CoreTracker.exe" 
   Delete "$INSTDIR\Newtonsoft.Json.dll" 
+  Delete "$INSTDIR\OpenHardwareMonitorLib.dll"  
   Delete "$INSTDIR\CoreTracker.x64.exe" 
+  Delete "$INSTDIR\OpenHardwareMonitorLib.x64.dll" 
   Delete "$INSTDIR\Newtonsoft.Json.x64.dll" 
   Delete "$INSTDIR\CoreTracker.x32.exe" 
   Delete "$INSTDIR\Newtonsoft.Json.x32.dll" 
+  Delete "$INSTDIR\OpenHardwareMonitorLib.x32.dll" 
   Delete "$INSTDIR\NULL" 
   Delete "$INSTDIR\CoreTrackerHelper.exe"
- 
+
   Delete "$SMPROGRAMS\CoreTracker\Uninstall.lnk" 
   Delete "$SMPROGRAMS\CoreTracker\Website.lnk" 
   Delete "$DESKTOP\CoreTracker.lnk" 
