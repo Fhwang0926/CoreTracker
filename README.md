@@ -78,7 +78,7 @@ Function Explain End
 
 ___
 
-## DEMO with youtube (Attention Task bar)
+## DEMO with youtube (Please Attention Task bar)
 
 
 [![CoreTracker](http://img.youtube.com/vi/rdZ1RNOGpvo/0.jpg)](http://www.youtube.com/watch?v=rdZ1RNOGpvo "CoreTracker")

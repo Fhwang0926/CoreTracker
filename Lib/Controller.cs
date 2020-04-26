@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
+using OpenHardwareMonitor.Hardware;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -161,7 +163,6 @@ namespace CoreTracker
 
         private bool setupRestart(string target)
         {
-            string path = Application.StartupPath + @"\update.bat";
             try
             {
                 string[] lines = { "ping 127.0.0.1 -n 2 > NULL", "cd %~dp0", "echo off", "cls", "echo start update : " + name, $"taskkill /IM {name}.exe /F", "timeout 2 > NUL",  $"START /B {target}", "del %0" };
@@ -208,5 +209,158 @@ namespace CoreTracker
             }
         }
         #endregion
+
+        #region "hardware"
+        public Computer computer = new Computer();
+        public scoreBox sb = new scoreBox();
+        public UpdateVisitor updateVisitor = new UpdateVisitor();
+        public List<ISensor> cpuList;
+
+        public void Dispose()
+        {
+            computer.Close();
+        }
+
+        public void hardwareMoniterInit()
+        {
+            computer.Open();
+        }
+        public void hardwareInfo()
+        {
+            // enable or disable setting
+            /*computer.CPUEnabled = true;         // default
+            computer.RAMEnabled = true;         // optional
+            computer.MainboardEnabled = true;   // optional
+            computer.GPUEnabled = true;         // optional*/
+            
+            // update info
+            computer.GetReport();
+            computer.Accept(updateVisitor);
+
+            foreach (IHardware h in computer.Hardware)
+            {
+                ISensor info = null;
+                switch (h.HardwareType)
+                {
+                    case HardwareType.CPU:
+
+                        // sub
+                        if (!(h.SubHardware is null))
+                        {
+                            foreach (var s in h.SubHardware)
+                            {
+                                info = s.Sensors.Where(ss => ss.SensorType == SensorType.Temperature && ss.Name == "CPU Package").FirstOrDefault();
+                                if (info is null) { break; }
+                                sb.addCpuScore((int)info.Value);
+
+                            }
+                        }
+                        // standartd
+                        info = h.Sensors.Where(ss => ss.SensorType == SensorType.Temperature).FirstOrDefault();
+                        if (!(info is null) && !(info.Value is null)) { sb.addCpuScore((int)info.Value); }
+
+                        // usage by core
+                        cpuList = h.Sensors.Where(ss => ss.SensorType == SensorType.Load).ToList<ISensor>();
+                        //Console.WriteLine("{0} : {1}", h.HardwareType, sb.cpu_temperature);
+                        break;
+                    case HardwareType.GpuAti:
+
+                        // sub
+                        if (!(h.SubHardware is null))
+                        {
+                            foreach (var s in h.SubHardware)
+                            {
+                                var sc_sub = s.Sensors.Where(ss => ss.SensorType == SensorType.Temperature && ss.Name == "GPU Core").FirstOrDefault();
+                                if (sc_sub is null) { break; }
+                                sb.addGpuScore((int)sc_sub.Value);
+
+                            }
+                        }
+                        // standartd
+                        info = h.Sensors.Where(ss => ss.SensorType == SensorType.Temperature && ss.Name == "GPU Core").FirstOrDefault();
+                        if (!(info is null) && !(info.Value is null)) { sb.addGpuScore((int)info.Value); }
+
+                        // Console.WriteLine("{0} : {1}", h.HardwareType, sb.gpu_temperature);
+                        break;
+                    case HardwareType.GpuNvidia:
+
+                        // sub
+                        if (!(h.SubHardware is null))
+                        {
+                            foreach (var s in h.SubHardware)
+                            {
+                                info = s.Sensors.Where(ss => ss.SensorType == SensorType.Temperature && ss.Name == "GPU Core").FirstOrDefault();
+                                if (info is null) { break; }
+                                sb.addGpuScore((int)info.Value);
+
+                            }
+                        }
+                        // standartd
+                        info = h.Sensors.Where(ss => ss.SensorType == SensorType.Temperature && ss.Name == "GPU Core").FirstOrDefault();
+                        if (!(info is null) && !(info.Value is null)) { sb.addGpuScore((int)info.Value); }
+
+                        // Console.WriteLine("{0} : {1}", h.HardwareType, sb.gpu_temperature);
+                        break;
+                    case HardwareType.RAM:
+
+                        // sub
+                        if (!(h.SubHardware is null))
+                        {
+                            foreach (var s in h.SubHardware)
+                            {
+                                info = s.Sensors.Where(ss => ss.SensorType == SensorType.Load && ss.Name == "Memory").FirstOrDefault();
+                                if (info is null) { break; }
+                                sb.addRamScore((int)info.Value);
+
+                            }
+                        }
+                        // standartd
+                        info = h.Sensors.Where(ss => ss.SensorType == SensorType.Load && ss.Name == "Memory").FirstOrDefault();
+                        if (!(info is null) && !(info.Value is null)) { sb.addRamScore((int)info.Value); }
+
+                        // Console.WriteLine("{0} : {1}", h.HardwareType, sb.ram_usage);
+                        break;
+                    case HardwareType.Mainboard:
+
+                        // sub
+                        if (!(h.SubHardware is null))
+                        {
+                            foreach (var sh in h.SubHardware)
+                            {
+                                foreach (var ss in sh.Sensors.Where(ss => ss.SensorType == SensorType.Temperature).ToList())
+                                {
+                                    sb.addboardScore((int)(ss.Value ?? 0));
+                                }
+                            }
+                        }
+                        // standartd
+                        info = h.Sensors.Where(ss => ss.SensorType == SensorType.Temperature).FirstOrDefault();
+                        if (!(info is null) && !(info.Value is null)) { sb.addboardScore((int)info.Value); }
+
+                        // Console.WriteLine("{0} : {1}", h.HardwareType, sb.board_temperature);
+                        break;
+                }
+            }
+        }
+        #endregion
     }
+
+    #region extenstion
+
+    public class UpdateVisitor : IVisitor
+    {
+        public void VisitComputer(IComputer computer)
+        {
+            computer.Traverse(this);
+        }
+        public void VisitHardware(IHardware hardware)
+        {
+            hardware.Update();
+            foreach (IHardware subHardware in hardware.SubHardware) subHardware.Accept(this);
+        }
+        public void VisitSensor(ISensor sensor) { }
+        public void VisitParameter(IParameter parameter) { }
+    }
+
+    #endregion
 }

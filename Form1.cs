@@ -1,4 +1,6 @@
-﻿using System;
+﻿using OpenHardwareMonitor.Collections;
+using OpenHardwareMonitor.Hardware;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
@@ -17,12 +19,16 @@ namespace CoreTracker
     {
         // Constant Definition
         private List<NotifyIcon> th_list = new List<NotifyIcon>();
+        private NotifyIcon CpuTmpereaute = new NotifyIcon() { Visible = false, Icon = Properties.Resources._10_c, BalloonTipIcon = ToolTipIcon.Info, BalloonTipTitle = "Info From CPU Temperaute" };
+        private NotifyIcon RamUsage = new NotifyIcon() { Visible = false, Icon = Properties.Resources._10_r, BalloonTipIcon = ToolTipIcon.Info, BalloonTipTitle = "Info From Memory Temperaute" };
+        private NotifyIcon BoardTmpereaute = new NotifyIcon() { Visible = false, Icon = Properties.Resources._10_b, BalloonTipIcon = ToolTipIcon.Info, BalloonTipTitle = "Info From Marderboard Temperaute" };
+        private NotifyIcon GraphicTmpereaute = new NotifyIcon() { Visible = false, Icon = Properties.Resources._10_g, BalloonTipIcon = ToolTipIcon.Info, BalloonTipTitle = "Info From GPU Temperaute" };
         private bool run = false;
         private Thread th;
         private Int16 ModeSlow = 5000;
         private Int16 ModeNormarl = 3000;
         private Int16 ModeFast = 1000;
-        private string VERSION = "v0.2.4";
+        private string VERSION = "v0.2.5";
         private string GITHUB = "https://github.com/Fhwang0926/CoreTracker";
 
         private bool mouseDown;
@@ -65,6 +71,13 @@ namespace CoreTracker
             }
 
             // intialize thread && check auto start
+            ch_graphic_temperature.Checked = Ragistry.ChecGraphicTemperature();
+            ch_ram_temperature.Checked = Ragistry.CheckRamTemperature();
+            ch_cpu_temperature.Checked = Ragistry.CheckCpuTemperature();
+            ch_board_temperature.Checked = Ragistry.CheckBoardTemperature();
+
+
+
             bool auto_run = Ragistry.CheckAutoRun();
             if (auto_run)
             {
@@ -77,6 +90,12 @@ namespace CoreTracker
             // check auto update
             bool auto_update = Ragistry.CheckAutoUpdate();
             if (auto_update) { ch_auto_update.Checked = true; self_update(); }
+
+
+            // option area
+            ManagementObjectCollection searcher = new ManagementObjectSearcher("SELECT * FROM Win32_DisplayConfiguration").Get();
+            if(searcher.Count > 0) { ch_graphic_temperature.Enabled = true; }
+            searcher.Dispose();
 
         }
 
@@ -119,7 +138,7 @@ namespace CoreTracker
             updateFormat rs = await controller.CompareVersion(v);
             if (rs.is_error)
             {
-                MessageBox.Show(rs?.msg.ToString(), "Update failed!! :/", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(rs?.msg.ToString(), "Update failed!! compare version", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
@@ -140,7 +159,7 @@ namespace CoreTracker
                         }
                         else
                         {
-                            MessageBox.Show("failed update :/", "Update Failed", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
+                            MessageBox.Show("failed update :/", "Update Failed : restart", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
                         }
                     }
                 }
@@ -172,26 +191,51 @@ namespace CoreTracker
         private void runner()
         {
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("select * from Win32_PerfFormattedData_PerfOS_Processor");
+
             pic_status.Image = Properties.Resources.good;
             bool noticeStatus = false;
             Int16 busyCount = 0;
 
+            // init
+            controller.hardwareMoniterInit();
+
             while (true)
             {
-                if (rb_fast.Checked) { System.Threading.Thread.Sleep(ModeFast); }
-                else if (rb_fast.Checked) { System.Threading.Thread.Sleep(ModeNormarl); }
-                else { System.Threading.Thread.Sleep(ModeSlow); }
+                // refresh temperaute
+                if (ch_board_temperature.Checked || ch_cpu_temperature.Checked || ch_graphic_temperature.Checked || ch_ram_temperature.Checked ) {
+                    controller.hardwareInfo();
+                }
+
+                if (ch_graphic_temperature.Checked) { 
+                    controller.computer.GPUEnabled = ch_graphic_temperature.Checked; GraphicTmpereaute.Icon = setTrayIcon(controller.sb.gpu_temperature, "graphic");
+                    GraphicTmpereaute.BalloonTipText = $"GPU Temperature : {controller.sb.gpu_temperature}";
+                }
+                if (ch_cpu_temperature.Checked) { 
+                    controller.computer.CPUEnabled = ch_cpu_temperature.Checked; CpuTmpereaute.Icon = setTrayIcon(controller.sb.cpu_temperature, "cpu");
+                    CpuTmpereaute.BalloonTipText = $"CPU Temperature : {controller.sb.cpu_temperature}";
+                }
+                if (ch_ram_temperature.Checked) { 
+                    controller.computer.RAMEnabled = ch_ram_temperature.Checked; RamUsage.Icon = setTrayIcon(controller.sb.ram_usage, "ram");
+                    RamUsage.BalloonTipText = $"RAM Usage status : {controller.sb.ram_usage}";
+                }
+                if (ch_board_temperature.Checked) { 
+                    controller.computer.MainboardEnabled = ch_board_temperature.Checked; BoardTmpereaute.Icon = setTrayIcon(controller.sb.board_temperature, "board");
+                    BoardTmpereaute.BalloonTipText = $"Marderboard Temperature : {controller.sb.board_temperature}";
+                }
+
+
+
 
                 var cpu_info = searcher.Get().Cast<ManagementObject>().Select(mo => new { Name = mo["Name"], Usage = Convert.ToInt32(mo["PercentProcessorTime"]) }).ToList();
                 foreach (var c in cpu_info)
                 {
-                    
+
                     if (c.Name.ToString() == "_Total")
                     {
                         // if show windows system notification more then 80% usage
-                        if (busyCount >= 5) { noticeStatus = false; busyCount = 0; continue; }
+                        if (busyCount >= 10) { noticeStatus = false; busyCount = 0; continue; }
                         else if (noticeStatus) { busyCount++; continue; }
-                        else if(Convert.ToInt32(c.Usage) > 80)
+                        else if (Convert.ToInt32(c.Usage) > 80)
                         {
                             ti_main.ShowBalloonTip(1000, "[CoreTracker Notice]CPU Busy", "recommended to check, why CPU busy if you don't know program so hard work is happening the cryptojacking virus", ToolTipIcon.Warning);
                             noticeStatus = true;
@@ -204,6 +248,10 @@ namespace CoreTracker
                         th_list[Convert.ToInt32(c.Name)].Icon = setTrayIcon(c.Usage);
                     }
                 }
+                if (rb_normal.Checked) { Thread.Sleep(ModeNormarl); }
+                else if (rb_slow.Checked) { Thread.Sleep(ModeSlow); }
+                else if (rb_fast.Checked) { Thread.Sleep(ModeFast); }
+                
             }
         }
 
@@ -226,6 +274,43 @@ namespace CoreTracker
         private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             toggleMe();
+        }
+
+        private dynamic setTrayIcon(int value, string type = "")
+        {
+            switch (type)
+            {
+                case "cpu":
+                    if (0 <= value && value < 10) { return Properties.Resources._10_c; }
+                    else if (10 <= value && value < 20) { return Properties.Resources._20_c; }
+                    else if (20 <= value && value < 40) { return Properties.Resources._40_c; }
+                    else if (40 <= value && value < 60) { return Properties.Resources._60_c; }
+                    else { return Properties.Resources._80_c; }
+                case "ram":
+                    if (0 <= value && value < 10) { return Properties.Resources._10_r; }
+                    else if (10 <= value && value < 20) { return Properties.Resources._20_r; }
+                    else if (20 <= value && value < 40) { return Properties.Resources._40_r; }
+                    else if (40 <= value && value < 60) { return Properties.Resources._60_r; }
+                    else { return Properties.Resources._80_r; }
+                case "board":
+                    if (0 <= value && value < 10) { return Properties.Resources._10_b; }
+                    else if (10 <= value && value < 20) { return Properties.Resources._20_b; }
+                    else if (20 <= value && value < 40) { return Properties.Resources._40_b; }
+                    else if (40 <= value && value < 60) { return Properties.Resources._60_b; }
+                    else { return Properties.Resources._80_b; }
+                case "graphic":
+                    if (0 <= value && value < 10) { return Properties.Resources._10_g; }
+                    else if (10 <= value && value < 20) { return Properties.Resources._20_g; }
+                    else if (20 <= value && value < 40) { return Properties.Resources._40_g; }
+                    else if (40 <= value && value < 60) { return Properties.Resources._60_g; }
+                    else { return Properties.Resources._80_g; }
+                default:
+                    if (0 <= value && value < 10) { return Properties.Resources._10; }
+                    else if (10 <= value && value < 20) { return Properties.Resources._20; }
+                    else if (20 <= value && value < 40) { return Properties.Resources._40; }
+                    else if (40 <= value && value < 60) { return Properties.Resources._60; }
+                    else { return Properties.Resources._80; }
+            }
         }
 
         private dynamic setTrayIcon(int value)
@@ -252,6 +337,7 @@ namespace CoreTracker
                 t.Dispose();
             }
             controller.RefreshTrayArea();
+            controller.Dispose();
         }
 
         private void Form1_Resize(object sender, EventArgs e)
@@ -342,11 +428,36 @@ namespace CoreTracker
         protected override void OnKeyDown(KeyEventArgs e)
         {
             if(ti_main.Visible) { return; }
-            if(e.KeyData == Keys.Escape)
-            {
-                toggleMe();
-            }
+            else if (e.KeyData == Keys.Escape) { toggleMe(); }
             //base.OnKeyUp(e);
+        }
+
+        private void ch_cpu_temperature_CheckedChanged(object sender, EventArgs e)
+        {
+            if (ch_cpu_temperature.Checked) { Ragistry.enable_cpu_temperature(); }
+            else { Ragistry.disable_cpu_temperature(); }
+            CpuTmpereaute.Visible = ch_cpu_temperature.Checked;
+        }
+
+        private void ch_ram_temperature_CheckedChanged(object sender, EventArgs e)
+        {
+            if (ch_ram_temperature.Checked) { Ragistry.enable_ram_temperature(); }
+            else { Ragistry.disable_ram_temperature(); }
+            RamUsage.Visible = ch_ram_temperature.Checked;
+        }
+
+        private void ch_board_temperature_CheckedChanged(object sender, EventArgs e)
+        {
+            if (ch_board_temperature.Checked) { Ragistry.enable_board_temperature(); }
+            else { Ragistry.disable_board_temperature(); }
+            BoardTmpereaute.Visible = ch_board_temperature.Checked;
+        }
+
+        private void ch_graphic_temperature_CheckedChanged(object sender, EventArgs e)
+        {
+            if (ch_graphic_temperature.Checked) { Ragistry.enable_graphic_temperature(); }
+            else { Ragistry.disable_graphic_temperature(); }
+            GraphicTmpereaute.Visible = ch_graphic_temperature.Checked;
         }
     }
     #endregion

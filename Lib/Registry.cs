@@ -7,6 +7,10 @@ namespace CoreTracker
     {
         private readonly RegistryKey startup_key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
         private readonly RegistryKey auto_update_key = Registry.CurrentUser.CreateSubKey("auto_update_key");
+        private readonly RegistryKey cpu_temperature_key = Registry.CurrentUser.CreateSubKey("cpu_temperature_key");
+        private readonly RegistryKey ram_temperature_key = Registry.CurrentUser.CreateSubKey("ram_temperature_key");
+        private readonly RegistryKey graphic_temperature_key = Registry.CurrentUser.CreateSubKey("graphic_temperature_key");
+        private readonly RegistryKey board_temperature_key = Registry.CurrentUser.CreateSubKey("board_temperature_key");
         private readonly string PN = "CoreTracker"; // program name
 
         public bool CheckAutoRun()
@@ -18,6 +22,30 @@ namespace CoreTracker
         public bool CheckAutoUpdate()
         {
             var target = auto_update_key.GetValue(PN);
+            return string.IsNullOrEmpty(target?.ToString()) ? false : true;
+        }
+
+        public bool CheckCpuTemperature()
+        {
+            var target = cpu_temperature_key.GetValue(PN);
+            return string.IsNullOrEmpty(target?.ToString()) ? false : true;
+        }
+
+        public bool CheckRamTemperature()
+        {
+            var target = ram_temperature_key.GetValue(PN);
+            return string.IsNullOrEmpty(target?.ToString()) ? false : true;
+        }
+
+        public bool CheckBoardTemperature()
+        {
+            var target = board_temperature_key.GetValue(PN);
+            return string.IsNullOrEmpty(target?.ToString()) ? false : true;
+        }
+
+        public bool ChecGraphicTemperature()
+        {
+            var target = graphic_temperature_key.GetValue(PN);
             return string.IsNullOrEmpty(target?.ToString()) ? false : true;
         }
 
@@ -41,6 +69,44 @@ namespace CoreTracker
             auto_update_key.DeleteValue(PN, false);
         }
 
+        public void disable_cpu_temperature()
+        {
+            cpu_temperature_key.DeleteValue(PN, false);
+        }
 
+        public void disable_ram_temperature()
+        {
+            ram_temperature_key.DeleteValue(PN, false);
+        }
+
+        public void disable_board_temperature()
+        {
+            board_temperature_key.DeleteValue(PN, false);
+        }
+
+        public void disable_graphic_temperature()
+        {
+            graphic_temperature_key.DeleteValue(PN, false);
+        }
+
+        public void enable_cpu_temperature()
+        {
+            cpu_temperature_key.SetValue(PN, false);
+        }
+
+        public void enable_ram_temperature()
+        {
+            ram_temperature_key.SetValue(PN, false);
+        }
+
+        public void enable_board_temperature()
+        {
+            board_temperature_key.SetValue(PN, false);
+        }
+
+        public void enable_graphic_temperature()
+        {
+            graphic_temperature_key.SetValue(PN, false);
+        }
     }
 }

@@ -2,6 +2,30 @@
 
 namespace CoreTracker
 {
+    class scoreBox
+    {
+        public void addCpuScore(int score)
+        {
+            cpu_temperature = cpu_temperature != 0 ? Convert.ToUInt16((cpu_temperature + score) / 2) : Convert.ToUInt16(score);
+        }
+        public void addRamScore(int score)
+        {
+            ram_usage = cpu_temperature != 0 ? Convert.ToUInt16((ram_usage + score) / 2) : Convert.ToUInt16(score);
+            ram_usage = Convert.ToUInt16((ram_usage + score) / 2);
+        }
+        public void addboardScore(int score)
+        {
+            board_temperature = board_temperature != 0 ? Convert.ToUInt16((board_temperature + score) / 2) : Convert.ToUInt16(score);
+        }
+        public void addGpuScore(int score)
+        {
+            gpu_temperature = gpu_temperature != 0 ? Convert.ToUInt16((gpu_temperature + score) / 2) : Convert.ToUInt16(score);
+        }
+        public UInt16 cpu_temperature { get; set; } = 0;
+        public UInt16 ram_usage { get; set; } = 0;
+        public UInt16 board_temperature { get; set; } = 0;
+        public UInt16 gpu_temperature { get; set; } = 0;
+    }
     class github_result
     {
         public string tag_name { get; set; }

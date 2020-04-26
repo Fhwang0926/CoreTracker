@@ -38,6 +38,10 @@
             this.ti_main = new System.Windows.Forms.NotifyIcon(this.components);
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.ch_graphic_temperature = new System.Windows.Forms.CheckBox();
+            this.ch_ram_temperature = new System.Windows.Forms.CheckBox();
+            this.ch_board_temperature = new System.Windows.Forms.CheckBox();
+            this.ch_cpu_temperature = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.rb_slow = new System.Windows.Forms.RadioButton();
             this.rb_normal = new System.Windows.Forms.RadioButton();
@@ -110,7 +114,7 @@
             this.btn_tray.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_tray.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btn_tray.ForeColor = System.Drawing.Color.White;
-            this.btn_tray.Location = new System.Drawing.Point(12, 640);
+            this.btn_tray.Location = new System.Drawing.Point(12, 699);
             this.btn_tray.Name = "btn_tray";
             this.btn_tray.Size = new System.Drawing.Size(344, 44);
             this.btn_tray.TabIndex = 4;
@@ -132,7 +136,7 @@
             this.groupBox1.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.groupBox1.ForeColor = System.Drawing.Color.White;
             this.groupBox1.Location = new System.Drawing.Point(12, 46);
-            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Name = "gb_sys_info";
             this.groupBox1.Size = new System.Drawing.Size(344, 144);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
@@ -140,6 +144,10 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.ch_graphic_temperature);
+            this.groupBox2.Controls.Add(this.ch_ram_temperature);
+            this.groupBox2.Controls.Add(this.ch_board_temperature);
+            this.groupBox2.Controls.Add(this.ch_cpu_temperature);
             this.groupBox2.Controls.Add(this.groupBox3);
             this.groupBox2.Controls.Add(this.ch_auto_start);
             this.groupBox2.Controls.Add(this.ch_auto_bugreport);
@@ -147,11 +155,56 @@
             this.groupBox2.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.groupBox2.ForeColor = System.Drawing.Color.White;
             this.groupBox2.Location = new System.Drawing.Point(12, 196);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(344, 254);
+            this.groupBox2.Name = "gb_setting";
+            this.groupBox2.Size = new System.Drawing.Size(344, 299);
             this.groupBox2.TabIndex = 6;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Setting";
+            // 
+            // ch_graphic_temperature
+            // 
+            this.ch_graphic_temperature.AutoSize = true;
+            this.ch_graphic_temperature.Location = new System.Drawing.Point(172, 117);
+            this.ch_graphic_temperature.Name = "ch_graphic_temperature";
+            this.ch_graphic_temperature.Size = new System.Drawing.Size(158, 16);
+            this.ch_graphic_temperature.TabIndex = 11;
+            this.ch_graphic_temperature.Text = "Graphic temperature";
+            this.ch_graphic_temperature.UseVisualStyleBackColor = true;
+            this.ch_graphic_temperature.CheckedChanged += new System.EventHandler(this.ch_graphic_temperature_CheckedChanged);
+            // 
+            // ch_ram_temperature
+            // 
+            this.ch_ram_temperature.AutoSize = true;
+            this.ch_ram_temperature.Location = new System.Drawing.Point(20, 117);
+            this.ch_ram_temperature.Name = "ch_ram_temperature";
+            this.ch_ram_temperature.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.ch_ram_temperature.Size = new System.Drawing.Size(100, 16);
+            this.ch_ram_temperature.TabIndex = 10;
+            this.ch_ram_temperature.Text = "RAM Usage";
+            this.ch_ram_temperature.UseVisualStyleBackColor = true;
+            this.ch_ram_temperature.CheckedChanged += new System.EventHandler(this.ch_ram_temperature_CheckedChanged);
+            // 
+            // ch_board_temperature
+            // 
+            this.ch_board_temperature.AutoSize = true;
+            this.ch_board_temperature.Location = new System.Drawing.Point(172, 73);
+            this.ch_board_temperature.Name = "ch_board_temperature";
+            this.ch_board_temperature.Size = new System.Drawing.Size(145, 16);
+            this.ch_board_temperature.TabIndex = 9;
+            this.ch_board_temperature.Text = "Board temperature";
+            this.ch_board_temperature.UseVisualStyleBackColor = true;
+            this.ch_board_temperature.CheckedChanged += new System.EventHandler(this.ch_board_temperature_CheckedChanged);
+            // 
+            // ch_cpu_temperature
+            // 
+            this.ch_cpu_temperature.AutoSize = true;
+            this.ch_cpu_temperature.Location = new System.Drawing.Point(20, 73);
+            this.ch_cpu_temperature.Name = "ch_cpu_temperature";
+            this.ch_cpu_temperature.Size = new System.Drawing.Size(140, 16);
+            this.ch_cpu_temperature.TabIndex = 8;
+            this.ch_cpu_temperature.Text = "CPU Temperature";
+            this.ch_cpu_temperature.UseVisualStyleBackColor = true;
+            this.ch_cpu_temperature.CheckedChanged += new System.EventHandler(this.ch_cpu_temperature_CheckedChanged);
             // 
             // groupBox3
             // 
@@ -160,7 +213,7 @@
             this.groupBox3.Controls.Add(this.rb_fast);
             this.groupBox3.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.groupBox3.ForeColor = System.Drawing.Color.White;
-            this.groupBox3.Location = new System.Drawing.Point(20, 168);
+            this.groupBox3.Location = new System.Drawing.Point(20, 200);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(305, 65);
             this.groupBox3.TabIndex = 7;
@@ -203,7 +256,7 @@
             // ch_auto_start
             // 
             this.ch_auto_start.AutoSize = true;
-            this.ch_auto_start.Location = new System.Drawing.Point(20, 105);
+            this.ch_auto_start.Location = new System.Drawing.Point(172, 34);
             this.ch_auto_start.Name = "ch_auto_start";
             this.ch_auto_start.Size = new System.Drawing.Size(88, 16);
             this.ch_auto_start.TabIndex = 2;
@@ -214,7 +267,7 @@
             // ch_auto_bugreport
             // 
             this.ch_auto_bugreport.AutoSize = true;
-            this.ch_auto_bugreport.Location = new System.Drawing.Point(20, 69);
+            this.ch_auto_bugreport.Location = new System.Drawing.Point(20, 160);
             this.ch_auto_bugreport.Name = "ch_auto_bugreport";
             this.ch_auto_bugreport.Size = new System.Drawing.Size(130, 16);
             this.ch_auto_bugreport.TabIndex = 1;
@@ -259,19 +312,19 @@
             this.groupBox4.Controls.Add(this.linkLabel1);
             this.groupBox4.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.groupBox4.ForeColor = System.Drawing.Color.White;
-            this.groupBox4.Location = new System.Drawing.Point(12, 456);
+            this.groupBox4.Location = new System.Drawing.Point(12, 515);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(344, 119);
             this.groupBox4.TabIndex = 8;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Refresh speed";
+            this.groupBox4.Text = "Info";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("굴림", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(86, 592);
+            this.label1.Location = new System.Drawing.Point(86, 651);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(125, 27);
             this.label1.TabIndex = 9;
@@ -279,7 +332,7 @@
             // 
             // pic_status
             // 
-            this.pic_status.Location = new System.Drawing.Point(218, 592);
+            this.pic_status.Location = new System.Drawing.Point(218, 651);
             this.pic_status.Name = "pic_status";
             this.pic_status.Size = new System.Drawing.Size(25, 27);
             this.pic_status.TabIndex = 10;
@@ -330,7 +383,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(44)))), ((int)(((byte)(54)))));
-            this.ClientSize = new System.Drawing.Size(368, 703);
+            this.ClientSize = new System.Drawing.Size(368, 769);
             this.ControlBox = false;
             this.Controls.Add(this.l_version);
             this.Controls.Add(this.l_hide);
@@ -392,6 +445,10 @@
         private System.Windows.Forms.Label l_close;
         private System.Windows.Forms.Label l_hide;
         private System.Windows.Forms.Label l_version;
+        private System.Windows.Forms.CheckBox ch_graphic_temperature;
+        private System.Windows.Forms.CheckBox ch_ram_temperature;
+        private System.Windows.Forms.CheckBox ch_board_temperature;
+        private System.Windows.Forms.CheckBox ch_cpu_temperature;
     }
 }
 
