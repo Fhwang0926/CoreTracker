@@ -28,7 +28,7 @@ namespace CoreTracker
         private Int16 ModeSlow = 5000;
         private Int16 ModeNormarl = 3000;
         private Int16 ModeFast = 1000;
-        private string VERSION = "v0.2.5";
+        private string VERSION = "v0.3.1";
         private string GITHUB = "https://github.com/Fhwang0926/CoreTracker";
 
         private bool mouseDown;
@@ -281,44 +281,44 @@ namespace CoreTracker
             switch (type)
             {
                 case "cpu":
-                    if (0 <= value && value < 10) { return Properties.Resources._10_c; }
-                    else if (10 <= value && value < 20) { return Properties.Resources._20_c; }
-                    else if (20 <= value && value < 40) { return Properties.Resources._40_c; }
-                    else if (40 <= value && value < 60) { return Properties.Resources._60_c; }
+                    if (0 <= value && value < 20) { return Properties.Resources._10_c; }
+                    else if (20 <= value && value < 40) { return Properties.Resources._20_c; }
+                    else if (40 <= value && value < 60) { return Properties.Resources._40_c; }
+                    else if (60 <= value && value < 80) { return Properties.Resources._60_c; }
                     else { return Properties.Resources._80_c; }
                 case "ram":
-                    if (0 <= value && value < 10) { return Properties.Resources._10_r; }
-                    else if (10 <= value && value < 20) { return Properties.Resources._20_r; }
-                    else if (20 <= value && value < 40) { return Properties.Resources._40_r; }
-                    else if (40 <= value && value < 60) { return Properties.Resources._60_r; }
+                    if (0 <= value && value < 20) { return Properties.Resources._10_r; }
+                    else if (20 <= value && value < 40) { return Properties.Resources._20_r; }
+                    else if (40 <= value && value < 60) { return Properties.Resources._40_r; }
+                    else if (60 <= value && value < 80) { return Properties.Resources._60_r; }
                     else { return Properties.Resources._80_r; }
                 case "board":
-                    if (0 <= value && value < 10) { return Properties.Resources._10_b; }
-                    else if (10 <= value && value < 20) { return Properties.Resources._20_b; }
-                    else if (20 <= value && value < 40) { return Properties.Resources._40_b; }
-                    else if (40 <= value && value < 60) { return Properties.Resources._60_b; }
+                    if (0 <= value && value < 20) { return Properties.Resources._10_b; }
+                    else if (20 <= value && value < 40) { return Properties.Resources._20_b; }
+                    else if (40 <= value && value < 60) { return Properties.Resources._40_b; }
+                    else if (60 <= value && value < 80) { return Properties.Resources._60_b; }
                     else { return Properties.Resources._80_b; }
                 case "graphic":
-                    if (0 <= value && value < 10) { return Properties.Resources._10_g; }
-                    else if (10 <= value && value < 20) { return Properties.Resources._20_g; }
-                    else if (20 <= value && value < 40) { return Properties.Resources._40_g; }
-                    else if (40 <= value && value < 60) { return Properties.Resources._60_g; }
+                    if (0 <= value && value < 20) { return Properties.Resources._10_g; }
+                    else if (20 <= value && value < 40) { return Properties.Resources._20_g; }
+                    else if (40 <= value && value < 60) { return Properties.Resources._40_g; }
+                    else if (60 <= value && value < 80) { return Properties.Resources._60_g; }
                     else { return Properties.Resources._80_g; }
                 default:
-                    if (0 <= value && value < 10) { return Properties.Resources._10; }
-                    else if (10 <= value && value < 20) { return Properties.Resources._20; }
-                    else if (20 <= value && value < 40) { return Properties.Resources._40; }
-                    else if (40 <= value && value < 60) { return Properties.Resources._60; }
+                    if (0 <= value && value < 20) { return Properties.Resources._10; }
+                    else if (20 <= value && value < 40) { return Properties.Resources._20; }
+                    else if (40 <= value && value < 60) { return Properties.Resources._40; }
+                    else if (60 <= value && value < 80) { return Properties.Resources._60; }
                     else { return Properties.Resources._80; }
             }
         }
 
         private dynamic setTrayIcon(int value)
         {
-            if (0 <= value && value < 10) { return Properties.Resources._10; }
-            else if (10 <= value && value < 20) { return Properties.Resources._20; }
-            else if (20 <= value && value < 40) { return Properties.Resources._40; }
-            else if (40 <= value && value < 60) { return Properties.Resources._60; }
+            if (0 <= value && value < 20) { return Properties.Resources._10; }
+            else if (20 <= value && value < 40) { return Properties.Resources._20; }
+            else if (40 <= value && value < 60) { return Properties.Resources._40; }
+            else if (60 <= value && value < 80) { return Properties.Resources._60; }
             else { return Properties.Resources._80; }
         }
 
@@ -338,6 +338,11 @@ namespace CoreTracker
             }
             controller.RefreshTrayArea();
             controller.Dispose();
+            BoardTmpereaute.Dispose();
+            CpuTmpereaute.Dispose();
+            GraphicTmpereaute.Dispose();
+            RamUsage.Dispose();
+            
         }
 
         private void Form1_Resize(object sender, EventArgs e)
