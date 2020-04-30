@@ -95,7 +95,7 @@ namespace CoreTracker
 
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 github_result.is_error = true;
             }
