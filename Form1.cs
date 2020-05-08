@@ -17,6 +17,20 @@ namespace CoreTracker
     #region application
     public partial class Form1 : Form
     {
+        public void SetTimeout(Action action, int timeout)
+        {
+            var timer = new System.Windows.Forms.Timer();
+            var noti = new NotifyIcon() { Visible = true, Icon = Properties.Resources.form };
+            timer.Interval = timeout;
+            timer.Tick += delegate (object sender, EventArgs args)
+            {
+                action();
+                timer.Stop();
+                noti.Dispose();
+            };
+            noti.ShowBalloonTip(2000, "[CoreTracker Notice] : Auto start", "soon disappear winodws", ToolTipIcon.Info);
+            timer.Start();
+        }
         // Constant Definition
         private List<NotifyIcon> th_list = new List<NotifyIcon>();
         private NotifyIcon CpuTmpereaute = new NotifyIcon() { Visible = false, Icon = Properties.Resources._10_c, BalloonTipIcon = ToolTipIcon.Info, BalloonTipTitle = "Info From CPU Temperaute" };
@@ -28,7 +42,7 @@ namespace CoreTracker
         private Int16 ModeSlow = 5000;
         private Int16 ModeNormarl = 3000;
         private Int16 ModeFast = 1000;
-        private string VERSION = "v0.3.1";
+        private string VERSION = "v0.4.0";
         private string GITHUB = "https://github.com/Fhwang0926/CoreTracker";
 
         private bool mouseDown;
@@ -60,7 +74,7 @@ namespace CoreTracker
             ti_main.ContextMenu.MenuItems.Add(0, new MenuItem("Exit", new System.EventHandler(Exit_Click)));
             ti_main.ContextMenu.MenuItems.Add(1, new MenuItem("Show", new System.EventHandler(Show_Click)));
             ti_main.ContextMenu.MenuItems.Add(2, new MenuItem("Hide", new System.EventHandler(Hide_Click)));
-            ti_main.ContextMenu.MenuItems.Add(3, new MenuItem("Report", new System.EventHandler(Report_Click)));
+            ti_main.ContextMenu.MenuItems.Add(3, new MenuItem("BUG Report(Github)", new System.EventHandler(Report_Click)));
             ti_main.ContextMenu.MenuItems.Add(4, new MenuItem("Reset", new System.EventHandler(Reset_Click)));
             ti_main.ContextMenu.MenuItems.Add(4, new MenuItem("Update", new System.EventHandler(Update_Click)));
 
@@ -81,8 +95,11 @@ namespace CoreTracker
             bool auto_run = Ragistry.CheckAutoRun();
             if (auto_run)
             {
+                // auto run (?)
                 ch_auto_start.Checked = true;
-                Hide();
+                // start new thred for hide
+                SetTimeout(toggleMe, 3000);
+
             }
             init_CPU_Watcher(auto_run);
             l_version.Text = VERSION;
@@ -257,7 +274,7 @@ namespace CoreTracker
 
         private void toggleMe()
         {
-            if(ti_main.Visible)
+            if (ti_main.Visible)
             {
                 Show();
                 this.WindowState = FormWindowState.Normal;

@@ -1,4 +1,4 @@
-set-executionpolicy unrestricted
+# set-executionpolicy unrestricted
 Write-Output "build nsi file start"
 Write-Output "arch : x86_x64"
 $version = ""
