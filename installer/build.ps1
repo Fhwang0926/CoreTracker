@@ -11,7 +11,6 @@ Write-Output $version
 $msbuild = $args[0]
 if (([string]::IsNullOrEmpty($msbuild)))
 {
-  Write-Output "ss"  
   $msbuild = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin";
 }
 
@@ -24,10 +23,11 @@ if (!(Test-Path $msbuild)) {
 Write-Output "set build version start : $msbuild"
 Set-Location ..
 ((Get-Content -path ./Form1.cs -Raw) -replace '(VERSION = )"v[0-9].[0-9].[0-9]"', ('$1'+'"'+$version+'"')) | Set-Content -Path ./Form1.cs
-Write-Output "version set"
-Start-Process -FilePath "msbuild.exe" -WorkingDirectory "$msbuild" -Wait -ArgumentList "$msbuild_option;Platform=x64"
+Write-Output "version set done"
+Write-Output ('/c "' + "$msbuild\msbuild.exe" + "'" + "$msbuild_option /p:Platform=x64")
+Start-Process -FilePath "cmd.exe" -Wait -ArgumentList ('/c "' + "$msbuild\msbuild.exe" + '" ' + "$msbuild_option /p:Platform=x64") -NoNewWindow
 Write-Output "compile done x64"
-Start-Process -FilePath "msbuild.exe" -WorkingDirectory "$msbuild" -Wait -ArgumentList "$msbuild_option;Platform=x86"
+Start-Process -FilePath "cmd.exe" -Wait -ArgumentList ('/c "' + "$msbuild\msbuild.exe" + '" ' + "$msbuild_option /p:Platform=x86") -NoNewWindow
 Write-Output "compile done x86"
 Set-Location .\installer
 Write-Output "set build version end"
@@ -38,8 +38,8 @@ $nsi = Get-Content "sample.nsi"
 $data = $nsi.Replace("%VERSION%", $version)
 
 Set-Content "build.$version.nsi" $data
-code "build.$version.nsi"
-Write-Output "build nsi file done"
+# code "build.$version.nsi"
+Write-Output "created nsi file"
 
 Write-Output "build delete pre file start"
 if (Test-Path ..\bin\Release\x32\Newtonsoft.x32.Json.dll) { Remove-Item ..\bin\Release\x32\Newtonsoft.x32.Json.dll; Write-Output "Deleted Newtonsoft.x32.Json.dll"; }
@@ -59,7 +59,13 @@ Copy-Item ..\bin\Release\x64\OpenHardwareMonitorLib.dll ..\bin\Release\x64\OpenH
 Copy-Item ..\bin\Release\x64\CoreTracker.exe ..\bin\Release\x64\CoreTracker.x64.exe -Force
 Write-Output "build rename to install files done"
 
-
-
+# start installer build
+makensis.exe ".\build.$version.nsi"
+Write-Output "build installer from nsi file"
+Set-Location ../deploy/
+Start-Process "CoreTracker_Installer_x86_x64_$version.exe"
+Set-Location ../installer/
+# run
+# start installer build
 
 # start upload relase

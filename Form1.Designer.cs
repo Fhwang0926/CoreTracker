@@ -57,6 +57,7 @@
             this.l_close = new System.Windows.Forms.Label();
             this.l_hide = new System.Windows.Forms.Label();
             this.l_version = new System.Windows.Forms.Label();
+            this.chk_disable_alert = new System.Windows.Forms.CheckBox();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -136,7 +137,7 @@
             this.groupBox1.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.groupBox1.ForeColor = System.Drawing.Color.White;
             this.groupBox1.Location = new System.Drawing.Point(12, 46);
-            this.groupBox1.Name = "gb_sys_info";
+            this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(344, 144);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
@@ -144,6 +145,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.chk_disable_alert);
             this.groupBox2.Controls.Add(this.ch_graphic_temperature);
             this.groupBox2.Controls.Add(this.ch_ram_temperature);
             this.groupBox2.Controls.Add(this.ch_board_temperature);
@@ -155,7 +157,7 @@
             this.groupBox2.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.groupBox2.ForeColor = System.Drawing.Color.White;
             this.groupBox2.Location = new System.Drawing.Point(12, 196);
-            this.groupBox2.Name = "gb_setting";
+            this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(344, 299);
             this.groupBox2.TabIndex = 6;
             this.groupBox2.TabStop = false;
@@ -378,6 +380,17 @@
             this.l_version.Size = new System.Drawing.Size(0, 19);
             this.l_version.TabIndex = 14;
             // 
+            // chk_disable_alert
+            // 
+            this.chk_disable_alert.AutoSize = true;
+            this.chk_disable_alert.Location = new System.Drawing.Point(172, 160);
+            this.chk_disable_alert.Name = "chk_disable_alert";
+            this.chk_disable_alert.Size = new System.Drawing.Size(154, 16);
+            this.chk_disable_alert.TabIndex = 12;
+            this.chk_disable_alert.Text = "Disabled Busy Alert";
+            this.chk_disable_alert.UseVisualStyleBackColor = true;
+            this.chk_disable_alert.CheckedChanged += new System.EventHandler(this.chk_disable_alert_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -449,6 +462,7 @@
         private System.Windows.Forms.CheckBox ch_ram_temperature;
         private System.Windows.Forms.CheckBox ch_board_temperature;
         private System.Windows.Forms.CheckBox ch_cpu_temperature;
+        private System.Windows.Forms.CheckBox chk_disable_alert;
     }
 }
 

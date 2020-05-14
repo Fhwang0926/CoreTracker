@@ -11,6 +11,7 @@ namespace CoreTracker
         private readonly RegistryKey ram_temperature_key = Registry.CurrentUser.CreateSubKey("ram_temperature_key");
         private readonly RegistryKey graphic_temperature_key = Registry.CurrentUser.CreateSubKey("graphic_temperature_key");
         private readonly RegistryKey board_temperature_key = Registry.CurrentUser.CreateSubKey("board_temperature_key");
+        private readonly RegistryKey disable_busy_alert_key = Registry.CurrentUser.CreateSubKey("disable_busy_alert_key");
         private readonly string PN = "CoreTracker"; // program name
 
         public bool CheckAutoRun()
@@ -46,6 +47,12 @@ namespace CoreTracker
         public bool ChecGraphicTemperature()
         {
             var target = graphic_temperature_key.GetValue(PN);
+            return string.IsNullOrEmpty(target?.ToString()) ? false : true;
+        }
+
+        public bool ChecDisableBusyAlert()
+        {
+            var target = disable_busy_alert_key.GetValue(PN);
             return string.IsNullOrEmpty(target?.ToString()) ? false : true;
         }
 
@@ -91,12 +98,12 @@ namespace CoreTracker
 
         public void enable_cpu_temperature()
         {
-            cpu_temperature_key.SetValue(PN, false);
+            cpu_temperature_key.SetValue(PN, true);
         }
 
         public void enable_ram_temperature()
         {
-            ram_temperature_key.SetValue(PN, false);
+            ram_temperature_key.SetValue(PN, true);
         }
 
         public void enable_board_temperature()
@@ -106,7 +113,17 @@ namespace CoreTracker
 
         public void enable_graphic_temperature()
         {
-            graphic_temperature_key.SetValue(PN, false);
+            graphic_temperature_key.SetValue(PN, true);
+        }
+
+        public void enable_busy_alert()
+        {
+            disable_busy_alert_key.SetValue(PN, false);
+        }
+
+        public void disable_busy_alert()
+        {
+            disable_busy_alert_key.SetValue(PN, true);
         }
     }
 }

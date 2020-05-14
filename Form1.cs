@@ -42,7 +42,7 @@ namespace CoreTracker
         private Int16 ModeSlow = 5000;
         private Int16 ModeNormarl = 3000;
         private Int16 ModeFast = 1000;
-        private string VERSION = "v0.5.0";
+        private string VERSION = "v0.5.1";
         private string GITHUB = "https://github.com/Fhwang0926/CoreTracker";
 
         private bool mouseDown;
@@ -61,7 +61,6 @@ namespace CoreTracker
             l_core_value.Text = (Environment.ProcessorCount / 2).ToString();
             l_th_value.Text = Environment.ProcessorCount.ToString();
             ch_auto_bugreport.Enabled = false;
-            ch_auto_bugreport.Text = ch_auto_bugreport.Text += "(coming soon)";
 
             // ass running status
             pic_status.Image = Properties.Resources.bad;
@@ -89,6 +88,7 @@ namespace CoreTracker
             ch_ram_temperature.Checked = Ragistry.CheckRamTemperature();
             ch_cpu_temperature.Checked = Ragistry.CheckCpuTemperature();
             ch_board_temperature.Checked = Ragistry.CheckBoardTemperature();
+            chk_disable_alert.Checked = Ragistry.ChecDisableBusyAlert();
 
 
 
@@ -249,6 +249,7 @@ namespace CoreTracker
 
                     if (c.Name.ToString() == "_Total")
                     {
+                        if (chk_disable_alert.Checked) { continue; }
                         // if show windows system notification more then 80% usage
                         if (busyCount >= 10) { noticeStatus = false; busyCount = 0; continue; }
                         else if (noticeStatus) { busyCount++; continue; }
@@ -481,6 +482,36 @@ namespace CoreTracker
             else { Ragistry.disable_graphic_temperature(); }
             GraphicTmpereaute.Visible = ch_graphic_temperature.Checked;
         }
+
+        private void chk_disable_alert_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chk_disable_alert.Checked) { Ragistry.enable_busy_alert(); }
+            else { Ragistry.disable_busy_alert(); }
+        }
     }
     #endregion
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
