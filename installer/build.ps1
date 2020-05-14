@@ -2,9 +2,37 @@
 Write-Output "build nsi file start"
 Write-Output "arch : x86_x64"
 $version = ""
+$msbuild_option = "CoreTracker.csproj /t:Build /p:Configuration=Release"
 foreach($line in (git tag | Select-Object -last 1)) { if($line -ne "") { $version = $line } }
 if($version -eq "") { Write-Output "no have"; break; }
 Write-Output $version
+
+# start build
+$msbuild = $args[0]
+if (([string]::IsNullOrEmpty($msbuild)))
+{
+  Write-Output "ss"  
+  $msbuild = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin";
+}
+
+if (!(Test-Path $msbuild)) {
+  Write-Output $msbuild
+  Write-Output "plz, set msbuild bin path first"  
+  exit
+}
+
+Write-Output "set build version start : $msbuild"
+Set-Location ..
+((Get-Content -path ./Form1.cs -Raw) -replace '(VERSION = )"v[0-9].[0-9].[0-9]"', ('$1'+'"'+$version+'"')) | Set-Content -Path ./Form1.cs
+Write-Output "version set"
+Start-Process -FilePath "msbuild.exe" -WorkingDirectory "$msbuild" -Wait -ArgumentList "$msbuild_option;Platform=x64"
+Write-Output "compile done x64"
+Start-Process -FilePath "msbuild.exe" -WorkingDirectory "$msbuild" -Wait -ArgumentList "$msbuild_option;Platform=x86"
+Write-Output "compile done x86"
+Set-Location .\installer
+Write-Output "set build version end"
+# end build
+
 
 $nsi = Get-Content "sample.nsi"
 $data = $nsi.Replace("%VERSION%", $version)

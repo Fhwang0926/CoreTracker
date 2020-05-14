@@ -1,4 +1,4 @@
-﻿using OpenHardwareMonitor.Collections;
+using OpenHardwareMonitor.Collections;
 using OpenHardwareMonitor.Hardware;
 using System;
 using System.Collections.Generic;
@@ -28,7 +28,7 @@ namespace CoreTracker
                 timer.Stop();
                 noti.Dispose();
             };
-            noti.ShowBalloonTip(2000, "[CoreTracker Notice] : Auto start", "soon disappear winodws", ToolTipIcon.Info);
+            noti.ShowBalloonTip(2000, "[CoreTracker Notice] : Auto Start", "Windows soon minimize to tray icon", ToolTipIcon.Info);
             timer.Start();
         }
         // Constant Definition
@@ -42,7 +42,7 @@ namespace CoreTracker
         private Int16 ModeSlow = 5000;
         private Int16 ModeNormarl = 3000;
         private Int16 ModeFast = 1000;
-        private string VERSION = "v0.4.0";
+        private string VERSION = "v0.5.0";
         private string GITHUB = "https://github.com/Fhwang0926/CoreTracker";
 
         private bool mouseDown;
