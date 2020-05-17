@@ -29,9 +29,17 @@ Start-Process -FilePath "cmd.exe" -Wait -ArgumentList ('/c "' + "$msbuild\msbuil
 Write-Output "compile done x64"
 Start-Process -FilePath "cmd.exe" -Wait -ArgumentList ('/c "' + "$msbuild\msbuild.exe" + '" ' + "$msbuild_option /p:Platform=x86") -NoNewWindow
 Write-Output "compile done x86"
-Set-Location .\installer
+Set-Location ./installer
 Write-Output "set build version end"
 # end build
+
+# start git upload code
+# Set-Location ..
+# git add .
+# git commmit -m "fix: bug fix"
+# git push
+# Set-Location ./installer
+# end git upload code
 
 
 $nsi = Get-Content "sample.nsi"
@@ -66,6 +74,3 @@ Set-Location ../deploy/
 Start-Process "CoreTracker_Installer_x86_x64_$version.exe"
 Set-Location ../installer/
 # run
-# start installer build
-
-# start upload relase
