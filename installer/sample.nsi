@@ -87,6 +87,8 @@ Section "MainSection" SEC01
   File "_install.bat" 
   File "_uninstall.bat"
   File "CoreTrackerHelper.exe"
+  File "CoreTrackerHelper.dll"
+  File "CoreTrackerHelper.runtimeconfig.json"
   File "..\README.md" 
   CreateDirectory "$SMPROGRAMS\CoreTracker" 
   CreateShortCut "$SMPROGRAMS\CoreTracker\CoreTracker.lnk" "$INSTDIR\CoreTracker.exe" 
@@ -141,6 +143,8 @@ Section Uninstall
   Delete "$INSTDIR\OpenHardwareMonitorLib.x32.dll" 
   Delete "$INSTDIR\NULL" 
   Delete "$INSTDIR\CoreTrackerHelper.exe"
+  Delete "$INSTDIR\CoreTrackerHelper.dll"
+  Delete "$INSTDIR\CoreTrackerHelper.runtimeconfig.json"
 
   Delete "$SMPROGRAMS\CoreTracker\Uninstall.lnk" 
   Delete "$SMPROGRAMS\CoreTracker\Website.lnk" 

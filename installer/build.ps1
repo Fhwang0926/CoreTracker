@@ -1,4 +1,5 @@
 # set-executionpolicy unrestricted
+
 Write-Output "build nsi file start"
 Write-Output "arch : x86_x64"
 $version = ""
@@ -7,8 +8,53 @@ foreach($line in (git tag | Select-Object -last 1)) { if($line -ne "") { $versio
 if($version -eq "") { Write-Output "no have"; break; }
 Write-Output $version
 
+# start new tag
+$option = $args[0]
+$msg = $args[1]
+$msbuild = ""
+# r:msg / release version update  vx.0.0
+# m:msg / major version update    v0.x.0
+# b:msg / major version update    v0.0.x
+# Release Number, Major Number, Minor Number
+# role = http://seorenn.blogspot.com/2012/02/version.html
+
+if (!([string]::IsNullOrEmpty($option)))
+{
+  git pull
+
+  if (!($option -Match "-")) {
+    # msbuild path
+    $msbuild = $args[0]
+    Write-Output "msbuild location set : $msbuild"
+    
+  } else {
+
+    if ($msg -eq "") { Write-Output "no have version tag message" exit }
+
+    $version_array = $version.Split(".")
+    if ($option -eq "-r") {
+      # release new update application
+      $version_array[0] = 'v' + [string](([int]($version_array[0].Replace('v', ''))) + 1)
+    } elseif ($option -eq "-m") {
+      # add or upgrade function or change some logic
+      $version_array[1] = [string](([int]$version_array[1]) + 1)
+      Write-Output $version_array[1]
+    } elseif ($option -eq "-b") {
+      # bug fix
+      $version_array[2] = ([int]$version_array[2]) + 1
+    }
+    $version = [string]::Join(".", $version_array)
+    Write-Output "new version : $version"
+  }
+  git add ../*
+  git commit -m $msg
+  git tag $version
+  git push origin $version
+  Write-Output "git upload done"  
+}
+# end new tag
+
 # start build
-$msbuild = $args[0]
 if (([string]::IsNullOrEmpty($msbuild)))
 {
   $msbuild = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin";
