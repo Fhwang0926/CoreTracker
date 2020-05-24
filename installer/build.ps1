@@ -12,6 +12,7 @@ Write-Output $version
 $option = $args[0]
 $msg = $args[1]
 $msbuild = ""
+$is_upload = 1
 # r:msg / release version update  vx.0.0
 # m:msg / major version update    v0.x.0
 # b:msg / major version update    v0.0.x
@@ -35,24 +36,33 @@ if (!([string]::IsNullOrEmpty($option)))
     if ($option -eq "-r") {
       # release new update application
       $version_array[0] = 'v' + [string](([int]($version_array[0].Replace('v', ''))) + 1)
+      $msg  = "fix:release new update application: $msg"
     } elseif ($option -eq "-m") {
       # add or upgrade function or change some logic
       $version_array[1] = [string](([int]$version_array[1]) + 1)
-      Write-Output $version_array[1]
+      $msg  = "fix:add or upgrade function or change some logic: $msg"
     } elseif ($option -eq "-b") {
       # bug fix
       $version_array[2] = ([int]$version_array[2]) + 1
+      $msg  = "fix:bug fix: $msg"
     }
     $version = [string]::Join(".", $version_array)
     Write-Output "new version : $version"
+
+    $is_upload = 1
   }
+  
+}
+# end new tag
+
+if ($is_upload -eq 1) {
+  # new tag upload
   git add ../*
   git commit -m $msg
   git tag $version
   git push origin $version
   Write-Output "git upload done"  
 }
-# end new tag
 
 # start build
 if (([string]::IsNullOrEmpty($msbuild)))

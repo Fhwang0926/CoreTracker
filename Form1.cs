@@ -40,7 +40,7 @@ namespace CoreTracker
         private Int16 ModeSlow = 5000;
         private Int16 ModeNormarl = 3000;
         private Int16 ModeFast = 1000;
-        private string VERSION = "v0.7.0";
+        private string VERSION = "v0.7.1";
         private string GITHUB = "https://github.com/Fhwang0926/CoreTracker";
 
         private bool mouseDown;
@@ -278,13 +278,13 @@ namespace CoreTracker
                 Show();
                 this.WindowState = FormWindowState.Normal;
                 ti_main.Visible = false;
+                ti_main.ContextMenu.MenuItems[2].Enabled = true;
             } else
             {
                 Hide();
                 ti_main.Visible = true;
+                ti_main.ContextMenu.MenuItems[2].Enabled = false;
             }
-            // Show
-            ti_main.ContextMenu.MenuItems[1].Enabled = ti_main.Visible;
         }
 
 
@@ -367,7 +367,6 @@ namespace CoreTracker
         {
             // Hide The Form when it's minimized
             if (FormWindowState.Minimized == WindowState) { 
-                Hide();
                 toggleMe();
                 if (!run && !th.IsAlive) { run = true; th.Start(); }
             }
@@ -485,10 +484,3 @@ namespace CoreTracker
     }
     #endregion
 }
-
-
-
-
-
-
-

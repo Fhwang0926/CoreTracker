@@ -302,17 +302,17 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(78, 28);
+            this.label2.Location = new System.Drawing.Point(97, 37);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(196, 48);
+            this.label2.Size = new System.Drawing.Size(137, 12);
             this.label2.TabIndex = 8;
-            this.label2.Text = "Auther : hdh0926@naver.com\r\n\r\nWelcome your feedback.\r\n\r\n";
+            this.label2.Text = "Welcome Feedback.";
             // 
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
             this.linkLabel1.LinkColor = System.Drawing.SystemColors.Info;
-            this.linkLabel1.Location = new System.Drawing.Point(78, 85);
+            this.linkLabel1.Location = new System.Drawing.Point(77, 68);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(172, 12);
             this.linkLabel1.TabIndex = 9;
@@ -399,12 +399,12 @@
             this.btn_north.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btn_north.FlatAppearance.BorderSize = 0;
             this.btn_north.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_north.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_north.Location = new System.Drawing.Point(111, 0);
             this.btn_north.Name = "btn_north";
             this.btn_north.Size = new System.Drawing.Size(162, 36);
             this.btn_north.TabIndex = 15;
             this.btn_north.Text = "North";
-            this.btn_north.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_north.UseVisualStyleBackColor = false;
             this.btn_north.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_north_MouseDown);
             this.btn_north.MouseMove += new System.Windows.Forms.MouseEventHandler(this.btn_north_MouseMove);
