@@ -38,6 +38,7 @@
             this.ti_main = new System.Windows.Forms.NotifyIcon(this.components);
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.chk_disable_alert = new System.Windows.Forms.CheckBox();
             this.ch_graphic_temperature = new System.Windows.Forms.CheckBox();
             this.ch_ram_temperature = new System.Windows.Forms.CheckBox();
             this.ch_board_temperature = new System.Windows.Forms.CheckBox();
@@ -57,7 +58,7 @@
             this.l_close = new System.Windows.Forms.Label();
             this.l_hide = new System.Windows.Forms.Label();
             this.l_version = new System.Windows.Forms.Label();
-            this.chk_disable_alert = new System.Windows.Forms.CheckBox();
+            this.btn_north = new System.Windows.Forms.Button();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -162,6 +163,17 @@
             this.groupBox2.TabIndex = 6;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Setting";
+            // 
+            // chk_disable_alert
+            // 
+            this.chk_disable_alert.AutoSize = true;
+            this.chk_disable_alert.Location = new System.Drawing.Point(172, 160);
+            this.chk_disable_alert.Name = "chk_disable_alert";
+            this.chk_disable_alert.Size = new System.Drawing.Size(154, 16);
+            this.chk_disable_alert.TabIndex = 12;
+            this.chk_disable_alert.Text = "Disabled Busy Alert";
+            this.chk_disable_alert.UseVisualStyleBackColor = true;
+            this.chk_disable_alert.CheckedChanged += new System.EventHandler(this.chk_disable_alert_CheckedChanged);
             // 
             // ch_graphic_temperature
             // 
@@ -377,19 +389,26 @@
             this.l_version.ForeColor = System.Drawing.Color.White;
             this.l_version.Location = new System.Drawing.Point(17, 16);
             this.l_version.Name = "l_version";
-            this.l_version.Size = new System.Drawing.Size(0, 19);
+            this.l_version.Size = new System.Drawing.Size(82, 19);
             this.l_version.TabIndex = 14;
+            this.l_version.Text = "VERSION";
             // 
-            // chk_disable_alert
+            // btn_north
             // 
-            this.chk_disable_alert.AutoSize = true;
-            this.chk_disable_alert.Location = new System.Drawing.Point(172, 160);
-            this.chk_disable_alert.Name = "chk_disable_alert";
-            this.chk_disable_alert.Size = new System.Drawing.Size(154, 16);
-            this.chk_disable_alert.TabIndex = 12;
-            this.chk_disable_alert.Text = "Disabled Busy Alert";
-            this.chk_disable_alert.UseVisualStyleBackColor = true;
-            this.chk_disable_alert.CheckedChanged += new System.EventHandler(this.chk_disable_alert_CheckedChanged);
+            this.btn_north.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btn_north.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btn_north.FlatAppearance.BorderSize = 0;
+            this.btn_north.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_north.Location = new System.Drawing.Point(111, 0);
+            this.btn_north.Name = "btn_north";
+            this.btn_north.Size = new System.Drawing.Size(162, 36);
+            this.btn_north.TabIndex = 15;
+            this.btn_north.Text = "North";
+            this.btn_north.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_north.UseVisualStyleBackColor = false;
+            this.btn_north.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_north_MouseDown);
+            this.btn_north.MouseMove += new System.Windows.Forms.MouseEventHandler(this.btn_north_MouseMove);
+            this.btn_north.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_north_MouseUp);
             // 
             // Form1
             // 
@@ -398,6 +417,7 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(44)))), ((int)(((byte)(54)))));
             this.ClientSize = new System.Drawing.Size(368, 769);
             this.ControlBox = false;
+            this.Controls.Add(this.btn_north);
             this.Controls.Add(this.l_version);
             this.Controls.Add(this.l_hide);
             this.Controls.Add(this.l_close);
@@ -417,9 +437,6 @@
             this.Name = "Form1";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
-            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);
-            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseUp);
             this.Resize += new System.EventHandler(this.Form1_Resize);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
@@ -463,6 +480,7 @@
         private System.Windows.Forms.CheckBox ch_board_temperature;
         private System.Windows.Forms.CheckBox ch_cpu_temperature;
         private System.Windows.Forms.CheckBox chk_disable_alert;
+        private System.Windows.Forms.Button btn_north;
     }
 }
 

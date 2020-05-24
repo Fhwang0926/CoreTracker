@@ -1,5 +1,3 @@
-using OpenHardwareMonitor.Collections;
-using OpenHardwareMonitor.Hardware;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -28,7 +26,7 @@ namespace CoreTracker
                 timer.Stop();
                 noti.Dispose();
             };
-            noti.ShowBalloonTip(2000, "[CoreTracker Notice] : Auto Start", "Windows soon minimize to tray icon", ToolTipIcon.Info);
+            noti.ShowBalloonTip(2000, "[CoreTracker Notice] : Auto Start", "Soon minimize to tray icon", ToolTipIcon.Info);
             timer.Start();
         }
         // Constant Definition
@@ -38,11 +36,11 @@ namespace CoreTracker
         private NotifyIcon BoardTmpereaute = new NotifyIcon() { Visible = false, Icon = Properties.Resources._10_b, BalloonTipIcon = ToolTipIcon.Info, BalloonTipTitle = "Info From Marderboard Temperaute" };
         private NotifyIcon GraphicTmpereaute = new NotifyIcon() { Visible = false, Icon = Properties.Resources._10_g, BalloonTipIcon = ToolTipIcon.Info, BalloonTipTitle = "Info From GPU Temperaute" };
         private bool run = false;
-        private Thread th;
+        private Thread th = null;
         private Int16 ModeSlow = 5000;
         private Int16 ModeNormarl = 3000;
         private Int16 ModeFast = 1000;
-        private string VERSION = "v0.6.0";
+        private string VERSION = "v0.6.1";
         private string GITHUB = "https://github.com/Fhwang0926/CoreTracker";
 
         private bool mouseDown;
@@ -55,12 +53,17 @@ namespace CoreTracker
             InitializeComponent();
             KeyPreview = true;
 
+
             // under code run after InitializeComponent
 
             // update
             l_core_value.Text = (Environment.ProcessorCount / 2).ToString();
             l_th_value.Text = Environment.ProcessorCount.ToString();
             ch_auto_bugreport.Enabled = false;
+
+            this.FormBorderStyle = FormBorderStyle.None;
+            Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20,20));
+            btn_north.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, btn_north.Height, btn_north.Width, -400, 20, 20));
 
             // ass running status
             pic_status.Image = Properties.Resources.bad;
@@ -90,12 +93,10 @@ namespace CoreTracker
             ch_board_temperature.Checked = Ragistry.CheckBoardTemperature();
             chk_disable_alert.Checked = Ragistry.ChecDisableBusyAlert();
 
-
-
             bool auto_run = Ragistry.CheckAutoRun();
             if (auto_run)
             {
-                // auto run (?)
+                // auto run
                 ch_auto_start.Checked = true;
                 // start new thred for hide
                 SetTimeout(toggleMe, 3000);
@@ -133,7 +134,7 @@ namespace CoreTracker
             th = new Thread(new ThreadStart(runner));
             if (Immediate_start) {
                 th.Start();
-                ti_main.ShowBalloonTip(1000, "[CoreTracker Notice] : Reset", "CPU Status Checker refreshed", ToolTipIcon.Info);
+                ti_main.ShowBalloonTip(1000, "[CoreTracker Notice] : Reset", "CPU Status Checker Refreshed", ToolTipIcon.Info);
             }
         }
         private void Report_Click(Object sender, System.EventArgs e)
@@ -214,7 +215,7 @@ namespace CoreTracker
             Int16 busyCount = 0;
 
             // init
-            controller.hardwareMoniterInit();
+            controller.hardwareMoniterInit(); 
 
             while (true)
             {
@@ -239,9 +240,6 @@ namespace CoreTracker
                     controller.computer.MainboardEnabled = ch_board_temperature.Checked; BoardTmpereaute.Icon = setTrayIcon(controller.sb.board_temperature, "board");
                     BoardTmpereaute.BalloonTipText = $"Marderboard Temperature : {controller.sb.board_temperature}";
                 }
-
-
-
 
                 var cpu_info = searcher.Get().Cast<ManagementObject>().Select(mo => new { Name = mo["Name"], Usage = Convert.ToInt32(mo["PercentProcessorTime"]) }).ToList();
                 foreach (var c in cpu_info)
@@ -285,7 +283,8 @@ namespace CoreTracker
                 Hide();
                 ti_main.Visible = true;
             }
-            
+            // Show
+            ti_main.ContextMenu.MenuItems[1].Enabled = ti_main.Visible;
         }
 
 
@@ -294,8 +293,9 @@ namespace CoreTracker
             toggleMe();
         }
 
-        private dynamic setTrayIcon(int value, string type = "")
+        private Icon setTrayIcon(int value, string type = "")
         {
+            // setTrayIcon find type nogada
             switch (type)
             {
                 case "cpu":
@@ -331,7 +331,7 @@ namespace CoreTracker
             }
         }
 
-        private dynamic setTrayIcon(int value)
+        private Icon setTrayIcon(int value)
         {
             if (0 <= value && value < 20) { return Properties.Resources._10; }
             else if (20 <= value && value < 40) { return Properties.Resources._20; }
@@ -368,13 +368,7 @@ namespace CoreTracker
             // Hide The Form when it's minimized
             if (FormWindowState.Minimized == WindowState) { 
                 Hide();
-                ti_main.Visible = true;
-                // 1 : show. 2 : hide
-                if(ti_main.Visible)
-                {
-                    ti_main.ContextMenu.MenuItems[1].Enabled = true;
-                    ti_main.ContextMenu.MenuItems[2].Enabled = false;
-                }                
+                toggleMe();
                 if (!run && !th.IsAlive) { run = true; th.Start(); }
             }
                 
@@ -389,7 +383,6 @@ namespace CoreTracker
         {
             if(ch_auto_start.Checked) { Ragistry.enable_auto_run(); }
             else { Ragistry.disable_auto_run(); }
-
         }
 
         private void l_close_Click(object sender, EventArgs e)
@@ -402,13 +395,14 @@ namespace CoreTracker
             this.WindowState = FormWindowState.Minimized;
         }
 
-        private void Form1_MouseDown(object sender, MouseEventArgs e)
+        private void btn_north_MouseDown(object sender, MouseEventArgs e)
         {
             mouseDown = true;
             lastLocation = e.Location;
         }
 
-        private void Form1_MouseMove(object sender, MouseEventArgs e)
+        // north move
+        private void btn_north_MouseMove(object sender, MouseEventArgs e)
         {
             if (mouseDown)
             {
@@ -417,7 +411,7 @@ namespace CoreTracker
             }
         }
 
-        private void Form1_MouseUp(object sender, MouseEventArgs e)
+        private void btn_north_MouseUp(object sender, MouseEventArgs e)
         {
             mouseDown = false;
         }
@@ -491,29 +485,3 @@ namespace CoreTracker
     }
     #endregion
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

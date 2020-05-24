@@ -12,6 +12,19 @@ using System.Windows.Forms;
 
 namespace CoreTracker
 {
+    public partial class Form1 : Form
+    {
+        [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
+        private static extern IntPtr CreateRoundRectRgn
+        (
+            int nLeftRect,     // x-coordinate of upper-left corner
+            int nTopRect,      // y-coordinate of upper-left corner
+            int nRightRect,    // x-coordinate of lower-right corner
+            int nBottomRect,   // y-coordinate of lower-right corner
+            int nWidthEllipse, // height of ellipse
+            int nHeightEllipse // width of ellipse
+        );
+    }
     internal class Controller
     {
         #region "Refresh Notification Area Icons"
@@ -227,6 +240,7 @@ namespace CoreTracker
         }
         public void hardwareInfo()
         {
+            // DEBUG CODE
             // enable or disable setting
             /*computer.CPUEnabled = true;         // default
             computer.RAMEnabled = true;         // optional

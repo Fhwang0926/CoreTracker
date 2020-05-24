@@ -169,7 +169,9 @@
   <ItemGroup>
     <Compile Include="Lib\Protocol.cs" />
     <Compile Include="Lib\Registry.cs" />
-    <Compile Include="Lib\Controller.cs" />
+    <Compile Include="Lib\Controller.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -258,4 +260,7 @@
     <None Include="Properties\icon\form.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <ServerGarbageCollection>true</ServerGarbageCollection>
+  </PropertyGroup>
 </Project>

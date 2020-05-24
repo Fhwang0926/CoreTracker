@@ -27,7 +27,7 @@ namespace CoreTracker
                     }
                     else
                     {
-                        MessageBox.Show("CoreTracker application is already running.");
+                        MessageBox.Show("CoreTracker is already Running.", "CoreTracker", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                 }
                 finally
