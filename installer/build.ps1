@@ -79,15 +79,6 @@ Set-Location ./installer
 Write-Output "set build version end"
 # end build
 
-# start git upload code
-# Set-Location ..
-# git add .
-# git commmit -m "fix: bug fix"
-# git push
-# Set-Location ./installer
-# end git upload code
-
-
 $nsi = Get-Content "sample.nsi"
 $data = $nsi.Replace("%VERSION%", $version)
 
