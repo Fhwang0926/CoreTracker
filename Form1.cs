@@ -38,7 +38,7 @@ namespace CoreTracker
         private Int16 ModeSlow = 5000;
         private Int16 ModeNormarl = 3000;
         private Int16 ModeFast = 1000;
-        private string VERSION = "v0.8.4";
+        private string VERSION = "v0.8.5";
         private string GITHUB = "https://github.com/Fhwang0926/CoreTracker";
 
         private bool mouseDown;
@@ -501,8 +501,3 @@ namespace CoreTracker
     }
     #endregion
 }
-
-
-
-
-
