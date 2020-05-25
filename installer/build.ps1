@@ -65,15 +65,6 @@ if (!([string]::IsNullOrEmpty($option)))
 }
 # end new tag
 
-if ($is_upload -eq 1) {
-  # new tag upload
-  git add ../*
-  git commit -m $msg
-  git tag $version
-  git push origin $version
-  Write-Output "git upload done"  
-}
-
 # start build
 if (([string]::IsNullOrEmpty($msbuild)))
 {
@@ -131,3 +122,13 @@ Set-Location ../deploy/
 Start-Process "CoreTracker_Installer_x86_x64_$version.exe"
 Set-Location ../installer/
 # run
+
+# last add tag & push
+if ($is_upload -eq 1) {
+  # new tag upload
+  git add ../*
+  git commit -m $msg
+  git tag $version
+  git push origin $version
+  Write-Output "git upload done"  
+}
