@@ -12,5 +12,6 @@ If "%PROCESSOR_ARCHITEW6432%" == "AMD64" (copy CoreTracker.x64.exe CoreTracker.e
 If "%PROCESSOR_ARCHITEW6432%" == "AMD64" (copy Newtonsoft.Json.x64.dll Newtonsoft.Json.dll) else ( copy Newtonsoft.Json.x32.dll Newtonsoft.Json.dll )
 If "%PROCESSOR_ARCHITEW6432%" == "AMD64" (copy OpenHardwareMonitorLib.x64.dll OpenHardwareMonitorLib.dll) else ( copy OpenHardwareMonitorLib.x32.dll OpenHardwareMonitorLib.dll )
 If "%PROCESSOR_ARCHITEW6432%" == "AMD64" (copy CoreTrackerHelper.x64.dll CoreTrackerHelper.dll) else ( copy CoreTrackerHelper.x32.dll CoreTrackerHelper.dll )
+If "%PROCESSOR_ARCHITEW6432%" == "AMD64" (copy CoreTrackerHelper.x64.exe CoreTrackerHelper.exe) else ( copy CoreTrackerHelper.x32.exe CoreTrackerHelper.exe )
 echo copy done
 echo all done
