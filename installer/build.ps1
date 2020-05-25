@@ -115,14 +115,6 @@ Copy-Item ..\bin\Release\x64\OpenHardwareMonitorLib.dll ..\bin\Release\x64\OpenH
 Copy-Item ..\bin\Release\x64\CoreTracker.exe ..\bin\Release\x64\CoreTracker.x64.exe -Force
 Write-Output "build rename to install files done"
 
-# start installer build
-makensis.exe ".\build.$version.nsi"
-Write-Output "build installer from nsi file"
-Set-Location ../deploy/
-Start-Process "CoreTracker_Installer_x86_x64_$version.exe"
-Set-Location ../installer/
-# run
-
 # last add tag & push
 if ($is_upload -eq 1) {
   # new tag upload
@@ -132,3 +124,11 @@ if ($is_upload -eq 1) {
   git push origin $version
   Write-Output "git upload done"  
 }
+
+# start installer build
+makensis.exe ".\build.$version.nsi"
+Write-Output "build installer from nsi file"
+Set-Location ../deploy/
+Start-Process "CoreTracker_Installer_x86_x64_$version.exe"
+Set-Location ../installer/
+# run
