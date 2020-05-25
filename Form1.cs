@@ -5,11 +5,8 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Management;
-using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
-using Tulpep;
-using Tulpep.NotificationWindow;
 
 namespace CoreTracker
 {
@@ -41,7 +38,7 @@ namespace CoreTracker
         private Int16 ModeSlow = 5000;
         private Int16 ModeNormarl = 3000;
         private Int16 ModeFast = 1000;
-        private string VERSION = "v0.8.3";
+        private string VERSION = "v0.8.4";
         private string GITHUB = "https://github.com/Fhwang0926/CoreTracker";
 
         private bool mouseDown;
@@ -504,6 +501,7 @@ namespace CoreTracker
     }
     #endregion
 }
+
 
 
 
