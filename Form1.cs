@@ -38,7 +38,7 @@ namespace CoreTracker
         private Int16 ModeSlow = 5000;
         private Int16 ModeNormarl = 3000;
         private Int16 ModeFast = 1000;
-        private string VERSION = "v0.8.8";
+        private string VERSION = "v0.8.9";
         private string GITHUB = "https://github.com/Fhwang0926/CoreTracker";
 
         private bool mouseDown;
@@ -90,11 +90,11 @@ namespace CoreTracker
             bool auto_run = Ragistry.CheckAutoRun();
             if (auto_run)
             {
+                btn_tray.Enabled = false;
                 // auto run
                 ch_auto_start.Checked = true;
                 // start new thred for hide
                 SetTimeout(toggleMe, 3000);
-
             }
             init_CPU_Watcher(auto_run);
             l_version.Text = VERSION;
@@ -501,4 +501,8 @@ namespace CoreTracker
     }
     #endregion
 }
+
+
+
+
 

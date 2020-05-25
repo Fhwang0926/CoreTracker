@@ -78,5 +78,6 @@ v0.8.3
 - fix: auto build test and bug_fix
 - error: the tag miss sorry to everybody, my mistake tagging(but will not fix it :D))
 
-v0.8.4
+v0.8.4 ~ v0.8.9
 - fix: auto build test and bug_fix
+- fix: add git push
