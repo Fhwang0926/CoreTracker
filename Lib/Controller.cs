@@ -117,7 +117,7 @@ namespace CoreTracker
 
         public Int32 StringToVersion(string v)
         {
-            return Convert.ToInt32(v.Substring(1, 5).Replace(".", string.Empty));
+            return Convert.ToInt32(v.Replace("v", string.Empty).Replace(".", string.Empty));
         }
 
         public static async Task<bool> download(string url, string target)
