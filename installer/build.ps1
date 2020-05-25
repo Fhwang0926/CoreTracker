@@ -31,7 +31,7 @@ if (!([string]::IsNullOrEmpty($option)))
   git pull
 
   if (!($option -Match "-")) {
-    # msbuild path
+    # msbuild path if no have option char '-'
     $msbuild = $args[0]
     Write-Output "msbuild location set : $msbuild"
     
@@ -43,10 +43,13 @@ if (!([string]::IsNullOrEmpty($option)))
     if ($option -eq "-r") {
       # release new update application
       $version_array[0] = 'v' + [string](([int]($version_array[0].Replace('v', ''))) + 1)
+      $version_array[1] = 0
+      $version_array[2] = 0
       $msg  = "fix:release new update application: $msg"
     } elseif ($option -eq "-m") {
       # add or upgrade function or change some logic
       $version_array[1] = [string](([int]$version_array[1]) + 1)
+      $version_array[2] = 0
       $msg  = "fix:add or upgrade function or change some logic: $msg"
     } elseif ($option -eq "-b") {
       # bug fix
