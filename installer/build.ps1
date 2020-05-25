@@ -4,7 +4,7 @@ Write-Output "build nsi file start"
 Write-Output "arch : x86_x64"
 $version = ""
 $msbuild_option = "CoreTracker.csproj /t:Build /p:Configuration=Release"
-foreach($line in (git tag | Select-Object -last 1)) { if($line -ne "") { $version = $line } }
+foreach($line in (git describe --tags $(git rev-list --tags --max-count=1))) { if($line -ne "") { $version = $line } }
 if($version -eq "") { Write-Output "no have"; break; }
 Write-Output $version
 
