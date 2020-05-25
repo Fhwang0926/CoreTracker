@@ -89,6 +89,7 @@ Section "MainSection" SEC01
   File "CoreTrackerHelper.exe"
   File "CoreTrackerHelper.dll"
   File "CoreTrackerHelper.runtimeconfig.json"
+  File "restart_explorer.bat"
   File "..\README.md" 
   CreateDirectory "$SMPROGRAMS\CoreTracker" 
   CreateShortCut "$SMPROGRAMS\CoreTracker\CoreTracker.lnk" "$INSTDIR\CoreTracker.exe" 
@@ -145,6 +146,7 @@ Section Uninstall
   Delete "$INSTDIR\CoreTrackerHelper.exe"
   Delete "$INSTDIR\CoreTrackerHelper.dll"
   Delete "$INSTDIR\CoreTrackerHelper.runtimeconfig.json"
+  Delete "$INSTDIR\restart_explorer.bat"
 
   Delete "$SMPROGRAMS\CoreTracker\Uninstall.lnk" 
   Delete "$SMPROGRAMS\CoreTracker\Website.lnk" 

@@ -1,3 +1,4 @@
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -5,6 +6,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Management;
+using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 using Tulpep;
@@ -40,7 +42,7 @@ namespace CoreTracker
         private Int16 ModeSlow = 5000;
         private Int16 ModeNormarl = 3000;
         private Int16 ModeFast = 1000;
-        private string VERSION = "v0.7.2";
+        private string VERSION = "v0.7.3";
         private string GITHUB = "https://github.com/Fhwang0926/CoreTracker";
 
         private bool mouseDown;
@@ -53,14 +55,13 @@ namespace CoreTracker
             InitializeComponent();
             KeyPreview = true;
 
-
             // under code run after InitializeComponent
 
             // update
             l_core_value.Text = (Environment.ProcessorCount / 2).ToString();
             l_th_value.Text = Environment.ProcessorCount.ToString();
-            ch_auto_bugreport.Enabled = false;
 
+            // make north
             this.FormBorderStyle = FormBorderStyle.None;
             Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20,20));
             btn_north.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, btn_north.Height, btn_north.Width, -400, 20, 20));
@@ -81,10 +82,7 @@ namespace CoreTracker
             ti_main.ContextMenu.MenuItems.Add(4, new MenuItem("Update", new System.EventHandler(Update_Click)));
 
             // add NotifyIcon by core count
-            for (int c = 1; c <= Environment.ProcessorCount; c++)
-            {
-                th_list.Add(new NotifyIcon() { Visible = true, Icon = Properties.Resources._10 });
-            }
+            for (int c = 1; c <= Environment.ProcessorCount; c++) { th_list.Add(new NotifyIcon() { Visible = true, Icon = Properties.Resources._10 }); }
 
             // intialize thread && check auto start
             ch_graphic_temperature.Checked = Ragistry.ChecGraphicTemperature();
@@ -115,19 +113,15 @@ namespace CoreTracker
             if(searcher.Count > 0) { ch_graphic_temperature.Enabled = true; }
             searcher.Dispose();
 
+            // display trayicon
+            ch_trayicon_setting.Checked = Ragistry.CheckTrayIconConfig();
+            if (!ch_trayicon_setting.Checked)
+            {
+                // recommended enable this setting
+                ch_trayicon_setting.Checked = toggleTraySetting();
+            }
         }
 
-        private void popup()
-        {
-            PopupNotifier popup = new PopupNotifier();
-            popup.BodyColor = Color.Red;
-            popup.TitleColor = Color.White;
-            popup.ContentColor = Color.White;
-            popup.TitleText = "CoreTracker Notification";
-            popup.Size = new Size { Height = 80, Width = 240 };
-            popup.ContentText = "[CPU Busy]Check your cpu, why working hard!!!! :/ ";
-            popup.Popup();// show
-        }
         private void init_CPU_Watcher(bool Immediate_start = true)
         {
             if (th != null) { th.Abort(); th = null; }
@@ -253,7 +247,7 @@ namespace CoreTracker
                         else if (noticeStatus) { busyCount++; continue; }
                         else if (Convert.ToInt32(c.Usage) > 80)
                         {
-                            ti_main.ShowBalloonTip(1000, "[CoreTracker Notice]CPU Busy", "recommended to check, why CPU busy if you don't know program so hard work is happening the cryptojacking virus", ToolTipIcon.Warning);
+                            ti_main.ShowBalloonTip(3000, "[CoreTracker Notice]CPU Busy", "recommended to check, why CPU busy if you don't know program so hard work is happening the cryptojacking virus", ToolTipIcon.Warning);
                             noticeStatus = true;
 
                         }
@@ -350,10 +344,8 @@ namespace CoreTracker
         private void Form1_FormClosing(object sender, EventArgs e)
         {
             if (th != null) { th.Abort(); th = null; }
-            foreach (var t in th_list )
-            {
-                t.Dispose();
-            }
+            foreach (var t in th_list) { t.Dispose(); }
+            
             controller.RefreshTrayArea();
             controller.Dispose();
             BoardTmpereaute.Dispose();
@@ -481,6 +473,37 @@ namespace CoreTracker
             if (chk_disable_alert.Checked) { Ragistry.enable_busy_alert(); }
             else { Ragistry.disable_busy_alert(); }
         }
+
+        private void ch_trayicon_setting_Click(object sender, EventArgs e)
+        {
+            toggleTraySetting();
+            ch_trayicon_setting.Checked = Ragistry.CheckTrayIconConfig();
+        }
+
+        private bool toggleTraySetting()
+        {
+            try
+            {
+                var rs = MessageBox.Show(
+                    "Requires setting to place tray icon area on taskbar\n\nWhen set, Explorer will restart.\n\nOther unsaved programs may be affected",
+                    "Notice",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning
+                    );
+                if (rs == DialogResult.Yes)
+                { 
+                    Ragistry.ToggleTrayIconConfig();
+                    bool restarted = controller.RestartExplorer();
+                    if (!restarted) { MessageBox.Show("Explorer Restart Failed, tray later or self restart plz", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return false; }
+                }
+                return true;
+            } catch (Exception)
+            {
+                return false;
+            }
+        }
     }
     #endregion
 }
+
+

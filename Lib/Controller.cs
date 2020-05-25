@@ -162,16 +162,12 @@ namespace CoreTracker
                     }
                 };
 
-                
                 process.Start();
-                //Process.Start(Application.StartupPath + $"\\{name}.bat");
                 return true;
             } catch (Exception)
             {
                 return false;
             }
-            
-            //Process.GetCurrentProcess().Kill();
         }
 
         private bool setupRestart(string target)
@@ -357,6 +353,22 @@ namespace CoreTracker
             }
         }
         #endregion
+
+        public bool RestartExplorer()
+        {
+            var process = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    WindowStyle = ProcessWindowStyle.Hidden,
+                    FileName = Application.StartupPath + $"\\restart_explorer.bat"
+                }
+            };
+
+            try { process.Start(); process.WaitForExit(); return true;  }
+            catch (Exception e) { Console.WriteLine(e.ToString()); return true; }
+            
+        }
     }
 
     #region extenstion

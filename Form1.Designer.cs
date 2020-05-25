@@ -48,7 +48,7 @@
             this.rb_normal = new System.Windows.Forms.RadioButton();
             this.rb_fast = new System.Windows.Forms.RadioButton();
             this.ch_auto_start = new System.Windows.Forms.CheckBox();
-            this.ch_auto_bugreport = new System.Windows.Forms.CheckBox();
+            this.ch_trayicon_setting = new System.Windows.Forms.CheckBox();
             this.ch_auto_update = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
@@ -153,7 +153,7 @@
             this.groupBox2.Controls.Add(this.ch_cpu_temperature);
             this.groupBox2.Controls.Add(this.groupBox3);
             this.groupBox2.Controls.Add(this.ch_auto_start);
-            this.groupBox2.Controls.Add(this.ch_auto_bugreport);
+            this.groupBox2.Controls.Add(this.ch_trayicon_setting);
             this.groupBox2.Controls.Add(this.ch_auto_update);
             this.groupBox2.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.groupBox2.ForeColor = System.Drawing.Color.White;
@@ -278,15 +278,16 @@
             this.ch_auto_start.UseVisualStyleBackColor = true;
             this.ch_auto_start.CheckedChanged += new System.EventHandler(this.ch_auto_start_CheckedChanged);
             // 
-            // ch_auto_bugreport
+            // ch_trayicon_setting
             // 
-            this.ch_auto_bugreport.AutoSize = true;
-            this.ch_auto_bugreport.Location = new System.Drawing.Point(20, 160);
-            this.ch_auto_bugreport.Name = "ch_auto_bugreport";
-            this.ch_auto_bugreport.Size = new System.Drawing.Size(130, 16);
-            this.ch_auto_bugreport.TabIndex = 1;
-            this.ch_auto_bugreport.Text = "Auto Bug Report";
-            this.ch_auto_bugreport.UseVisualStyleBackColor = true;
+            this.ch_trayicon_setting.AutoSize = true;
+            this.ch_trayicon_setting.Location = new System.Drawing.Point(20, 160);
+            this.ch_trayicon_setting.Name = "ch_trayicon_setting";
+            this.ch_trayicon_setting.Size = new System.Drawing.Size(123, 16);
+            this.ch_trayicon_setting.TabIndex = 1;
+            this.ch_trayicon_setting.Text = "Show TrayIcon";
+            this.ch_trayicon_setting.UseVisualStyleBackColor = true;
+            this.ch_trayicon_setting.Click += new System.EventHandler(this.ch_trayicon_setting_Click);
             // 
             // ch_auto_update
             // 
@@ -465,7 +466,7 @@
         private System.Windows.Forms.RadioButton rb_normal;
         private System.Windows.Forms.RadioButton rb_fast;
         private System.Windows.Forms.CheckBox ch_auto_start;
-        private System.Windows.Forms.CheckBox ch_auto_bugreport;
+        private System.Windows.Forms.CheckBox ch_trayicon_setting;
         private System.Windows.Forms.CheckBox ch_auto_update;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.LinkLabel linkLabel1;

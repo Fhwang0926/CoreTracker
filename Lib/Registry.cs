@@ -1,5 +1,8 @@
 ﻿using Microsoft.Win32;
 using System.Windows.Forms;
+using Microsoft.Win32;
+using System;
+using System.Security.Principal;
 
 namespace CoreTracker
 {
@@ -13,6 +16,21 @@ namespace CoreTracker
         private readonly RegistryKey board_temperature_key = Registry.CurrentUser.CreateSubKey("board_temperature_key");
         private readonly RegistryKey disable_busy_alert_key = Registry.CurrentUser.CreateSubKey("disable_busy_alert_key");
         private readonly string PN = "CoreTracker"; // program name
+        private RegistryKey UserKey = Registry.Users;
+        private readonly RegistryKey trayicon_key = Registry.Users.OpenSubKey($"{WindowsIdentity.GetCurrent().User.ToString()}\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer", true);
+        //private readonly RegistryKey current_trayicon_key = Registry.CurrentUser.OpenSubKey($"Software\\Microsoft\\Windows\\CurrentVersion\\Explorer", true);
+
+        public void ToggleTrayIconConfig()
+        {
+            bool toggle = Convert.ToBoolean(trayicon_key.GetValue("EnableAutoTray"));
+            trayicon_key.SetValue("EnableAutoTray", toggle ? 0 : 1); // not
+            //current_trayicon_key.SetValue("EnableAutoTray", toggle ? 0 : 1); // not
+        }
+
+        public bool CheckTrayIconConfig()
+        {
+            return !Convert.ToBoolean(trayicon_key.GetValue("EnableAutoTray"));
+        }
 
         public bool CheckAutoRun()
         {

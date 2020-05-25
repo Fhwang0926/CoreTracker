@@ -10,6 +10,13 @@ Write-Output $version
 
 # start new tag
 $option = $args[0]
+if ($option -eq "-h") {
+  Write-Output "-r [msg]"
+  Write-Output "-m [msg]"
+  Write-Output "-b [msg]"
+  Write-Output "-h Print Help"
+  exit
+}
 $msg = $args[1]
 $msbuild = ""
 $is_upload = 1

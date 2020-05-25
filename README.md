@@ -96,13 +96,18 @@ ___
 
 ___
 
+## trayicon area setting on windows(can setting toggle on CoreTracker application)
+
+1. mouse right click on taskbar
+2. open taskbar setting
+3. Click setting is "Select the icon to display on the taskbar"
+4. Enable CoreTracker or enable all trayicon(We recommend choosing a wide monitor)
+
 ## New Features
 
-- CPU temperature Status by one trayicon(is optional)
-- Motherboard temperature Status by one trayicon(is optional)
-- RAM Status by one trayicon(is optional)
-- GPU temperature Status  by one trayicon(is optional)
-
+- Auto Bug Report
+- memory reduce
+- Add Korean language
 
 
 [CoreTarackerHelper]: <https://github.com/Fhwang0926/CoreTrackerHelper>
