@@ -6,7 +6,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Status: ing](https://img.shields.io/badge/Status-dev_ing-red.svg)](https://github.com/Fhwang0926/CoreTracker)
 
-[![Status: ing](https://raw.githubusercontent.com/Fhwang0926/CoreTracker/master/img/CoreTracker.png)](https://github.com/Fhwang0926/CoreTracker)
+<img src="https://raw.githubusercontent.com/Fhwang0926/CoreTracker/master/img/CoreTracker.png" width="200" style="display: inline-block:">
 
 ***
 We can see by graphic about the status of Logical Processor
