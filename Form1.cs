@@ -39,10 +39,11 @@ namespace CoreTracker
         private Int16 ModeSlow = 5000;
         private Int16 ModeNormarl = 3000;
         private Int16 ModeFast = 1000;
-        private string VERSION = "v0.8.18";
+        private string VERSION = "v0.8.19";
         private string GITHUB = "https://github.com/Fhwang0926/CoreTracker";
 
         private bool mouseDown;
+        private bool is_updateing = false;
         private Point lastLocation;
         private Ragistry Ragistry = new Ragistry();
         private Controller controller = new Controller();
@@ -104,7 +105,7 @@ namespace CoreTracker
 
             // display trayicon
             ch_trayicon_setting.Checked = Ragistry.CheckTrayIconConfig();
-            if (!ch_trayicon_setting.Checked)
+            if (!is_updateing && !ch_trayicon_setting.Checked)
             {
                 // recommended enable this setting
                 ch_trayicon_setting.Checked = toggleTraySetting();
@@ -164,6 +165,7 @@ namespace CoreTracker
                 }
                 else
                 {
+                    is_updateing = true;
                     DialogResult result = MessageBox.Show(rs?.msg.ToString(), $"{Process.GetCurrentProcess().ProcessName}", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
                     if (result == System.Windows.Forms.DialogResult.OK)
                     {
@@ -178,9 +180,11 @@ namespace CoreTracker
                         {
                             MessageBox.Show("failed update :/", "Update Failed : restart", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
                         }
+                        is_updateing = false;
                     }
                 }
             }
+            
         }
         private void Reset_Click(Object sender, System.EventArgs e)
         {
@@ -510,6 +514,8 @@ namespace CoreTracker
     }
     #endregion
 }
+
+
 
 
 
