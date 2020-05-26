@@ -54,7 +54,7 @@ if (!([string]::IsNullOrEmpty($option)))
     } elseif ($option -eq "-b") {
       # bug fix
       $version_array[2] = ([int]$version_array[2]) + 1
-      $msg  = "fix:bug fix: $msg"
+      $msg  = "fix:bug $msg"
     }
     $version = [string]::Join(".", $version_array)
     Write-Output "new version : $version"
@@ -79,7 +79,7 @@ if (!(Test-Path $msbuild)) {
 
 Write-Output "set build version start : $msbuild"
 Set-Location ..
-((Get-Content -path ./Form1.cs -Raw) -replace '(VERSION = )"v[0-9].[0-9].[0-9]"', ('$1'+'"'+$version+'"')) | Set-Content -Path ./Form1.cs
+((Get-Content -path ./Form1.cs -Raw) -replace '(VERSION = )"v[0-9].[0-9].[0-9]{0,}"', ('$1'+'"'+$version+'"')) | Set-Content -Path ./Form1.cs
 Write-Output "version set done"
 Write-Output ('/c "' + "$msbuild\msbuild.exe" + "'" + "$msbuild_option /p:Platform=x64")
 Start-Process -FilePath "cmd.exe" -Wait -ArgumentList ('/c "' + "$msbuild\msbuild.exe" + '" ' + "$msbuild_option /p:Platform=x64") -NoNewWindow
