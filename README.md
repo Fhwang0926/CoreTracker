@@ -28,8 +28,6 @@ _ _ _
 - How work it
 - Demo
 - Installation
-- Support
-- How bug report
 - New Features!
 
 ___
@@ -117,11 +115,11 @@ ___
 
 ___
 
-## Installation 
+## 3. Installation 
 
 1. dependency(support x86 and x64)
 
-> <= dotnet framework 3.5
+> same or higher dotnet framework 3.5
 
 2. Many core(?)  :D :D :D
 3. testing tool(if you want to) ~ is optional
@@ -138,11 +136,10 @@ ___
 <img src="https://raw.githubusercontent.com/Fhwang0926/CoreTracker/master/img/set_trayicon_3.png" width="300">
 ___
 
-## New Features
+## 4. New Features
 
 - Auto Bug Report
 - memory reduce
-- Add Korean language
 
 
 [CoreTarackerHelper]: <https://github.com/Fhwang0926/CoreTrackerHelper>
