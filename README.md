@@ -6,14 +6,19 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Status: ing](https://img.shields.io/badge/Status-dev_ing-red.svg)](https://github.com/Fhwang0926/CoreTracker)
 
+[![Status: ing](https://raw.githubusercontent.com/Fhwang0926/CoreTracker/master/img/CoreTracker.png)](https://github.com/Fhwang0926/CoreTracker)
+
 ***
 We can see by graphic about the status of Logical Processor
 
-<img src="https://raw.githubusercontent.com/Fhwang0926/CoreTracker/master/form.ico" width="75">
-<img src="https://raw.githubusercontent.com/Fhwang0926/CoreTracker/master/img/cpu.png" width="75">
-<img src="https://raw.githubusercontent.com/Fhwang0926/CoreTracker/master/img/ram.png" width="75">
-<img src="https://raw.githubusercontent.com/Fhwang0926/CoreTracker/master/img/gpu.png" width="75">
-<img src="https://raw.githubusercontent.com/Fhwang0926/CoreTracker/master/img/mainboard.png" width="75">
+<div>
+  <img src="https://raw.githubusercontent.com/Fhwang0926/CoreTracker/master/form.ico" width="75" style="display: inline-block:">
+  <img src="https://raw.githubusercontent.com/Fhwang0926/CoreTracker/master/img/cpu.png" width="75" style="display: inline-block:">
+  <img src="https://raw.githubusercontent.com/Fhwang0926/CoreTracker/master/img/ram.png" width="75" style="display: inline-block:">
+  <img src="https://raw.githubusercontent.com/Fhwang0926/CoreTracker/master/img/gpu.png" width="75" style="display: inline-block:">
+  <img src="https://raw.githubusercontent.com/Fhwang0926/CoreTracker/master/img/mainboard.png" width="75" style="display: inline-block:">
+</div>
+
 
 _ _ _
 
