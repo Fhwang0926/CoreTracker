@@ -75,7 +75,7 @@ namespace CoreTracker
 
         public void enable_auto_run()
         {
-            startup_key.SetValue(PN, Application.ExecutablePath);
+            startup_key.SetValue(PN, '"' + Application.ExecutablePath + "'");
         }
 
         public void disable_auto_run()
