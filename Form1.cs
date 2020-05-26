@@ -23,6 +23,7 @@ namespace CoreTracker
                 action();
                 timer.Stop();
                 noti.Dispose();
+                btn_tray.Enabled = true;
             };
             noti.ShowBalloonTip(2000, "[CoreTracker Notice] : Auto Start", "Soon minimize to tray icon", ToolTipIcon.Info);
             timer.Start();
@@ -88,14 +89,6 @@ namespace CoreTracker
             chk_disable_alert.Checked = Ragistry.ChecDisableBusyAlert();
 
             bool auto_run = Ragistry.CheckAutoRun();
-            if (auto_run)
-            {
-                btn_tray.Enabled = false;
-                // auto run
-                ch_auto_start.Checked = true;
-                // start new thred for hide
-                SetTimeout(toggleMe, 3000);
-            }
             init_CPU_Watcher(auto_run);
             l_version.Text = VERSION;
 
@@ -115,6 +108,16 @@ namespace CoreTracker
             {
                 // recommended enable this setting
                 ch_trayicon_setting.Checked = toggleTraySetting();
+            }
+
+            
+            if (auto_run)
+            {
+                btn_tray.Enabled = false;
+                // auto run
+                ch_auto_start.Checked = true;
+                // start new thred for hide
+                SetTimeout(toggleMe, 3000);
             }
         }
 
@@ -501,6 +504,8 @@ namespace CoreTracker
     }
     #endregion
 }
+
+
 
 
 
