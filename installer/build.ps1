@@ -120,7 +120,7 @@ if ($is_upload -eq 1) {
   if ($msg -eq "") { $msg = "fix: bug fix some code" }
   # new tag upload
   git add ../*
-  git commit -m "$msg"
+  git commit -m ".$msg"
   git push
   git tag $version
   git push origin $version

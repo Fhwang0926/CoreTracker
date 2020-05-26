@@ -84,3 +84,4 @@ v0.8.4 ~ v0.8.9
 
 ~ v0.9.0
 - Add Logger for critical error
+- auto start hidden bug fix
