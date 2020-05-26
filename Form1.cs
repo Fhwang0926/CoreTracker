@@ -39,7 +39,7 @@ namespace CoreTracker
         private Int16 ModeSlow = 5000;
         private Int16 ModeNormarl = 3000;
         private Int16 ModeFast = 1000;
-        private string VERSION = "v0.8.15";
+        private string VERSION = "v0.8.16";
         private string GITHUB = "https://github.com/Fhwang0926/CoreTracker";
 
         private bool mouseDown;
@@ -125,6 +125,12 @@ namespace CoreTracker
         {
             if (th != null) { th.Abort(); th = null; }
             th = new Thread(new ThreadStart(runner));
+            GraphicTmpereaute.Icon = setTrayIcon(0, "graphic");
+            CpuTmpereaute.Icon = setTrayIcon(0, "cpu");
+            RamUsage.Icon = setTrayIcon(0, "ram");
+            BoardTmpereaute.Icon = setTrayIcon(0, "board");
+            foreach (var item in th_list) { item.Icon = Properties.Resources._10; }
+
             if (Immediate_start) {
                 th.Start();
                 ti_main.ShowBalloonTip(1000, "[CoreTracker Notice] : Reset", "CPU Status Checker Refreshed", ToolTipIcon.Info);
@@ -504,6 +510,7 @@ namespace CoreTracker
     }
     #endregion
 }
+
 
 
 
