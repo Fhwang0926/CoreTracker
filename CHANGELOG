@@ -87,3 +87,5 @@ v0.8.4 ~ v0.8.9
 - auto start hidden bug fix
 - set start location
 - change cpu busy text
+- auto builder bug fix
+- change msgbox order
