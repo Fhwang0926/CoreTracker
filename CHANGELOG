@@ -83,5 +83,7 @@ v0.8.4 ~ v0.8.9
 - fix: add git push
 
 ~ v0.9.0
-- Add Logger for critical error
+- Add Logger for critical error(was done)
 - auto start hidden bug fix
+- set start location
+- change cpu busy text

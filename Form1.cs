@@ -246,7 +246,7 @@ namespace CoreTracker
                         else if (noticeStatus) { busyCount++; continue; }
                         else if (Convert.ToInt32(c.Usage) > 80)
                         {
-                            ti_main.ShowBalloonTip(3000, "[CoreTracker Notice]CPU Busy", "recommended to check, why CPU busy if you don't know program so hard work is happening the cryptojacking virus", ToolTipIcon.Warning);
+                            ti_main.ShowBalloonTip(5000, "[CoreTracker Notice]CPU Busy", "CPU so busy, the reason is your action? if is not, scan cryptojacking malware on PC", ToolTipIcon.Warning);
                             noticeStatus = true;
 
                         }
@@ -504,6 +504,8 @@ namespace CoreTracker
     }
     #endregion
 }
+
+
 
 
 
