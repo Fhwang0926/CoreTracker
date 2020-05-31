@@ -114,10 +114,26 @@ namespace CoreTracker
             }
             return github_result;
         }
-
-        public Int32 StringToVersion(string v)
+        // return true when is new
+        public bool checkVersion(string appVersion, string recentVersion)
         {
-            return Convert.ToInt32(v.Replace("v", string.Empty).Replace(".", string.Empty));
+            List<string> av = appVersion.Split('.').ToList<string>();
+            List<string> rv = recentVersion.Split('.').ToList<string>();
+
+            // depth 1
+            if (Convert.ToInt16(av[0]) < Convert.ToInt16(rv[0])) { return true; }
+            if (Convert.ToInt16(av[0]) == Convert.ToInt16(rv[0])) {
+                // depth 2
+                if (Convert.ToInt16(av[1]) < Convert.ToInt16(rv[1])) { return true; }
+                if (Convert.ToInt16(av[1]) == Convert.ToInt16(rv[1]))
+                {
+                    // depth 3
+                    if (Convert.ToInt16(av[2]) < Convert.ToInt16(rv[2])) { return true; }
+                }
+            }
+
+            return false;
+
         }
 
         public static async Task<bool> download(string url, string target)
@@ -203,12 +219,15 @@ namespace CoreTracker
 
         }
 
-        public async Task<updateFormat> CompareVersion(Int32 v)
+        public async Task<updateFormat> CompareVersion(string v)
         {
             github_result rs = await CheckVersion();
             if (rs.is_error) { return new updateFormat { msg = "version check failed, try later or check internet status", is_error = true }; }
 
-            if (StringToVersion(rs.tag_name) > v)
+            string recentVersion = rs.tag_name.Replace("v", string.Empty);
+            string appVersion = v.Replace("v", string.Empty);
+
+            if (checkVersion(appVersion, recentVersion))
             {
                 return new updateFormat { target = rs.target, msg = "Can you update the latest release version?" };
             }

@@ -28,7 +28,7 @@ namespace CoreTracker
         {
             try
             {
-                if (!Program.IsAdministrator())
+                if (!Program.IsAdministrator() && !args.Contains("-debug"))
                 {
                     // Restart and run as admin
                     var exeName = Process.GetCurrentProcess().MainModule.FileName;
@@ -43,7 +43,7 @@ namespace CoreTracker
                 System.Threading.Mutex mutex = new System.Threading.Mutex(false, System.Diagnostics.Process.GetCurrentProcess().ProcessName);
                 try
                 {
-                    if (mutex.WaitOne(0, false) && !args.Contains("-schedule"))
+                    if (mutex.WaitOne(0, false))
                     {
                         // Run the application
                         Application.EnableVisualStyles();

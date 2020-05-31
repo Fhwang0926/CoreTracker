@@ -24,7 +24,7 @@ namespace CoreTracker
         private Int16 ModeSlow = 5000;
         private Int16 ModeNormarl = 3000;
         private Int16 ModeFast = 1000;
-        private string VERSION = "v0.9.1";
+        private string VERSION = "v0.9.2";
         private string GITHUB = "https://github.com/Fhwang0926/CoreTracker";
 
         private bool mouseDown;
@@ -97,7 +97,6 @@ namespace CoreTracker
             bool auto_update = Ragistry.CheckAutoUpdate();
             if (auto_update) { ch_auto_update.Checked = true; self_update(); }
 
-
             // option area
             ManagementObjectCollection searcher = new ManagementObjectSearcher("SELECT * FROM Win32_DisplayConfiguration").Get();
             if (searcher.Count > 0) { ch_graphic_temperature.Enabled = true; }
@@ -154,8 +153,7 @@ namespace CoreTracker
         private async void self_update(bool updateAnswer = false)
         {
             // auto update latest
-            Int32 v = controller.StringToVersion(VERSION);
-            updateFormat rs = await controller.CompareVersion(v);
+            updateFormat rs = await controller.CompareVersion(VERSION.Replace("v", string.Empty));
             if (rs.is_error)
             {
                 MessageBox.Show(rs?.msg.ToString(), "Update failed!! compare version", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -516,6 +514,7 @@ namespace CoreTracker
     }
     #endregion
 }
+
 
 
 
