@@ -13,6 +13,25 @@ namespace CoreTracker
     #region application
     public partial class Form1 : Form
     {
+        // Constant Definition
+        private List<NotifyIcon> th_list = new List<NotifyIcon>();
+        private NotifyIcon CpuTmpereaute = new NotifyIcon() { Visible = false, Icon = Properties.Resources._10_c, BalloonTipIcon = ToolTipIcon.Info, BalloonTipTitle = "Info From CPU Temperaute" };
+        private NotifyIcon RamUsage = new NotifyIcon() { Visible = false, Icon = Properties.Resources._10_r, BalloonTipIcon = ToolTipIcon.Info, BalloonTipTitle = "Info From Memory Temperaute" };
+        private NotifyIcon BoardTmpereaute = new NotifyIcon() { Visible = false, Icon = Properties.Resources._10_b, BalloonTipIcon = ToolTipIcon.Info, BalloonTipTitle = "Info From Marderboard Temperaute" };
+        private NotifyIcon GraphicTmpereaute = new NotifyIcon() { Visible = false, Icon = Properties.Resources._10_g, BalloonTipIcon = ToolTipIcon.Info, BalloonTipTitle = "Info From GPU Temperaute" };
+        private bool run = false;
+        private Thread th = null;
+        private Int16 ModeSlow = 5000;
+        private Int16 ModeNormarl = 3000;
+        private Int16 ModeFast = 1000;
+        private string VERSION = "v0.8.26";
+        private string GITHUB = "https://github.com/Fhwang0926/CoreTracker";
+
+        private bool mouseDown;
+        private bool is_updateing = false;
+        private Point lastLocation;
+        private Ragistry Ragistry = new Ragistry();
+        private Controller controller = new Controller();
         public void SetTimeout(Action action, int timeout)
         {
             var timer = new System.Windows.Forms.Timer();
@@ -28,25 +47,6 @@ namespace CoreTracker
             noti.ShowBalloonTip(2000, "[CoreTracker Notice] : Auto Start", "Soon minimize to tray icon", ToolTipIcon.Info);
             timer.Start();
         }
-        // Constant Definition
-        private List<NotifyIcon> th_list = new List<NotifyIcon>();
-        private NotifyIcon CpuTmpereaute = new NotifyIcon() { Visible = false, Icon = Properties.Resources._10_c, BalloonTipIcon = ToolTipIcon.Info, BalloonTipTitle = "Info From CPU Temperaute" };
-        private NotifyIcon RamUsage = new NotifyIcon() { Visible = false, Icon = Properties.Resources._10_r, BalloonTipIcon = ToolTipIcon.Info, BalloonTipTitle = "Info From Memory Temperaute" };
-        private NotifyIcon BoardTmpereaute = new NotifyIcon() { Visible = false, Icon = Properties.Resources._10_b, BalloonTipIcon = ToolTipIcon.Info, BalloonTipTitle = "Info From Marderboard Temperaute" };
-        private NotifyIcon GraphicTmpereaute = new NotifyIcon() { Visible = false, Icon = Properties.Resources._10_g, BalloonTipIcon = ToolTipIcon.Info, BalloonTipTitle = "Info From GPU Temperaute" };
-        private bool run = false;
-        private Thread th = null;
-        private Int16 ModeSlow = 5000;
-        private Int16 ModeNormarl = 3000;
-        private Int16 ModeFast = 1000;
-        private string VERSION = "v0.8.25";
-        private string GITHUB = "https://github.com/Fhwang0926/CoreTracker";
-
-        private bool mouseDown;
-        private bool is_updateing = false;
-        private Point lastLocation;
-        private Ragistry Ragistry = new Ragistry();
-        private Controller controller = new Controller();
 
         public Form1()
         {
@@ -99,29 +99,29 @@ namespace CoreTracker
 
 
             // option area
-            /*ManagementObjectCollection searcher = new ManagementObjectSearcher("SELECT * FROM Win32_DisplayConfiguration").Get();
-            if(searcher.Count > 0) { ch_graphic_temperature.Enabled = true; }
-            searcher.Dispose();*/
+            ManagementObjectCollection searcher = new ManagementObjectSearcher("SELECT * FROM Win32_DisplayConfiguration").Get();
+            if (searcher.Count > 0) { ch_graphic_temperature.Enabled = true; }
+            searcher.Dispose();
 
             // display trayicon
-            /*ch_trayicon_setting.Checked = Ragistry.CheckTrayIconConfig();
+            ch_trayicon_setting.Checked = Ragistry.CheckTrayIconConfig();
             if (!is_updateing && !ch_trayicon_setting.Checked)
             {
                 // recommended enable this setting
                 ch_trayicon_setting.Checked = toggleTraySetting();
-            }*/
+            }
 
-            
-            /*if (auto_run)
+
+            if (auto_run)
             {
                 btn_tray.Enabled = false;
                 // auto run
                 ch_auto_start.Checked = true;
                 // start new thred for hide
                 SetTimeout(toggleMe, 3000);
-            }*/
+            }
 
-            Activate();
+            //Activate();
         }
 
         private void init_CPU_Watcher(bool Immediate_start = true)
@@ -516,6 +516,7 @@ namespace CoreTracker
     }
     #endregion
 }
+
 
 
 
