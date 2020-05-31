@@ -9,6 +9,11 @@ namespace CoreTracker
 {
     static class Program
     {
+        // for registration startup
+        // if i change on setting, can't excute on starup
+        //<requestedExecutionLevel level = "asInvoker" uiAccess="false" />
+        //<requestedExecutionLevel level = "requireAdministrator" uiAccess="false" />
+        //<requestedExecutionLevel level = "highestAvailable" uiAccess="false" />
         public static bool IsAdministrator()
         {
             WindowsIdentity identity = WindowsIdentity.GetCurrent();
@@ -34,7 +39,7 @@ namespace CoreTracker
                     Application.Exit();
                     return;
                 }
-                // real start
+                // real start main function
                 System.Threading.Mutex mutex = new System.Threading.Mutex(false, System.Diagnostics.Process.GetCurrentProcess().ProcessName);
                 try
                 {
