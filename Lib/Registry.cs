@@ -8,6 +8,7 @@ namespace CoreTracker
     class Ragistry
     {
         private readonly RegistryKey startup_key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+        private readonly RegistryKey startupOnSystem_key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
         private readonly RegistryKey auto_update_key = Registry.CurrentUser.CreateSubKey("auto_update_key");
         private readonly RegistryKey cpu_temperature_key = Registry.CurrentUser.CreateSubKey("cpu_temperature_key");
         private readonly RegistryKey ram_temperature_key = Registry.CurrentUser.CreateSubKey("ram_temperature_key");
@@ -23,7 +24,6 @@ namespace CoreTracker
         {
             bool toggle = Convert.ToBoolean(trayicon_key.GetValue("EnableAutoTray"));
             trayicon_key.SetValue("EnableAutoTray", toggle ? 0 : 1); // not
-            //current_trayicon_key.SetValue("EnableAutoTray", toggle ? 0 : 1); // not
         }
 
         public bool CheckTrayIconConfig()
@@ -75,12 +75,15 @@ namespace CoreTracker
 
         public void enable_auto_run()
         {
-            startup_key.SetValue(PN, '"' + Application.ExecutablePath + "'");
+            startup_key.SetValue(PN, Application.ExecutablePath.ToString());
+            startupOnSystem_key.SetValue(PN, Application.ExecutablePath.ToString());
+
         }
 
         public void disable_auto_run()
         {
             startup_key.DeleteValue(PN, false);
+            startupOnSystem_key.DeleteValue(PN, false);
         }
 
         public void enable_auto_update()
