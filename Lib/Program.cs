@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace CoreTracker
@@ -10,14 +11,14 @@ namespace CoreTracker
         /// 해당 애플리케이션의 주 진입점입니다.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
             try
             {
                 System.Threading.Mutex mutex = new System.Threading.Mutex(false, System.Diagnostics.Process.GetCurrentProcess().ProcessName);
                 try
                 {
-                    if (mutex.WaitOne(0, false))
+                    if (mutex.WaitOne(0, false) && !args.Contains("-schedule"))
                     {
                         // Run the application
                         Application.EnableVisualStyles();
