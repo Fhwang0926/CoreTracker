@@ -18,6 +18,7 @@ namespace CoreTracker
         private readonly string PN = "CoreTracker"; // program name
         private RegistryKey UserKey = Registry.Users;
         private readonly RegistryKey trayicon_key = Registry.Users.OpenSubKey($"{WindowsIdentity.GetCurrent().User.ToString()}\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer", true);
+        private readonly RegistryKey user_run_key = Registry.Users.OpenSubKey($"{WindowsIdentity.GetCurrent().User.ToString()}\\Software\\Microsoft\\Windows\\CurrentVersion\\Run", true);
         //private readonly RegistryKey current_trayicon_key = Registry.CurrentUser.OpenSubKey($"Software\\Microsoft\\Windows\\CurrentVersion\\Explorer", true);
 
         public void ToggleTrayIconConfig()
@@ -77,13 +78,14 @@ namespace CoreTracker
         {
             startup_key.SetValue(PN, Application.ExecutablePath.ToString());
             startupOnSystem_key.SetValue(PN, Application.ExecutablePath.ToString());
-
+            user_run_key.SetValue(PN, Application.ExecutablePath.ToString());
         }
 
         public void disable_auto_run()
         {
             startup_key.DeleteValue(PN, false);
             startupOnSystem_key.DeleteValue(PN, false);
+            user_run_key.DeleteValue(PN, false);
         }
 
         public void enable_auto_update()
