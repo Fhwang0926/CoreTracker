@@ -1,11 +1,13 @@
 echo off
 cls
 echo start install script
-echo off
+
+If "%PROCESSOR_ARCHITEW6432%" == "AMD64" (schtasks /create /tn CoreTracker /tr "C:\Program Files (x86)\CoreTracker\CoreTracker.exe" /sc onstart /sd 03/15/2001)
+else ( schtasks /create /tn CoreTracker /tr "C:\Program Files\CoreTracker\CoreTracker.exe" /sc onstart /sd 03/15/2001 )
 SET location=%~dp0
 echo start install script
 echo location : %location:~0,-1%
-ping 127.0.0.1 -n 1 > NULL
+ping 127.0.0.1 -n 1 > nul
 del NULL
 echo copy start
 If "%PROCESSOR_ARCHITEW6432%" == "AMD64" (copy CoreTracker.x64.exe CoreTracker.exe) else ( copy CoreTracker.x32.exe CoreTracker.exe )
