@@ -66,8 +66,9 @@ namespace CoreTracker
                 
             } catch(Exception e)
             {
+
                 string[] lines = { e.Message.ToString(), e.StackTrace.ToString() };
-                using (var outputFile = new StreamWriter(Path.Combine(@"C:\Temp\", $"{System.Diagnostics.Process.GetCurrentProcess().ProcessName}.log")))
+                using (var outputFile = new StreamWriter(Path.Combine(@"C:\Temp\", $"{System.Diagnostics.Process.GetCurrentProcess().ProcessName}.log"), true))
                 {
                     foreach (string line in lines)
                         outputFile.WriteLine(line);
@@ -75,7 +76,6 @@ namespace CoreTracker
                 Application.ExitThread();
                 Application.Exit();
             }
-            
         }
     }
 }

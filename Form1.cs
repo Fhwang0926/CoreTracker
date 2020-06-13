@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Management;
 using System.Threading;
+using System.Web.Query.Dynamic;
 using System.Windows.Forms;
 
 namespace CoreTracker
@@ -32,7 +33,7 @@ namespace CoreTracker
         private Point lastLocation;
         private Ragistry Ragistry = new Ragistry();
         private Controller controller = new Controller();
-        public void SetTimeout(Action action, int timeout)
+        public void SetTimeout(System.Action action, int timeout)
         {
             var timer = new System.Windows.Forms.Timer();
             var noti = new NotifyIcon() { Visible = true, Icon = Properties.Resources.form };
@@ -120,7 +121,7 @@ namespace CoreTracker
                 SetTimeout(toggleMe, 3000);
             }
 
-            //Activate();
+            Activate();
         }
 
         private void init_CPU_Watcher(bool Immediate_start = true)
@@ -212,66 +213,77 @@ namespace CoreTracker
         private void runner()
         {
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("select * from Win32_PerfFormattedData_PerfOS_Processor");
-
-            pic_status.Image = Properties.Resources.good;
-            bool noticeStatus = false;
-            Int16 busyCount = 0;
-
-            // init
-            controller.hardwareMoniterInit(); 
-
-            while (true)
+            try
             {
-                // refresh temperaute
-                if (ch_board_temperature.Checked || ch_cpu_temperature.Checked || ch_graphic_temperature.Checked || ch_ram_temperature.Checked ) {
-                    controller.hardwareInfo();
-                }
 
-                if (ch_graphic_temperature.Checked) { 
-                    controller.computer.GPUEnabled = ch_graphic_temperature.Checked; GraphicTmpereaute.Icon = setTrayIcon(controller.sb.gpu_temperature, "graphic");
-                    GraphicTmpereaute.BalloonTipText = $"GPU Temperature : {controller.sb.gpu_temperature}";
-                }
-                if (ch_cpu_temperature.Checked) { 
-                    controller.computer.CPUEnabled = ch_cpu_temperature.Checked; CpuTmpereaute.Icon = setTrayIcon(controller.sb.cpu_temperature, "cpu");
-                    CpuTmpereaute.BalloonTipText = $"CPU Temperature : {controller.sb.cpu_temperature}";
-                }
-                if (ch_ram_temperature.Checked) { 
-                    controller.computer.RAMEnabled = ch_ram_temperature.Checked; RamUsage.Icon = setTrayIcon(controller.sb.ram_usage, "ram");
-                    RamUsage.BalloonTipText = $"RAM Usage status : {controller.sb.ram_usage}";
-                }
-                if (ch_board_temperature.Checked) { 
-                    controller.computer.MainboardEnabled = ch_board_temperature.Checked; BoardTmpereaute.Icon = setTrayIcon(controller.sb.board_temperature, "board");
-                    BoardTmpereaute.BalloonTipText = $"Marderboard Temperature : {controller.sb.board_temperature}";
-                }
+                pic_status.Image = Properties.Resources.good;
+                bool noticeStatus = false;
+                Int16 busyCount = 0;
 
-                var cpu_info = searcher.Get().Cast<ManagementObject>().Select(mo => new { Name = mo["Name"], Usage = Convert.ToInt32(mo["PercentProcessorTime"]) }).ToList();
-                foreach (var c in cpu_info)
+                // init
+                controller.hardwareMoniterInit();
+
+                while (true)
                 {
-
-                    if (c.Name.ToString() == "_Total")
+                    // refresh temperaute
+                    if (ch_board_temperature.Checked || ch_cpu_temperature.Checked || ch_graphic_temperature.Checked || ch_ram_temperature.Checked)
                     {
-                        if (chk_disable_alert.Checked) { continue; }
-                        // if show windows system notification more then 80% usage
-                        if (busyCount >= 10) { noticeStatus = false; busyCount = 0; continue; }
-                        else if (noticeStatus) { busyCount++; continue; }
-                        else if (Convert.ToInt32(c.Usage) > 80)
+                        controller.hardwareInfo();
+                    }
+
+                    if (ch_graphic_temperature.Checked)
+                    {
+                        controller.computer.GPUEnabled = ch_graphic_temperature.Checked; GraphicTmpereaute.Icon = setTrayIcon(controller.sb.gpu_temperature, "graphic");
+                        GraphicTmpereaute.BalloonTipText = $"GPU Temperature : {controller.sb.gpu_temperature}";
+                    }
+                    if (ch_cpu_temperature.Checked)
+                    {
+                        controller.computer.CPUEnabled = ch_cpu_temperature.Checked; CpuTmpereaute.Icon = setTrayIcon(controller.sb.cpu_temperature, "cpu");
+                        CpuTmpereaute.BalloonTipText = $"CPU Temperature : {controller.sb.cpu_temperature}";
+                    }
+                    if (ch_ram_temperature.Checked)
+                    {
+                        controller.computer.RAMEnabled = ch_ram_temperature.Checked; RamUsage.Icon = setTrayIcon(controller.sb.ram_usage, "ram");
+                        RamUsage.BalloonTipText = $"RAM Usage status : {controller.sb.ram_usage}";
+                    }
+                    if (ch_board_temperature.Checked)
+                    {
+                        controller.computer.MainboardEnabled = ch_board_temperature.Checked; BoardTmpereaute.Icon = setTrayIcon(controller.sb.board_temperature, "board");
+                        BoardTmpereaute.BalloonTipText = $"Marderboard Temperature : {controller.sb.board_temperature}";
+                    }
+
+                    var cpu_info = searcher.Get().Cast<ManagementObject>().Select(mo => new { Name = mo["Name"], Usage = Convert.ToInt32(mo["PercentProcessorTime"]) }).ToList();
+                    foreach (var c in cpu_info)
+                    {
+
+                        if (c.Name.ToString() == "_Total")
                         {
-                            ti_main.ShowBalloonTip(5000, "[CoreTracker Notice]CPU Busy", "CPU so busy, the reason is your action? if is not, scan cryptojacking malware on PC", ToolTipIcon.Warning);
-                            noticeStatus = true;
+                            if (chk_disable_alert.Checked) { continue; }
+                            // if show windows system notification more then 80% usage
+                            if (busyCount >= 10) { noticeStatus = false; busyCount = 0; continue; }
+                            else if (noticeStatus) { busyCount++; continue; }
+                            else if (Convert.ToInt32(c.Usage) > 80)
+                            {
+                                ti_main.ShowBalloonTip(5000, "[CoreTracker Notice]CPU Busy", "CPU so busy, the reason is your action? if is not, scan cryptojacking malware on PC", ToolTipIcon.Warning);
+                                noticeStatus = true;
 
+                            }
+                            continue;
                         }
-                        continue;
+                        else
+                        {
+                            th_list[Convert.ToInt32(c.Name)].Icon = setTrayIcon(c.Usage);
+                        }
                     }
-                    else
-                    {
-                        th_list[Convert.ToInt32(c.Name)].Icon = setTrayIcon(c.Usage);
-                    }
+                    if (rb_normal.Checked) { Thread.Sleep(ModeNormarl); }
+                    else if (rb_slow.Checked) { Thread.Sleep(ModeSlow); }
+                    else if (rb_fast.Checked) { Thread.Sleep(ModeFast); }
                 }
-                if (rb_normal.Checked) { Thread.Sleep(ModeNormarl); }
-                else if (rb_slow.Checked) { Thread.Sleep(ModeSlow); }
-                else if (rb_fast.Checked) { Thread.Sleep(ModeFast); }
-                
+            } catch (Exception e) {
+                Console.WriteLine($"runner Error : {e.Message}\n\n{e.StackTrace}");
+                searcher.Dispose();
             }
+            
         }
 
         private void toggleMe()
@@ -296,7 +308,7 @@ namespace CoreTracker
             toggleMe();
         }
 
-        private Icon setTrayIcon(int value, string type = "")
+        private static Icon setTrayIcon(int value, string type = "")
         {
             // setTrayIcon find type nogada
             switch (type)
@@ -334,7 +346,7 @@ namespace CoreTracker
             }
         }
 
-        private Icon setTrayIcon(int value)
+        private static Icon setTrayIcon(int value)
         {
             if (0 <= value && value < 20) { return Properties.Resources._10; }
             else if (20 <= value && value < 40) { return Properties.Resources._20; }
@@ -381,8 +393,29 @@ namespace CoreTracker
 
         private void ch_auto_start_CheckedChanged(object sender, EventArgs e)
         {
-            if(ch_auto_start.Checked) { Ragistry.enable_auto_run(); }
-            else { Ragistry.disable_auto_run(); }
+            string me = Process.GetCurrentProcess().MainModule.FileName.Split('\\').LastOrDefault().Replace(".exe", "");
+            if (ch_auto_start.Checked)
+            {
+                string cmd = $"schtasks /Create /TR \"{Application.ExecutablePath}\" /TN CoreTracker /SC ONLOGON /IT /RL HIGHEST /F";
+                if (!controller.exeCmd(cmd))
+                {
+                    MessageBox.Show("Add Auto start Scheduler Failed");
+                    return;
+                }
+                Ragistry.enable_auto_run();
+
+            }
+            else
+            {
+
+                string cmd = $"schtasks /Delete /TN \"{"CoreTracker"}\" /F";
+                if (!controller.exeCmd(cmd))
+                {
+                    MessageBox.Show("Delete Auto start Scheduler Failed");
+                    return;
+                }
+                Ragistry.disable_auto_run();
+            }
         }
 
         private void l_close_Click(object sender, EventArgs e)
@@ -444,6 +477,7 @@ namespace CoreTracker
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
+            if (e == null) { return; }
             if(ti_main.Visible) { return; }
             else if (e.KeyData == Keys.Escape) { toggleMe(); }
             //base.OnKeyUp(e);
@@ -514,6 +548,8 @@ namespace CoreTracker
     }
     #endregion
 }
+
+
 
 
 

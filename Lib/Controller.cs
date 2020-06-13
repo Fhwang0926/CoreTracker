@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -82,7 +83,6 @@ namespace CoreTracker
         #region "self controller - update, restart"
         string name = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
         
-
         public static async Task<github_result> CheckVersion()
         {
             
@@ -387,6 +387,25 @@ namespace CoreTracker
             try { process.Start(); process.WaitForExit(); return true;  }
             catch (Exception e) { Console.WriteLine(e.ToString()); return true; }
             
+        }
+
+        public bool exeCmd(string cmd)
+        {
+            try
+            {
+                Process p = new Process();
+                p.StartInfo.FileName = "cmd.exe";
+                p.StartInfo.Arguments = @"/C " + cmd;
+                p.StartInfo.RedirectStandardOutput = false;
+                p.StartInfo.UseShellExecute = false;
+                p.Start();
+                p.WaitForExit();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 
