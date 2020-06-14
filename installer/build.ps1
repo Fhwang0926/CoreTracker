@@ -132,5 +132,6 @@ makensis.exe ".\build.$version.nsi"
 Write-Output "build installer from nsi file"
 Set-Location ../deploy/
 Start-Process "CoreTracker_Installer_x86_x64_$version.exe"
+Copy-Item "CoreTracker_Installer_x86_x64_$version.exe" "../binWin/CoreTracker_Installer_x86_x64_$version.exe"
 Set-Location ../installer/
 # run
