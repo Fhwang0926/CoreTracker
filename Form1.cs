@@ -25,7 +25,7 @@ namespace CoreTracker
         private Int16 ModeSlow = 5000;
         private Int16 ModeNormarl = 3000;
         private Int16 ModeFast = 1000;
-        private string VERSION = "v0.9.5";
+        private string VERSION = "v0.9.6";
         private string GITHUB = "https://github.com/Fhwang0926/CoreTracker";
 
         private bool mouseDown;
@@ -393,6 +393,7 @@ namespace CoreTracker
 
         private void ch_auto_start_CheckedChanged(object sender, EventArgs e)
         {
+            ch_auto_start.Enabled = false;
             string me = Process.GetCurrentProcess().MainModule.FileName.Split('\\').LastOrDefault().Replace(".exe", "");
             if (ch_auto_start.Checked)
             {
@@ -416,6 +417,7 @@ namespace CoreTracker
                 }
                 Ragistry.disable_auto_run();
             }
+            ch_auto_start.Enabled = true;
         }
 
         private void l_close_Click(object sender, EventArgs e)
@@ -471,8 +473,10 @@ namespace CoreTracker
 
         private void ch_auto_update_CheckedChanged(object sender, EventArgs e)
         {
+            ch_auto_update.Enabled = false;
             if (ch_auto_update.Checked) { Ragistry.enable_auto_update(); }
             else { Ragistry.disable_auto_update(); }
+            ch_auto_update.Enabled = true;
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
@@ -485,36 +489,46 @@ namespace CoreTracker
 
         private void ch_cpu_temperature_CheckedChanged(object sender, EventArgs e)
         {
+            ch_cpu_temperature.Enabled = false;
             if (ch_cpu_temperature.Checked) { Ragistry.enable_cpu_temperature(); }
             else { Ragistry.disable_cpu_temperature(); }
             CpuTmpereaute.Visible = ch_cpu_temperature.Checked;
+            ch_cpu_temperature.Enabled = true;
         }
 
         private void ch_ram_temperature_CheckedChanged(object sender, EventArgs e)
         {
+            ch_ram_temperature.Enabled = false;
             if (ch_ram_temperature.Checked) { Ragistry.enable_ram_temperature(); }
             else { Ragistry.disable_ram_temperature(); }
             RamUsage.Visible = ch_ram_temperature.Checked;
+            ch_ram_temperature.Enabled = true;
         }
 
         private void ch_board_temperature_CheckedChanged(object sender, EventArgs e)
         {
+            ch_board_temperature.Enabled = false;
             if (ch_board_temperature.Checked) { Ragistry.enable_board_temperature(); }
             else { Ragistry.disable_board_temperature(); }
             BoardTmpereaute.Visible = ch_board_temperature.Checked;
+            ch_board_temperature.Enabled = true;
         }
 
         private void ch_graphic_temperature_CheckedChanged(object sender, EventArgs e)
         {
+            ch_graphic_temperature.Enabled = false;
             if (ch_graphic_temperature.Checked) { Ragistry.enable_graphic_temperature(); }
             else { Ragistry.disable_graphic_temperature(); }
             GraphicTmpereaute.Visible = ch_graphic_temperature.Checked;
+            ch_graphic_temperature.Enabled = true; ;
         }
 
         private void chk_disable_alert_CheckedChanged(object sender, EventArgs e)
         {
+            chk_disable_alert.Enabled = false;
             if (chk_disable_alert.Checked) { Ragistry.enable_busy_alert(); }
             else { Ragistry.disable_busy_alert(); }
+            chk_disable_alert.Enabled = true;
         }
 
         private void ch_trayicon_setting_Click(object sender, EventArgs e)
@@ -548,6 +562,8 @@ namespace CoreTracker
     }
     #endregion
 }
+
+
 
 
 
