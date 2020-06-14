@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -190,7 +189,7 @@ namespace CoreTracker
         {
             try
             {
-                string[] lines = { "ping 127.0.0.1 -n 2 > NULL", "cd %~dp0", "echo off", "cls", "echo start update : " + name, $"taskkill /IM {name}.exe /F", "timeout 2 > NUL",  $"START /B {target}", "del %0" };
+                string[] lines = { "ping 127.0.0.1 -n 2 > nul", "cd %~dp0", "echo off", "cls", "echo start update : " + name, $"taskkill /IM {name}.exe /F", "timeout 2 > NUL",  $"START /B {target}", "del %0" };
                 using (var outputFile = new StreamWriter(Path.Combine(Application.StartupPath, $"{name}.bat"))) { foreach (string line in lines) { outputFile.WriteLine(line); } }
             }
 

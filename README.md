@@ -105,6 +105,9 @@ Function Explain Start
 
 [CoreTarackerHelper] : excute tray icon refresh when uninstall using
 
+[OpenHardwareMonitor] : Reference dll
+
+
 Function Explain End
 ___
 
@@ -141,11 +144,8 @@ ___
 - Auto Bug Report
 - memory reduce
 
-### Refer
-https://m.blog.naver.com/PostView.nhn?blogId=lemonglase&logNo=220835293039&proxyReferer=https:%2F%2Fwww.google.com%2F&view=img_2
-
-
 [CoreTarackerHelper]: <https://github.com/Fhwang0926/CoreTrackerHelper>
+[OpenHardwareMonitor]: <https://github.com/openhardwaremonitor/openhardwaremonitor>
 
 
 
