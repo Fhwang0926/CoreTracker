@@ -115,6 +115,14 @@ Copy-Item ..\bin\Release\x64\OpenHardwareMonitorLib.dll ..\bin\Release\x64\OpenH
 Copy-Item ..\bin\Release\x64\CoreTracker.exe ..\bin\Release\x64\CoreTracker.x64.exe -Force
 Write-Output "build rename to install files done"
 
+# start installer build
+makensis.exe ".\build.$version.nsi"
+Write-Output "build installer from nsi file"
+Set-Location ../deploy/
+Remove-Item "../binWin/*"
+Copy-Item "CoreTracker_Installer_x86_x64_$version.exe" "../binWin/CoreTracker_Installer_x86_x64_$version.exe"
+
+
 # last add tag & push
 if ($is_upload -eq 1) {
   if ($msg -eq "") { $msg = "fix: bug fix some code" }
@@ -127,12 +135,6 @@ if ($is_upload -eq 1) {
   Write-Output "git upload done"  
 }
 
-# start installer build
-makensis.exe ".\build.$version.nsi"
-Write-Output "build installer from nsi file"
-Set-Location ../deploy/
-Start-Process "CoreTracker_Installer_x86_x64_$version.exe"
-Remove-Item "../binWin/*"
-Copy-Item "CoreTracker_Installer_x86_x64_$version.exe" "../binWin/CoreTracker_Installer_x86_x64_$version.exe"
-Set-Location ../installer/
 # run
+Start-Process "CoreTracker_Installer_x86_x64_$version.exe"
+Set-Location ../installer/
