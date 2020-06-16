@@ -29,14 +29,13 @@ jobs:
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v1.0.0
 
-    - name: MSBuild_x32
-      run:
+    - name: MSBuild_x32_x64
+      run: |
         msbuild CoreTracker.csproj /t:Build /p:Configuration=Release /p:Platform=x86
-    - name: MSBuild_x64
-      run:
         msbuild CoreTracker.csproj /t:Build /p:Configuration=Release /p:Platform=x64
 
   build:
+    needs: compile
     runs-on: windows-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -50,7 +49,7 @@ jobs:
       uses: microsoft/setup-msbuild@v1.0.0
 
     - name: copy
-      run:
+      run: |
         echo build rename to install files start
         copy bin\Release\x32\Newtonsoft.Json.dll bin\Release\x32\Newtonsoft.Json.x32.dll
         copy bin\Release\x32\OpenHardwareMonitorLib.dll bin\Release\x32\OpenHardwareMonitorLib.x32.dll
@@ -61,7 +60,7 @@ jobs:
         echo build rename to install files done
 
     - name: build_installer
-      run:
+      run: |
         mkdir deploy
         cd installer
         copy ./build.nsi ../install.nsi
