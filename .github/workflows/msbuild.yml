@@ -54,6 +54,7 @@ jobs:
     - uses: actions/download-artifact@v2
       with:
         path: ./
+    - name: show downloaded
       run: ls
     
     - name: copy
@@ -69,6 +70,7 @@ jobs:
       run: |
         mkdir deploy
         cd installer
+        ((Get-Content -path sample.nsi -Raw) -replace '%VERSION%','${{ github.ref }}' | Set-Content -Path 'build.nsi')
         copy ./build.nsi ../install.nsi
         cd ..
 
