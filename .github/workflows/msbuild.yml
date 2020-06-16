@@ -48,31 +48,32 @@ jobs:
 
     - name: Load msbuild
       uses: microsoft/setup-msbuild@v1.0.0
-    
-    - name: Create installer
-      uses: joncloud/makensis-action@v2.0
-      with:
-        arguments: "/V3"
 
     - name: copy
       run:
         echo build rename to install files start
-        cp bin\Release\x32\Newtonsoft.Json.dll bin\Release\x32\Newtonsoft.Json.x32.dll
-        cp bin\Release\x32\OpenHardwareMonitorLib.dll bin\Release\x32\OpenHardwareMonitorLib.x32.dll
-        cp bin\Release\x32\CoreTracker.exe bin\Release\x32\CoreTracker.x32.exe
-        cp bin\Release\x64\Newtonsoft.Json.dll bin\Release\x64\Newtonsoft.Json.x64.dll
-        cp bin\Release\x64\OpenHardwareMonitorLib.dll bin\Release\x64\OpenHardwareMonitorLib.x64.dll
-        cp bin\Release\x64\CoreTracker.exe bin\Release\x64\CoreTracker.x64.exe
+        copy bin\Release\x32\Newtonsoft.Json.dll bin\Release\x32\Newtonsoft.Json.x32.dll
+        copy bin\Release\x32\OpenHardwareMonitorLib.dll bin\Release\x32\OpenHardwareMonitorLib.x32.dll
+        copy bin\Release\x32\CoreTracker.exe bin\Release\x32\CoreTracker.x32.exe
+        copy bin\Release\x64\Newtonsoft.Json.dll bin\Release\x64\Newtonsoft.Json.x64.dll
+        copy bin\Release\x64\OpenHardwareMonitorLib.dll bin\Release\x64\OpenHardwareMonitorLib.x64.dll
+        copy bin\Release\x64\CoreTracker.exe bin\Release\x64\CoreTracker.x64.exe
         echo build rename to install files done
 
     - name: build_installer
       run:
         mkdir deploy
         cd installer
-        cp ./build.nsi ../install.nsi
-        makensis.exe build.nsi
+        copy ./build.nsi ../install.nsi
         cd ..
-        ls ./depoly/
+
+    - name: Create installer
+      uses: joncloud/makensis-action@v2.0
+      with:
+        arguments: "/V3"
+
+    - name: Check result
+      run: ls ./depoly/
       
     - name: Create Release
       uses: actions/create-release@v1
