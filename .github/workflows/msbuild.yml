@@ -56,8 +56,7 @@ jobs:
         path: ./
         
     - name: Display structure of downloaded files
-      run: ls -R
-      working-directory: path/to/artifacts
+      run: ls bin\
     
     - name: copy
       run: |
