@@ -2,7 +2,7 @@
  
 ; HM NIS Edit Wizard helper defines 
 !define PRODUCT_NAME "CoreTracker" 
-!define PRODUCT_VERSION "v0.9.12" 
+!define PRODUCT_VERSION "v0.9.13" 
 !define PRODUCT_PUBLISHER "helloFhwang, Inc." 
 !define PRODUCT_WEB_SITE "https://github.com/Fhwang0926/CoreTracker" 
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\${PRODUCT_NAME}.exe" 
@@ -14,8 +14,8 @@
  
 ; MUI Settings 
 !define MUI_ABORTWARNING 
-!define MUI_ICON "..\Properties\icon\form.ico" 
-!define MUI_UNICON "..\Properties\icon\form.ico" 
+!define MUI_ICON "Properties\icon\form.ico" 
+!define MUI_UNICON "Properties\icon\form.ico" 
  
 ; Language Selection Dialog Settings 
 !define MUI_LANGDLL_REGISTRY_ROOT "${PRODUCT_UNINST_ROOT_KEY}" 
@@ -25,7 +25,7 @@
 ; Welcome page 
 !insertmacro MUI_PAGE_WELCOME 
 ; License page 
-!insertmacro MUI_PAGE_LICENSE "..\License" 
+!insertmacro MUI_PAGE_LICENSE "License" 
 ; Directory page  
 !insertmacro MUI_PAGE_DIRECTORY 
   
@@ -45,7 +45,7 @@
 ; MUI end ------ 
  
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}" 
-OutFile "../deploy/CoreTracker_Installer_x86_x64_v0.9.12.exe" 
+OutFile "../deploy/CoreTracker_Installer_x86_x64_v0.9.13.exe" 
 InstallDir "$PROGRAMFILES\${PRODUCT_NAME}" 
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" "" 
 ShowInstDetails show 
@@ -78,18 +78,18 @@ Section "MainSection" SEC01
   SetOutPath "$INSTDIR" 
   SetOverwrite ifnewer 
   ; packing file
-  File "..\bin\Release\x32\Newtonsoft.Json.x32.dll"
-  File "..\bin\Release\x32\OpenHardwareMonitorLib.x32.dll"
-  File "..\bin\Release\x32\CoreTracker.x32.exe"
-  File "..\bin\Release\x64\Newtonsoft.Json.x64.dll"
-  File "..\bin\Release\x64\OpenHardwareMonitorLib.x64.dll"
-  File "..\bin\Release\x64\CoreTracker.x64.exe"
+  File "bin\Release\x32\Newtonsoft.Json.x32.dll"
+  File "bin\Release\x32\OpenHardwareMonitorLib.x32.dll"
+  File "bin\Release\x32\CoreTracker.x32.exe"
+  File "bin\Release\x64\Newtonsoft.Json.x64.dll"
+  File "bin\Release\x64\OpenHardwareMonitorLib.x64.dll"
+  File "bin\Release\x64\CoreTracker.x64.exe"
   File "_install.bat" 
   File "_uninstall.bat"
   File "CoreTrackerHelper.x32.exe"
   File "CoreTrackerHelper.x64.exe"
   File "restart_explorer.bat"
-  File "..\README.md" 
+  File "README.md" 
   CreateDirectory "$SMPROGRAMS\CoreTracker" 
   CreateShortCut "$SMPROGRAMS\CoreTracker\CoreTracker.lnk" "$INSTDIR\CoreTracker.exe" 
   CreateShortCut "$DESKTOP\CoreTracker.lnk" "$INSTDIR\CoreTracker.exe" 
