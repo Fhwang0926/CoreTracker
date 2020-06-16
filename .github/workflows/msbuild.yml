@@ -33,11 +33,12 @@ jobs:
       run: |
         msbuild CoreTracker.csproj /t:Build /p:Configuration=Release /p:Platform=x86
         msbuild CoreTracker.csproj /t:Build /p:Configuration=Release /p:Platform=x64
-        
+
     - uses: actions/cache@v2
       with:
         path: |
-          **/bin/
+          **/bin
+        key: ${{ runner.os }}
 
   build:
     needs: compile
@@ -50,13 +51,6 @@ jobs:
     - name: Checkout
       uses: actions/checkout@master
     
-    - uses: actions/cache@v2
-      with:
-        path: |
-          **/bin/
-      ## ~/cache/exclude
-      # key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
-
     - name: copy
       run: |
         copy bin\Release\x32\Newtonsoft.Json.dll bin\Release\x32\Newtonsoft.Json.x32.dll
