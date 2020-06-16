@@ -43,6 +43,9 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - name: Checkout
       uses: actions/checkout@master
+
+    - name: Load msbuild
+      uses: microsoft/setup-msbuild@v1.0.0
     
     - name: Create installer
       uses: joncloud/makensis-action@v2.0
@@ -50,7 +53,6 @@ jobs:
         arguments: "/V3"
 
     - name: copy
-      uses: microsoft/setup-msbuild@v1.0.0
       run:
         echo build rename to install files start
         cp bin\Release\x32\Newtonsoft.Json.dll bin\Release\x32\Newtonsoft.Json.x32.dll
@@ -67,6 +69,7 @@ jobs:
         cd installer
         makensis.exe ".\build.($github.ref).nsi"
         cd ..
+        ls ./depoly/
       
     - name: Create Release
       uses: actions/create-release@v1
