@@ -69,6 +69,7 @@ jobs:
       run:
         mkdir deploy
         cd installer
+        cp ./build.nsi ../install.nsi
         makensis.exe build.nsi
         cd ..
         ls ./depoly/
