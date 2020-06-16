@@ -7,13 +7,15 @@ name: msbuild
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    # tags:
+    #  - "v*"
+  # pull_request:
+  #   branches: [ master ]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  build:
+  compile:
     # The type of runner that the job will run on
     runs-on: windows-latest
 
@@ -27,11 +29,64 @@ jobs:
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v1.0.0
 
-    # - name: MSBuild
-    #   run:
-    #     msbuild CoreTracker.csproj /t:Build /p:Configuration=Release /p:Platform=x64
-    #     msbuild CoreTracker.csproj /t:Build /p:Configuration=Release /p:Platform=x86
-    - name: Dump GitHub context
+    - name: MSBuild
+      run:
+        msbuild CoreTracker.csproj /t:Build /p:Configuration=Release /p:Platform=x64
+        msbuild CoreTracker.csproj /t:Build /p:Configuration=Release /p:Platform=x86
+
+  build:
+    runs-on: windows-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - name: Checkout
+      uses: actions/checkout@master
+    
+    - name: Create installer
+      uses: joncloud/makensis-action@v2.0
+      with:
+        arguments: "/V3"
+
+    - name: copy
+      uses: microsoft/setup-msbuild@v1.0.0
+      run:
+        echo build rename to install files start
+        cp bin\Release\x32\Newtonsoft.Json.dll bin\Release\x32\Newtonsoft.Json.x32.dll
+        cp bin\Release\x32\OpenHardwareMonitorLib.dll bin\Release\x32\OpenHardwareMonitorLib.x32.dll
+        cp bin\Release\x32\CoreTracker.exe bin\Release\x32\CoreTracker.x32.exe
+        cp bin\Release\x64\Newtonsoft.Json.dll bin\Release\x64\Newtonsoft.Json.x64.dll
+        cp bin\Release\x64\OpenHardwareMonitorLib.dll bin\Release\x64\OpenHardwareMonitorLib.x64.dll
+        cp bin\Release\x64\CoreTracker.exe bin\Release\x64\CoreTracker.x64.exe
+        echo build rename to install files done
+
+    - name: build_installer
+      run:
+        mkdir deploy
+        cd installer
+        makensis.exe ".\build.($github.ref).nsi"
+        cd ..
+      
+    - name: Create Release
+      uses: actions/create-release@v1
       env:
-        GITHUB_CONTEXT: ${{ toJson(github) }}
-      run: echo "$GITHUB_CONTEXT"
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        body: |
+          Changes in this Release
+          - $CHANGES
+          - $TITLE #$NUMBER @$AUTHOR
+          - Second Change
+          - title: '🚀 Features'
+            label: 'enhancement'
+          - title: '🐛 Hotfixes'
+            label: 'bug'
+          - title: 'ETC'
+            label: 'documentation'
+        draft: false
+        #  prerelease is beta i must publish
+        prerelease: true
+

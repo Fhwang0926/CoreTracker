@@ -144,6 +144,12 @@ ___
 - Auto Bug Report
 - memory reduce
 
+## REFER
+github action
+
+https://github.com/joncloud/makensis-action
+
+
 [CoreTarackerHelper]: <https://github.com/Fhwang0926/CoreTrackerHelper>
 [OpenHardwareMonitor]: <https://github.com/openhardwaremonitor/openhardwaremonitor>
 
