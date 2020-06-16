@@ -54,9 +54,7 @@ jobs:
     - uses: actions/download-artifact@v2
       with:
         path: ./
-        
-    - name: Display structure of downloaded files
-      run: ls bin\
+      run: ls
     
     - name: copy
       run: |
