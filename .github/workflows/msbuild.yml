@@ -29,10 +29,12 @@ jobs:
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v1.0.0
 
-    - name: MSBuild
+    - name: MSBuild_x32
+      run:
+        msbuild CoreTracker.csproj /t:Build /p:Configuration=Release /p:Platform=x86
+    - name: MSBuild_x64
       run:
         msbuild CoreTracker.csproj /t:Build /p:Configuration=Release /p:Platform=x64
-        msbuild CoreTracker.csproj /t:Build /p:Configuration=Release /p:Platform=x86
 
   build:
     runs-on: windows-latest
@@ -67,7 +69,7 @@ jobs:
       run:
         mkdir deploy
         cd installer
-        makensis.exe ".\build.($github.ref).nsi"
+        makensis.exe build.nsi
         cd ..
         ls ./depoly/
       
