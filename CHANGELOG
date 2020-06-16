@@ -1,3 +1,7 @@
+~ v1.0.0
+- bugfix
+- change miss some word
+
 ~ v0.9.5
 - change update logic(has bug)
 
@@ -27,7 +31,7 @@ v0.7.1
 - fix: auto build test and bug_fix
 
 v0.7.0
-- add: change form style(with north) and change moving logic
+- add: change form style(with notch) and change moving logic
 
 v0.6.1
 - fix: auto builder

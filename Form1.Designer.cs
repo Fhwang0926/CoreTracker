@@ -58,7 +58,7 @@
             this.l_close = new System.Windows.Forms.Label();
             this.l_hide = new System.Windows.Forms.Label();
             this.l_version = new System.Windows.Forms.Label();
-            this.btn_north = new System.Windows.Forms.Button();
+            this.btn_notch = new System.Windows.Forms.Button();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -394,22 +394,22 @@
             this.l_version.TabIndex = 14;
             this.l_version.Text = "VERSION";
             // 
-            // btn_north
+            // btn_notch
             // 
-            this.btn_north.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btn_north.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btn_north.FlatAppearance.BorderSize = 0;
-            this.btn_north.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_north.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_north.Location = new System.Drawing.Point(111, 0);
-            this.btn_north.Name = "btn_north";
-            this.btn_north.Size = new System.Drawing.Size(162, 36);
-            this.btn_north.TabIndex = 15;
-            this.btn_north.Text = "North";
-            this.btn_north.UseVisualStyleBackColor = false;
-            this.btn_north.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_north_MouseDown);
-            this.btn_north.MouseMove += new System.Windows.Forms.MouseEventHandler(this.btn_north_MouseMove);
-            this.btn_north.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_north_MouseUp);
+            this.btn_notch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btn_notch.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btn_notch.FlatAppearance.BorderSize = 0;
+            this.btn_notch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_notch.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_notch.Location = new System.Drawing.Point(111, 0);
+            this.btn_notch.Name = "btn_notch";
+            this.btn_notch.Size = new System.Drawing.Size(162, 36);
+            this.btn_notch.TabIndex = 15;
+            this.btn_notch.Text = "Notch";
+            this.btn_notch.UseVisualStyleBackColor = false;
+            this.btn_notch.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_notch_MouseDown);
+            this.btn_notch.MouseMove += new System.Windows.Forms.MouseEventHandler(this.btn_notch_MouseMove);
+            this.btn_notch.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_notch_MouseUp);
             // 
             // Form1
             // 
@@ -418,7 +418,7 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(44)))), ((int)(((byte)(54)))));
             this.ClientSize = new System.Drawing.Size(368, 769);
             this.ControlBox = false;
-            this.Controls.Add(this.btn_north);
+            this.Controls.Add(this.btn_notch);
             this.Controls.Add(this.l_version);
             this.Controls.Add(this.l_hide);
             this.Controls.Add(this.l_close);
@@ -482,7 +482,7 @@
         private System.Windows.Forms.CheckBox ch_board_temperature;
         private System.Windows.Forms.CheckBox ch_cpu_temperature;
         private System.Windows.Forms.CheckBox chk_disable_alert;
-        private System.Windows.Forms.Button btn_north;
+        private System.Windows.Forms.Button btn_notch;
     }
 }
 

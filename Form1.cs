@@ -60,10 +60,10 @@ namespace CoreTracker
             l_core_value.Text = (Environment.ProcessorCount / 2).ToString();
             l_th_value.Text = Environment.ProcessorCount.ToString();
 
-            // make north
+            // make Notch
             this.FormBorderStyle = FormBorderStyle.None;
             Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20,20));
-            btn_north.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, btn_north.Height, btn_north.Width, -400, 20, 20));
+            btn_notch.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, btn_notch.Height, btn_notch.Width, -400, 20, 20));
 
             // ass running status
             pic_status.Image = Properties.Resources.bad;
@@ -430,14 +430,14 @@ namespace CoreTracker
             this.WindowState = FormWindowState.Minimized;
         }
 
-        private void btn_north_MouseDown(object sender, MouseEventArgs e)
+        private void btn_notch_MouseDown(object sender, MouseEventArgs e)
         {
             mouseDown = true;
             lastLocation = e.Location;
         }
 
-        // north move
-        private void btn_north_MouseMove(object sender, MouseEventArgs e)
+        // Notch move
+        private void btn_notch_MouseMove(object sender, MouseEventArgs e)
         {
             if (mouseDown)
             {
@@ -446,7 +446,7 @@ namespace CoreTracker
             }
         }
 
-        private void btn_north_MouseUp(object sender, MouseEventArgs e)
+        private void btn_notch_MouseUp(object sender, MouseEventArgs e)
         {
             mouseDown = false;
         }
