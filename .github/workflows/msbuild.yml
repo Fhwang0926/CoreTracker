@@ -57,24 +57,15 @@ jobs:
     - name: show downloaded
       run: |
         ls
-        cd bin
-        ls
-        cd Release
-        ls
-        cd x32
-        ls
-        cd ..
-        cd x64
-        ls
     
     - name: copy
       run: |
-        copy bin\Release\x32\Newtonsoft.Json.dll bin\Release\x32\Newtonsoft.Json.x32.dll
-        copy bin\Release\x32\OpenHardwareMonitorLib.dll bin\Release\x32\OpenHardwareMonitorLib.x32.dll
-        copy bin\Release\x32\CoreTracker.exe bin\Release\x32\CoreTracker.x32.exe
-        copy bin\Release\x64\Newtonsoft.Json.dll bin\Release\x64\Newtonsoft.Json.x64.dll
-        copy bin\Release\x64\OpenHardwareMonitorLib.dll bin\Release\x64\OpenHardwareMonitorLib.x64.dll
-        copy bin\Release\x64\CoreTracker.exe bin\Release\x64\CoreTracker.x64.exe
+        copy bin\x32\Newtonsoft.Json.dll bin\x32\Newtonsoft.Json.x32.dll
+        copy bin\x32\OpenHardwareMonitorLib.dll bin\x32\OpenHardwareMonitorLib.x32.dll
+        copy bin\x32\CoreTracker.exe bin\x32\CoreTracker.x32.exe
+        copy bin\x64\Newtonsoft.Json.dll bin\x64\Newtonsoft.Json.x64.dll
+        copy bin\x64\OpenHardwareMonitorLib.dll bin\x64\OpenHardwareMonitorLib.x64.dll
+        copy bin\x64\CoreTracker.exe bin\x64\CoreTracker.x64.exe
 
     - name: build_installer
       run: |

@@ -2,7 +2,7 @@
  
 ; HM NIS Edit Wizard helper defines 
 !define PRODUCT_NAME "CoreTracker" 
-!define PRODUCT_VERSION "v0.9.21" 
+!define PRODUCT_VERSION "v0.9.22" 
 !define PRODUCT_PUBLISHER "helloFhwang, Inc." 
 !define PRODUCT_WEB_SITE "https://github.com/Fhwang0926/CoreTracker" 
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\${PRODUCT_NAME}.exe" 
@@ -45,7 +45,7 @@
 ; MUI end ------ 
  
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}" 
-OutFile "../deploy/CoreTracker_Installer_x86_x64_v0.9.21.exe" 
+OutFile "../deploy/CoreTracker_Installer_x86_x64_v0.9.22.exe" 
 InstallDir "$PROGRAMFILES\${PRODUCT_NAME}" 
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" "" 
 ShowInstDetails show 
