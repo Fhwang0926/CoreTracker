@@ -7,8 +7,8 @@ name: CoreTracker-CI/CD
 on:
   push:
     branches: [ master ]
-    tags:
-     - "v*"
+    # tags:
+    #  - "v*"
 
 jobs:
   # This workflow contains a single job called "build"
