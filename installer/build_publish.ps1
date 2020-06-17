@@ -67,7 +67,7 @@ Write-Output "override version set done"
 Set-Location ./installer
 if (Test-Path "build.nsi") { Remove-Item "build.nsi"; Write-Output "build.nsi"; }
 $nsi = Get-Content "sample.nsi"
-$data = $nsi.Replace("%VERSION%", $version)
+$data = $nsi.Replace("%VERSION%", $version).Replace("Release\", "")
 Set-Content "build.nsi" $data
 Set-Location ..
 

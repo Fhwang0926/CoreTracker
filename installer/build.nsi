@@ -2,7 +2,7 @@
  
 ; HM NIS Edit Wizard helper defines 
 !define PRODUCT_NAME "CoreTracker" 
-!define PRODUCT_VERSION "v0.9.22" 
+!define PRODUCT_VERSION "v0.9.23" 
 !define PRODUCT_PUBLISHER "helloFhwang, Inc." 
 !define PRODUCT_WEB_SITE "https://github.com/Fhwang0926/CoreTracker" 
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\${PRODUCT_NAME}.exe" 
@@ -45,7 +45,7 @@
 ; MUI end ------ 
  
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}" 
-OutFile "../deploy/CoreTracker_Installer_x86_x64_v0.9.22.exe" 
+OutFile "../deploy/CoreTracker_Installer_x86_x64_v0.9.23.exe" 
 InstallDir "$PROGRAMFILES\${PRODUCT_NAME}" 
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" "" 
 ShowInstDetails show 
@@ -78,12 +78,12 @@ Section "MainSection" SEC01
   SetOutPath "$INSTDIR" 
   SetOverwrite ifnewer 
   ; packing file
-  File "bin\Release\x32\Newtonsoft.Json.x32.dll"
-  File "bin\Release\x32\OpenHardwareMonitorLib.x32.dll"
-  File "bin\Release\x32\CoreTracker.x32.exe"
-  File "bin\Release\x64\Newtonsoft.Json.x64.dll"
-  File "bin\Release\x64\OpenHardwareMonitorLib.x64.dll"
-  File "bin\Release\x64\CoreTracker.x64.exe"
+  File "bin\x32\Newtonsoft.Json.x32.dll"
+  File "bin\x32\OpenHardwareMonitorLib.x32.dll"
+  File "bin\x32\CoreTracker.x32.exe"
+  File "bin\x64\Newtonsoft.Json.x64.dll"
+  File "bin\x64\OpenHardwareMonitorLib.x64.dll"
+  File "bin\x64\CoreTracker.x64.exe"
   File "_install.bat" 
   File "_uninstall.bat"
   File "CoreTrackerHelper.x32.exe"
