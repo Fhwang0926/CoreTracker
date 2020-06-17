@@ -71,7 +71,7 @@ jobs:
       run: |
         mkdir deploy
         cd installer
-        ((Get-Content -path sample.nsi -Raw) -replace '%VERSION%','${{ github.ref }}' | Set-Content -Path 'build.nsi')
+        ((Get-Content -path sample.nsi -Raw) -replace '%VERSION%','${{ github.ref }}' -replace 'Release\','' | Set-Content -Path 'build.nsi')
         copy ./build.nsi ../install.nsi
         cd ..
 
