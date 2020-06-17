@@ -42,16 +42,16 @@ if (!([string]::IsNullOrEmpty($option)))
       $version_array[0] = 'v' + [string](([int]($version_array[0].Replace('v', ''))) + 1)
       $version_array[1] = 0
       $version_array[2] = 0
-      $msg  = "fix:release new update application: $msg"
+      $msg  = "fix:add or upgrade function or change some logic: $msg"
     } elseif ($option -eq "-m") {
       # add or upgrade function or change some logic
       $version_array[1] = [string](([int]$version_array[1]) + 1)
       $version_array[2] = 0
-      $msg  = "fix:add or upgrade function or change some logic: $msg"
+      $msg  = "fix:bug: $msg"
     } elseif ($option -eq "-b") {
       # bug fix
       $version_array[2] = ([int]$version_array[2]) + 1
-      $msg  = "fix:bug $msg"
+      $msg  = "fix:test: $msg"
     }
     $version = [string]::Join(".", $version_array)
     Write-Output "new version : $version"

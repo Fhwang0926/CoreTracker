@@ -55,7 +55,17 @@ jobs:
       with:
         path: ./
     - name: show downloaded
-      run: ls
+      run:
+        ls
+        cd bin
+        ls
+        cd Release
+        ls
+        cd x32
+        ls
+        cd ..
+        cd x64
+        ls
     
     - name: copy
       run: |
