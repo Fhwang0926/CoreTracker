@@ -71,7 +71,7 @@ jobs:
       run: |
         mkdir deploy
         cd installer
-        ((Get-Content -path sample.nsi -Raw) -replace '%VERSION%','${{ github.ref }}' -replace 'Release\','' | Set-Content -Path 'build.nsi')
+        ((Get-Content -path sample.nsi -Raw) -replace '%VERSION%','${{ github.ref }}' | Set-Content -Path 'build.nsi')
         copy ./build.nsi ../install.nsi
         cd ..
 
@@ -85,6 +85,7 @@ jobs:
       
     - name: Create Release
       uses: actions/create-release@v1
+      id: create-release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
       with:
@@ -104,4 +105,14 @@ jobs:
         draft: false
         #  prerelease is beta i must publish
         prerelease: true
+
+    - name: Upload Release
+      id: upload-release-asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: ./depoly/CoreTracker_Installer_x86_x64_${{ github.ref }}.exe
+        asset_content_type: application/octet-stream
 

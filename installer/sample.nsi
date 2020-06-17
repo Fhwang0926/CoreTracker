@@ -78,12 +78,12 @@ Section "MainSection" SEC01
   SetOutPath "$INSTDIR" 
   SetOverwrite ifnewer 
   ; packing file
-  File "bin\Release\x32\Newtonsoft.Json.x32.dll"
-  File "bin\Release\x32\OpenHardwareMonitorLib.x32.dll"
-  File "bin\Release\x32\CoreTracker.x32.exe"
-  File "bin\Release\x64\Newtonsoft.Json.x64.dll"
-  File "bin\Release\x64\OpenHardwareMonitorLib.x64.dll"
-  File "bin\Release\x64\CoreTracker.x64.exe"
+  File "bin\x32\Newtonsoft.Json.x32.dll"
+  File "bin\x32\OpenHardwareMonitorLib.x32.dll"
+  File "bin\x32\CoreTracker.x32.exe"
+  File "bin\x64\Newtonsoft.Json.x64.dll"
+  File "bin\x64\OpenHardwareMonitorLib.x64.dll"
+  File "bin\x64\CoreTracker.x64.exe"
   File "installer\_install.bat" 
   File "installer\_uninstall.bat"
   File "installer\CoreTrackerHelper.x32.exe"
