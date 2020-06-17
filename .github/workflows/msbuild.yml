@@ -69,7 +69,7 @@ jobs:
     - name: build_installer
       run: |
         cd installer
-        ((Get-Content -path sample.nsi -Raw) -replace '%VERSION%','${{ giithub.ref }}' | Set-Content -Path 'install.nsi')
+        ((Get-Content -path sample.nsi -Raw) -replace '%VERSION%','${{ github.ref }}' | Set-Content -Path 'install.nsi')
         copy ./install.nsi ../install.nsi
         cd ..
         ls
