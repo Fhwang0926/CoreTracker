@@ -45,7 +45,7 @@
 ; MUI end ------ 
  
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}" 
-OutFile "../deploy/CoreTracker_Installer_x86_x64_%VERSION%.exe" 
+OutFile "deploy/CoreTracker_Installer_x86_x64_%VERSION%.exe" 
 InstallDir "$PROGRAMFILES\${PRODUCT_NAME}" 
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" "" 
 ShowInstDetails show 
@@ -84,12 +84,12 @@ Section "MainSection" SEC01
   File "bin\Release\x64\Newtonsoft.Json.x64.dll"
   File "bin\Release\x64\OpenHardwareMonitorLib.x64.dll"
   File "bin\Release\x64\CoreTracker.x64.exe"
-  File "_install.bat" 
-  File "_uninstall.bat"
-  File "CoreTrackerHelper.x32.exe"
-  File "CoreTrackerHelper.x64.exe"
-  File "restart_explorer.bat"
-  File "README.md" 
+  File "installer\_install.bat" 
+  File "installer\_uninstall.bat"
+  File "installer\CoreTrackerHelper.x32.exe"
+  File "installer\CoreTrackerHelper.x64.exe"
+  File "installer\restart_explorer.bat"
+  File "installer\README.md" 
   CreateDirectory "$SMPROGRAMS\CoreTracker" 
   CreateShortCut "$SMPROGRAMS\CoreTracker\CoreTracker.lnk" "$INSTDIR\CoreTracker.exe" 
   CreateShortCut "$DESKTOP\CoreTracker.lnk" "$INSTDIR\CoreTracker.exe" 
