@@ -7,12 +7,9 @@ name: CoreTracker-CI/CD
 on:
   push:
     branches: [ master ]
-    # tags:
-    #  - "v*"
-  # pull_request:
-  #   branches: [ master ]
+    tags:
+     - "v*"
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
   compile:
@@ -51,6 +48,7 @@ jobs:
     - uses: actions/download-artifact@v2
       with:
         path: ./
+
     - name: show downloaded
       run: |
         ls
@@ -67,10 +65,11 @@ jobs:
     - name: build_installer
       run: |
         cd installer
-        ((Get-Content -path sample.nsi -Raw) -replace '%VERSION%','${{ github.ref }}' | Set-Content -Path 'build.nsi')
-        copy ./build.nsi ../install.nsi
+        ((Get-Content -path sample.nsi -Raw) -replace '%VERSION%','${{ giithub.ref }}' | Set-Content -Path 'install.nsi')
+        copy ./install.nsi ../install.nsi
         cd ..
         ls
+        type install.nsi
 
     - name: Create installer
       uses: joncloud/makensis-action@v2.0
@@ -84,7 +83,7 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: CoreTracker_Installer_x86_x64_${{ github.ref }}.exe
-        path: CoreTracker_Installer_x86_x64_${{ github.ref }}.exe
+        path: C:\Temp\CoreTracker_Installer_x86_x64_${{ github.ref }}.exe
   
   release:
     needs: build
