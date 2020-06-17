@@ -89,7 +89,7 @@ Section "MainSection" SEC01
   File "installer\CoreTrackerHelper.x32.exe"
   File "installer\CoreTrackerHelper.x64.exe"
   File "installer\restart_explorer.bat"
-  File "installer\README.md" 
+  File "README.md" 
   CreateDirectory "$SMPROGRAMS\CoreTracker" 
   CreateShortCut "$SMPROGRAMS\CoreTracker\CoreTracker.lnk" "$INSTDIR\CoreTracker.exe" 
   CreateShortCut "$DESKTOP\CoreTracker.lnk" "$INSTDIR\CoreTracker.exe" 
