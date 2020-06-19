@@ -50,10 +50,6 @@ jobs:
       with:
         path: ./
 
-    - name: show downloaded
-      run: |
-        ls
-    
     - name: copy
       run: |
         copy bin\Release\x32\Newtonsoft.Json.dll bin\Release\x32\Newtonsoft.Json.x32.dll
@@ -70,11 +66,7 @@ jobs:
 
     - name: build_installer
       run: |
-        cd installer
-        ((Get-Content -path sample.nsi -Raw) -replace '%VERSION%','${{ steps.get_version.outputs.VERSION }}' | Set-Content -Path 'install.nsi')
-        copy ./install.nsi ../install.nsi
-        cd ..
-        ls
+        ((Get-Content -path ./installer/sample.nsi -Raw) -replace '%VERSION%','${{ steps.get_version.outputs.VERSION }}' | Set-Content -Path 'install.nsi')
         type install.nsi
 
     - name: Create installer
@@ -82,14 +74,10 @@ jobs:
       with:
         arguments: "/V3"
 
-    - name: Check result
-      run: |
-        ls
-    
     - uses: actions/upload-artifact@v2
       with:
         name: CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe
-        path: CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe
+        path: /assert/CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe
   
   release:
     needs: build
@@ -99,7 +87,7 @@ jobs:
 
     - uses: actions/download-artifact@v2
       with:
-        path: ./
+        path: ./assert/
     - name: show downloaded
       run: |
         ls
@@ -133,7 +121,6 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: assert/CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe
         asset_content_type: application/octet-stream
-
