@@ -1,6 +1,7 @@
 ~ v1.0.0
 - bugfix
 - change miss some word
+- add auto build installer
 
 ~ v0.9.5
 - change update logic(has bug)

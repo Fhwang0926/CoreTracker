@@ -77,7 +77,7 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe
-        path: /assert/CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe
+        path: CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe
   
   release:
     needs: build
@@ -87,7 +87,7 @@ jobs:
 
     - uses: actions/download-artifact@v2
       with:
-        path: ./assert/
+        path: ./
     - name: show downloaded
       run: |
         ls
@@ -122,5 +122,5 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: assert/CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe
+        asset_path: CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe
         asset_content_type: application/octet-stream

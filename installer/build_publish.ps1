@@ -56,7 +56,7 @@ if (!([string]::IsNullOrEmpty($option)))
     } elseif ($option -eq "-t") {
       # bug fix
       $version_array[2] = ([int]$version_array[2]) + 1
-      $msg  = "test: $msg"
+      $msg  = "it's just test"
     }
     $version = [string]::Join(".", $version_array)
     Write-Output "new version : $version"
