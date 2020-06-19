@@ -45,7 +45,7 @@
 ; MUI end ------ 
  
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}" 
-OutFile "C:\Temp\CoreTracker_Installer_x86_x64_%VERSION%.exe" 
+OutFile "CoreTracker_Installer_x86_x64_%VERSION%.exe" 
 InstallDir "$PROGRAMFILES\${PRODUCT_NAME}" 
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" "" 
 ShowInstDetails show 
