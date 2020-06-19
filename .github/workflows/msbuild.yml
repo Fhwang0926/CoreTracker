@@ -114,6 +114,11 @@ jobs:
         draft: false
         #  prerelease is beta i must publish
         prerelease: true
+    
+    - name: Get the version
+      id: get_version
+      run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+      shell: bash
 
     - name: Upload Release
       id: upload-release-asset
