@@ -11,6 +11,7 @@ Set-Location ..
 # start new tag
 $option = $args[0]
 if ($option -eq "-h") {
+  Write-Output "-t"
   Write-Output "-r [msg]"
   Write-Output "-m [msg]"
   Write-Output "-b [msg]"
@@ -51,7 +52,11 @@ if (!([string]::IsNullOrEmpty($option)))
     } elseif ($option -eq "-b") {
       # bug fix
       $version_array[2] = ([int]$version_array[2]) + 1
-      $msg  = "fix:test: $msg"
+      $msg  = "fix: $msg"
+    } elseif ($option -eq "-t") {
+      # bug fix
+      $version_array[2] = ([int]$version_array[2]) + 1
+      $msg  = "test: $msg"
     }
     $version = [string]::Join(".", $version_array)
     Write-Output "new version : $version"

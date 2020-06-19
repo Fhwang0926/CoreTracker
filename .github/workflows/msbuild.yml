@@ -7,8 +7,8 @@ name: CoreTracker-CI/CD
 on:
   push:
     branches: [ master ]
-    # tags:
-    #  - "v*"
+    tags:
+     - "v*.*.*"
   # pull_request:
   #   branches: [ master ]
 
@@ -66,19 +66,15 @@ jobs:
         copy bin\Release\x64\OpenHardwareMonitorLib.dll bin\Release\x64\OpenHardwareMonitorLib.x64.dll
         copy bin\Release\x64\CoreTracker.exe bin\Release\x64\CoreTracker.x64.exe
     
-    # Check for write permission
-    - name: Check user permission
-      id: check
-      uses: scherermichael-oss/action-has-permission@master
-      with:
-        required-permission: write
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Get the version
+      id: get_version
+      run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+      shell: bash
 
     - name: build_installer
       run: |
         cd installer
-        ((Get-Content -path sample.nsi -Raw) -replace '%VERSION%','${{ github.ref }}' | Set-Content -Path 'install.nsi')
+        ((Get-Content -path sample.nsi -Raw) -replace '%VERSION%','${{ steps.get_version.outputs.VERSION }}' | Set-Content -Path 'install.nsi')
         copy ./install.nsi ../install.nsi
         cd ..
         ls
@@ -95,8 +91,8 @@ jobs:
     
     - uses: actions/upload-artifact@v2
       with:
-        name: CoreTracker_Installer_x86_x64_${{ github.ref }}.exe
-        path: CoreTracker_Installer_x86_x64_${{ github.ref }}.exe
+        name: CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe
+        path: CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe
   
   release:
     needs: build
