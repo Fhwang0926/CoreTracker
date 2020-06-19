@@ -115,11 +115,13 @@ jobs:
         #  prerelease is beta i must publish
         prerelease: true
     
+    - name: check tag name
+      run: echo ${{ github.event.release.tag_name }}
+      shell: bash
+
     - name: Get the version
       id: get_version
-      run: |
-        ls
-        echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+      run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
       shell: bash
 
 
@@ -130,6 +132,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./
+        asset_path: ./CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe
         asset_name: CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe
         asset_content_type: application/octet-stream
