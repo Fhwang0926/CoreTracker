@@ -1,0 +1,145 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CoreTracker-CI/CD
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches:
+      - dev
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+
+jobs:
+  # This workflow contains a single job called "build"
+  compile:
+    # The type of runner that the job will run on
+    runs-on: windows-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - name: Checkout
+      uses: actions/checkout@master
+
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.0.0
+
+    - name: MSBuild_x32_x64
+      run: |
+        msbuild CoreTracker.csproj /t:Build /p:Configuration=Release /p:Platform=x86
+        msbuild CoreTracker.csproj /t:Build /p:Configuration=Release /p:Platform=x64
+        ls bin\
+    
+    - uses: actions/upload-artifact@v2
+      with:
+        name: bin
+        path: bin\**\**\**
+
+  build:
+    needs: compile
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+    
+    - uses: actions/download-artifact@v2
+      with:
+        path: ./
+
+    - name: copy
+      run: |
+        copy bin\Release\x32\Newtonsoft.Json.dll bin\Release\x32\Newtonsoft.Json.x32.dll
+        copy bin\Release\x32\OpenHardwareMonitorLib.dll bin\Release\x32\OpenHardwareMonitorLib.x32.dll
+        copy bin\Release\x32\CoreTracker.exe bin\Release\x32\CoreTracker.x32.exe
+        copy bin\Release\x64\Newtonsoft.Json.dll bin\Release\x64\Newtonsoft.Json.x64.dll
+        copy bin\Release\x64\OpenHardwareMonitorLib.dll bin\Release\x64\OpenHardwareMonitorLib.x64.dll
+        copy bin\Release\x64\CoreTracker.exe bin\Release\x64\CoreTracker.x64.exe
+    
+    - name: Get the version
+      id: get_version
+      run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+      shell: bash
+
+    - name: build_installer
+      run: |
+        ((Get-Content -path ./installer/sample.nsi -Raw) -replace '%VERSION%','${{ steps.get_version.outputs.VERSION }}' | Set-Content -Path 'install.nsi')
+        type install.nsi
+
+    - name: Create installer
+      uses: joncloud/makensis-action@v2.0
+      with:
+        arguments: "/V3"
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe
+        path: CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe
+  
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - uses: actions/download-artifact@v2
+      with:
+        path: ./
+    
+    - name: show downloaded
+      run: ls
+    
+    - name: Get the version
+      id: get_version
+      run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+      shell: bash
+    
+    - name: Get the url
+      id: get_url
+      run: echo ::set-output name=URL::${{ steps.create_release.outputs.assets_url }}/api/uploads/}
+      shell: bash
+
+    - name: Create Release
+      uses: actions/create-release@v1
+      id: create_release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      with:
+        tag_name: ${{ steps.get_version.outputs.VERSION }}
+        release_name: Release ${{ steps.get_version.outputs.VERSION }}
+        body: |
+          Changes in this Release
+          - $CHANGES
+          - $TITLE #$NUMBER @$AUTHOR
+          - Second Change
+          - title: '🚀 Features'
+            label: 'enhancement'
+          - title: '🐛 Hotfixes'
+            label: 'bug'
+          - title: 'ETC'
+            label: 'documentation'
+        draft: true
+        #  prerelease is beta i must publish
+        prerelease: false
+    
+    - name: Upload Release
+      id: upload-release-asset
+      uses: Fhwang0926/upload-release-asset@v1.0.2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        # upload_url: ${{ steps.create_release.outputs.upload_url }}
+        upload_url: ${{ steps.get_url.outputs.URL }}
+        asset_path: ./CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe
+        asset_name: CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe
+        asset_content_type: application/octet-stream
+
+    # - name: check uploaded status
+    #   shell: bash
+    #   run: |
+    #     echo ${{ steps.upload-release-asset.outputs.id }}
+    #     wget ${{ steps.upload-release-asset.outputs.browser_download_url }}
+    #     echo done
