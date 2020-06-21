@@ -120,9 +120,14 @@ jobs:
         #  prerelease is beta i must publish
         prerelease: false
     
+    - name: Get the url
+      id: get_url
+      run: echo ::set-output name=URL::${{ steps.create_release.outputs.assets_url }}/api/uploads/}
+      shell: bash
+
     - name: print var
       run: |
-        echo ${{ secrets.GITHUB_TOKEN }}
+        echo ${{ get_url.URL }}
     
     - name: Upload Release
       id: upload-release-asset
@@ -132,7 +137,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         # upload_url: ${{ steps.create_release.outputs.upload_url }}
-        upload_url: ${{ steps.get_url.outputs.URL }}
+        upload_url: ${{ steps.get_version.outputs.URL }}
         asset_path: ./CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe
         asset_name: CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe
         asset_content_type: application/octet-stream
