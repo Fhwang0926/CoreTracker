@@ -81,7 +81,7 @@ jobs:
   
   release:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
 
@@ -120,9 +120,13 @@ jobs:
             label: 'bug'
           - title: 'ETC'
             label: 'documentation'
-        draft: false
+        draft: true
         #  prerelease is beta i must publish
-        prerelease: true
+        prerelease: false
+    
+    - name: check release url
+      run: |
+        echo ${{ steps.create_release.outputs.upload_url }}
 
     - name: Upload Release
       id: upload-release-asset
@@ -134,3 +138,10 @@ jobs:
         asset_path: ./CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe
         asset_name: CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe
         asset_content_type: application/octet-stream
+
+    - name: check uploaded status
+      shell: bash
+      run: |
+        echo ${{ steps.upload-release-asset.outputs.id }}
+        wget ${{ steps.upload-release-asset.outputs.browser_download_url }}
+        echo done
