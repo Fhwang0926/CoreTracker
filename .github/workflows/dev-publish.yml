@@ -127,7 +127,7 @@ jobs:
 
     - name: print var
       run: |
-        echo ${{ get_url.URL }}
+        echo ${{ steps.outputs.get_url.URL }}
     
     - name: Upload Release
       id: upload-release-asset
