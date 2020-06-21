@@ -122,12 +122,13 @@ jobs:
     
     - name: Upload Release
       id: upload-release-asset
-      uses: actions/upload-release-asset@v1
+      uses: Fhwang0926/upload-release-asset@v1.0.3
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: './CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe'
+        # upload_url: ${{ steps.create_release.outputs.upload_url }}
+        upload_url: https://uploads.github.com/repos/Fhwang0926/CoreTracker/releases/27763810/assets?name=CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe
+        asset_path: ./CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe
         asset_name: CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe
         asset_content_type: application/octet-stream
 
