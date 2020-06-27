@@ -85,17 +85,6 @@ jobs:
 
     steps:
 
-    - uses: actions/download-artifact@v2
-      with:
-        path: ./
-    
-    - name: show downloaded
-      run: |
-        ls -al
-        pwd
-        cd CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe
-        ls -al
-    
     - name: get location
       id: get_location
       run: echo "::set-output name=location::$(pwd)"
@@ -107,6 +96,17 @@ jobs:
       id: get_version
       run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
       shell: bash
+
+    - uses: actions/download-artifact@v2
+      with:
+        path: ./
+    
+    - name: show downloaded
+      run: |
+        ls -al
+        pwd
+        cd CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe
+        ls -al
 
     - name: Create Release
       uses: actions/create-release@v1
@@ -138,7 +138,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_name: ${{ steps.get_location.outputs.location }}/CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe
+        asset_name: ${{ steps.get_location.outputs.location }}/CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe/CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe
     
     - name: check download url
       run: |
