@@ -90,7 +90,7 @@ jobs:
         path: ./
     
     - name: show downloaded
-      run: ls
+      run: ls -al .
     
     - name: Get the version
       id: get_version
