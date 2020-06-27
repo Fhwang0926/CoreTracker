@@ -94,6 +94,13 @@ jobs:
         ls
         pwd
     
+    - name: get location
+      id: get_location
+      run: echo "::set-output name=location::$(pwd)"
+    
+    - name: print location
+      run: echo ${{ steps.get_location.outputs.location }}
+
     - name: Get the version
       id: get_version
       run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
@@ -122,12 +129,6 @@ jobs:
         #  prerelease is beta i must publish
         prerelease: false
 
-    - name: show downloaded
-      run: |
-        ls -al .
-        chmod 775 CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe
-      shell: bash
-    
     - name: Upload Release
       id: upload-release-asset
       uses: Fhwang0926/upload-release-asset@v1.1.10
@@ -135,7 +136,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_name: CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe
+        asset_name: ${{ steps.get_location.outputs.location }}/CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe
     
     - name: check download url
       run: |
