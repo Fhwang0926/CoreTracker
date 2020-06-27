@@ -128,7 +128,7 @@ jobs:
     
     - name: Upload Release
       id: upload-release-asset
-      uses: Fhwang0926/upload-release-asset@v1.1.9
+      uses: Fhwang0926/upload-release-asset@v1.1.10
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
