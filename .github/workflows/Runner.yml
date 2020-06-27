@@ -104,8 +104,9 @@ jobs:
     - name: show downloaded
       run: |
         ls -al
+        mv CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe dist
+        cd dist
         pwd
-        cd CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe
         ls -al
 
     - name: Create Release
@@ -133,12 +134,12 @@ jobs:
 
     - name: Upload Release
       id: upload-release-asset
-      uses: Fhwang0926/upload-release-asset@v1.1.10
+      uses: Fhwang0926/upload-release-asset@v1.1.14
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_name: ${{ steps.get_location.outputs.location }}/CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe/CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe
+        asset_name: dist/CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe
     
     - name: check download url
       run: |
