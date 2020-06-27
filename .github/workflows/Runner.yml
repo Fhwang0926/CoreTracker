@@ -91,8 +91,10 @@ jobs:
     
     - name: show downloaded
       run: |
-        ls
+        ls -al
         pwd
+        cd CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe
+        ls -al
     
     - name: get location
       id: get_location
