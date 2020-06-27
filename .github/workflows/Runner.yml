@@ -120,15 +120,6 @@ jobs:
         #  prerelease is beta i must publish
         prerelease: false
     
-    - name: Get the url
-      id: get_url
-      run: echo ::set-output name=URL::${{ steps.create_release.outputs.assets_url }}/api/uploads/}
-      shell: bash
-
-    - name: print var
-      run: |
-        echo ${{ steps.outputs.get_url.URL }}
-    
     - name: Upload Release
       id: upload-release-asset
       uses: Fhwang0926/upload-release-asset@v1.1.8
@@ -139,11 +130,8 @@ jobs:
         asset_name: ./CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe
     
     - name: check download url
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        run: |
-         echo ${{ steps.upload-release-asset.outputs.browser_download_url }}
+      run: |
+        echo ${{ steps.upload-release-asset.outputs.browser_download_url }}
 
 
         
