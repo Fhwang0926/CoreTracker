@@ -108,7 +108,6 @@ Function Explain Start
 
 [OpenHardwareMonitor] : Reference dll
 
-
 Function Explain End
 ___
 
@@ -138,6 +137,7 @@ ___
 
 #### 3. Can set all show tray icon on the taskbar or selected application tray icon on the taskbar
 <img src="https://raw.githubusercontent.com/Fhwang0926/CoreTracker/master/img/set_trayicon_3.png" width="300">
+
 ___
 
 ## 4. New Features
@@ -145,14 +145,15 @@ ___
 - Auto Bug Report
 - memory reduce
 
-## REFER
-github action
+___
 
-https://github.com/joncloud/makensis-action
+## 5. REFER
+- [NSIS]
+- [CoreTarackerHelper]
+- [OpenHardwareMonitor]
+- [Fhwang0926@upload-release-asset]
 
-
+[NSIS]: <https://github.com/joncloud/makensis-action>
 [CoreTarackerHelper]: <https://github.com/Fhwang0926/CoreTrackerHelper>
 [OpenHardwareMonitor]: <https://github.com/openhardwaremonitor/openhardwaremonitor>
-
-
-
+[Fhwang0926@upload-release-asset]: <https://github.com/Fhwang0926/upload-release-asset>
