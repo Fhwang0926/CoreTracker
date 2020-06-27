@@ -81,7 +81,7 @@ jobs:
   
   release:
     needs: build
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
 
@@ -119,6 +119,12 @@ jobs:
         draft: true
         #  prerelease is beta i must publish
         prerelease: false
+
+    - name: show downloaded
+      run: |
+        ls -al .
+        chmod 775 CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe
+      shell: bash
     
     - name: Upload Release
       id: upload-release-asset
