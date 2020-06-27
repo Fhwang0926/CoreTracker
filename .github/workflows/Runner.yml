@@ -136,6 +136,5 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        # upload_url: ${{ steps.create_release.outputs.upload_url }}
-        upload_url: ${{ steps.get_version.outputs.URL }}
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_name: CoreTracker_Installer_x86_x64_${{ steps.get_version.outputs.VERSION }}.exe
