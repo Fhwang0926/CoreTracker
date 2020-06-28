@@ -1,7 +1,8 @@
-~ v0.9.0
+~ v0.10.0
 - bugfix
 - change miss some word
-- add auto build installer
+- add auto build installer with github action
+- add download progressbar
 
 ~ v0.9.5
 - change update logic(has bug)
