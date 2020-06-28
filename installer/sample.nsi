@@ -88,7 +88,6 @@ Section "MainSection" SEC01
   File "installer\_uninstall.bat"
   File "installer\CoreTrackerHelper.x32.exe"
   File "installer\CoreTrackerHelper.x64.exe"
-  File "installer\restart_explorer.bat"
   File "README.md" 
   CreateDirectory "$SMPROGRAMS\CoreTracker" 
   CreateShortCut "$SMPROGRAMS\CoreTracker\CoreTracker.lnk" "$INSTDIR\CoreTracker.exe" 
@@ -144,7 +143,6 @@ Section Uninstall
   Delete "$INSTDIR\NULL" 
   Delete "$INSTDIR\CoreTrackerHelper.x32.exe"
   Delete "$INSTDIR\CoreTrackerHelper.x64.exe"
-  Delete "$INSTDIR\restart_explorer.bat"
 
   Delete "$SMPROGRAMS\CoreTracker\Uninstall.lnk" 
   Delete "$SMPROGRAMS\CoreTracker\Website.lnk" 

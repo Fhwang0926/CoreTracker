@@ -390,22 +390,23 @@ namespace CoreTracker
         public bool RestartExplorer()
         {
             try {
-                exeCmd("taskkill / f / im explorer.exe");
-                exeCmd("start explorer.exe");
+                exeCmd("taskkill /F /IM explorer.exe", true);
+                exeCmd("start /B explorer.exe");
                 return true;
             } catch (Exception e) { Console.WriteLine(e.ToString()); return false; }
             
         }
 
-        public bool exeCmd(string cmd)
+        public bool exeCmd(string cmd, bool isAdmin = false)
         {
             try
             {
                 Process p = new Process();
                 p.StartInfo.FileName = "cmd.exe";
-                p.StartInfo.Arguments = @"/C " + cmd;
+                p.StartInfo.Arguments = "/C " + cmd;
                 p.StartInfo.RedirectStandardOutput = false;
                 p.StartInfo.UseShellExecute = false;
+                if (isAdmin) { p.StartInfo.Verb = "runas"; }
                 p.Start();
                 p.WaitForExit();
                 return true;
