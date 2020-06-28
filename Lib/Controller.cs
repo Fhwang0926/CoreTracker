@@ -2,11 +2,14 @@
 using OpenHardwareMonitor.Hardware;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -24,6 +27,18 @@ namespace CoreTracker
             int nWidthEllipse, // height of ellipse
             int nHeightEllipse // width of ellipse
         );
+
+        private void InitializeLayout()
+        {
+            this.SuspendLayout();
+            // 
+            // Form1
+            // 
+            this.ClientSize = new System.Drawing.Size(299, 25);
+            this.Name = "Form1";
+            this.ResumeLayout(false);
+
+        }
     }
     internal class Controller
     {
@@ -132,30 +147,30 @@ namespace CoreTracker
             }
 
             return false;
-
         }
 
-        public static async Task<bool> download(string url, string target)
+        public static bool downloadAsync(string url, string target)
         {
             try
             {
-                using (HttpClient client = new HttpClient())
+                using (WebClient client = new WebClient())
                 {
-                    var response = await client.GetAsync(url);
-
-                    if (response.IsSuccessStatusCode)
+                    try { if (File.Exists(target)) { File.Delete(target); } } catch (Exception) {  }
+                    Form2 downloadForm = new Form2();
+                    downloadForm.Show();
+                    client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(downloadForm.ProgressChanged);
+                    client.DownloadFileCompleted += new AsyncCompletedEventHandler(downloadForm.Completed);
+                    client.DownloadFileAsync(new Uri(url), target);
+                    downloadForm.timer.Start();
+                    while (!downloadForm.getDownloadStatus())
                     {
-                        using (var fs = new FileStream(target, FileMode.OpenOrCreate))
-                        {
-                            var responseTask = response.Content.CopyToAsync(fs);
-                            responseTask.Wait();
-                            return true;
-                        }
-                    } else
-                    {
-                        return false;
+                        Application.DoEvents();
+                        Thread.Sleep(100);
                     }
+                    downloadForm.Close();
+                    downloadForm.Dispose();
                 }
+                return true;
             } catch (Exception)
             {
                 return false;
@@ -201,11 +216,11 @@ namespace CoreTracker
             return true;
         }
 
-        public async Task<updateFormat> startDownload(string url)
+        public updateFormat startDownload(string url)
         {
             string target = $"{Application.UserAppDataPath}\\" + System.Diagnostics.Process.GetCurrentProcess().ProcessName + "_new_installer.exe";
             // start download
-            if (await download(url, target))
+            if (downloadAsync(url, target))
             {
                 // setup restart bat file
                 if (setupRestart(target)) { return new updateFormat { msg = "download done :D, if click ok button restart program", is_error = false }; }
@@ -374,17 +389,11 @@ namespace CoreTracker
 
         public bool RestartExplorer()
         {
-            var process = new Process
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    WindowStyle = ProcessWindowStyle.Hidden,
-                    FileName = Application.StartupPath + $"\\restart_explorer.bat"
-                }
-            };
-
-            try { process.Start(); process.WaitForExit(); return true;  }
-            catch (Exception e) { Console.WriteLine(e.ToString()); return true; }
+            try {
+                exeCmd("taskkill / f / im explorer.exe");
+                exeCmd("start explorer.exe");
+                return true;
+            } catch (Exception e) { Console.WriteLine(e.ToString()); return false; }
             
         }
 

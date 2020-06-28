@@ -11,10 +11,11 @@ Set-Location ..
 # start new tag
 $option = $args[0]
 if ($option -eq "-h") {
+  Write-Output "v<Major Version>,<Minor Version>,<Build or MainTenance Version>"
   Write-Output "-t"
-  Write-Output "-r [msg]"
-  Write-Output "-m [msg]"
-  Write-Output "-b [msg]"
+  Write-Output "-r: <Major Version> [msg]"
+  Write-Output "-m: <Minor Version> [msg]"
+  Write-Output "-b: <Build or MainTenance Version> [msg]"
   Write-Output "-h Print Help"
   exit
 }

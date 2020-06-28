@@ -25,7 +25,7 @@ namespace CoreTracker
         private Int16 ModeSlow = 5000;
         private Int16 ModeNormarl = 3000;
         private Int16 ModeFast = 1000;
-        private string VERSION = "v0.9.79";
+        private string VERSION = "v0.10.0";
         private string GITHUB = "https://github.com/Fhwang0926/CoreTracker";
 
         private bool mouseDown;
@@ -95,6 +95,7 @@ namespace CoreTracker
             l_version.Text = VERSION;
 
             // check auto update
+
             bool auto_update = Ragistry.CheckAutoUpdate();
             if (auto_update) { ch_auto_update.Checked = true; self_update(); }
 
@@ -171,7 +172,7 @@ namespace CoreTracker
                     if (result == System.Windows.Forms.DialogResult.OK)
                     {
                         // unload start
-                        updateFormat restart = await controller.startDownload(rs.target);
+                        updateFormat restart = controller.startDownload(rs.target);
                         // real restart
                         if (!restart.is_error)
                         {
@@ -562,6 +563,7 @@ namespace CoreTracker
     }
     #endregion
 }
+
 
 
 

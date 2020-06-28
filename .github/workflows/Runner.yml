@@ -12,12 +12,9 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 
 jobs:
-  # This workflow contains a single job called "build"
   compile:
-    # The type of runner that the job will run on
     runs-on: windows-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -118,16 +115,17 @@ jobs:
         tag_name: ${{ steps.get_version.outputs.VERSION }}
         release_name: Release ${{ steps.get_version.outputs.VERSION }}
         body: |
-          Changes in this Release
-          - $CHANGES
-          - $TITLE #$NUMBER @$AUTHOR
-          - Second Change
-          - title: '🚀 Features'
-            label: 'enhancement'
-          - title: '🐛 Hotfixes'
-            label: 'bug'
-          - title: 'ETC'
-            label: 'documentation'
+          new version Release
+        #  Changes in this Release
+        #    - $CHANGES
+        #    - $TITLE #$NUMBER @$AUTHOR
+        #    - Second Change
+        #    - title: '🚀 Features'
+        #     label: 'enhancement'
+        #    - title: '🐛 Hotfixes'
+        #     label: 'bug'
+        #    - title: 'ETC'
+        #      label: 'documentation'
         draft: true
         #  prerelease is beta i must publish
         prerelease: false
