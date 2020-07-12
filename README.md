@@ -23,6 +23,10 @@ We can see by graphic about the status of Logical Processor
 
 _ _ _
 
+# Download
+
+ - `Release` : [`Latest`](https://github.com/Fhwang0926/CoreTracker/releases)
+ 
 # Summary
 
 - What is it ?
