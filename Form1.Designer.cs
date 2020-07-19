@@ -252,7 +252,7 @@
             this.rb_normal.Size = new System.Drawing.Size(70, 16);
             this.rb_normal.TabIndex = 1;
             this.rb_normal.TabStop = true;
-            this.rb_normal.Text = "Nomarl";
+            this.rb_normal.Text = "Normal";
             this.rb_normal.UseVisualStyleBackColor = true;
             // 
             // rb_fast
