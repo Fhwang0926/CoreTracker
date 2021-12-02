@@ -78,7 +78,7 @@ ___
 | Status | Color | Example |
 | ------ | ------ | ------ |
 | 0 <= status < 20 | GREEN | <img src="https://raw.githubusercontent.com/Fhwang0926/CoreTracker/master/Properties/status/10.ico" width="20"> |
-| 20 <= status < 40 | YELLO | <img src="https://raw.githubusercontent.com/Fhwang0926/CoreTracker/master/Properties/status/20.ico" width="20"> |
+| 20 <= status < 40 | YELLOW | <img src="https://raw.githubusercontent.com/Fhwang0926/CoreTracker/master/Properties/status/20.ico" width="20"> |
 | 40 <= status < 60 | ORANGE | <img src="https://raw.githubusercontent.com/Fhwang0926/CoreTracker/master/Properties/status/40.ico" width="20"> |
 | 60 <= status < 80 | ORANGE | <img src="https://raw.githubusercontent.com/Fhwang0926/CoreTracker/master/Properties/status/60.ico" width="20"> |
 | 80 <= status | RED  | <img src="https://raw.githubusercontent.com/Fhwang0926/CoreTracker/master/Properties/status/80.ico" width="20"> |
