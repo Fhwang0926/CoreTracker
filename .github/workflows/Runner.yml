@@ -43,7 +43,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@master
     
-    - uses: actions/download-artifact@v2
+    - uses: actions/download-artifact@v4.1.7
       with:
         path: ./
 
@@ -94,7 +94,7 @@ jobs:
       run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
       shell: bash
 
-    - uses: actions/download-artifact@v2
+    - uses: actions/download-artifact@v4.1.7
       with:
         path: ./
     
